@@ -5,7 +5,7 @@ ___
 
 To start development:
 
-1. You shuold install Node on your computer
+1. You should install Node on your computer
 2. In root directory run "npm intall" or you can use Yarn to install all dependencies( node packages )
 
 ```

@@ -37,10 +37,13 @@ module.exports = (env, options) => {
       {
         test: /\.s?css$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          isProduction ? MiniCssExtractPlugin.loader : 'style-loader', 
           {
             loader: "css-loader", options: {
-                sourceMap: true
+                sourceMap: true,
+                sourceMap: true,
+                modules: true,
+                localIdentName: "[local]___[hash:base64:5]"
             }
         }, {
             loader: "sass-loader", options: {
