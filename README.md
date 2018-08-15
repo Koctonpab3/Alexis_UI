@@ -13,5 +13,5 @@ To start development:
  build --- build project
  test --- run tests
  lint --- check syntax errors
- lint --- fix syntax errors
+ lint:fix --- fix syntax errors
 ```
