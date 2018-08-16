@@ -2,6 +2,7 @@ const path = require('path');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin")
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = (env, options) => {
   
@@ -26,8 +27,15 @@ module.exports = (env, options) => {
     plugins: [
       new MiniCssExtractPlugin({
         filename: "styles.css",
+      }),
+      new HtmlWebpackPlugin({
+        title: 'Alexis UI',
+        template: './src/index.html',
+        filename: isProduction ? '../index.html' : 'index.html'
+        
       })
     ],
+  
     module: {
       rules: [{
         loader: 'babel-loader',
@@ -56,10 +64,10 @@ module.exports = (env, options) => {
     },
     devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map',
     devServer: {
-      contentBase: path.join(__dirname, 'public'),
+      contentBase: path.join(__dirname, 'src'),
       open: true,
       historyApiFallback: true,
-      publicPath: '/dist/'
+      publicPath: ''
     }
   };
 };
