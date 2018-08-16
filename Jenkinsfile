@@ -6,19 +6,19 @@ pipeline {
     stages {
         stage('InstallPackages') {
             steps {
-                bat 'npm install'
+                sh 'npm install'
             }
         }
         stage('Lint'){
             steps{
-                bat 'npm run lint'
-                bat 'npm run lint:fix'
+                sh 'npm run lint'
+                sh 'npm run lint:fix'
             }
         }
 
         stage('Build'){
             steps{
-                bat 'npm run build'
+                sh 'npm run build'
             }
         }
     }
