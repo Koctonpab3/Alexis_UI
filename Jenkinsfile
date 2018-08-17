@@ -18,6 +18,11 @@ pipeline {
                 sh 'npm run lint:fix'
             }
         }
+        stage('Test'){
+            steps{
+                sh 'npm run test'
+            }
+        }
 
         stage('Build'){
             steps{
