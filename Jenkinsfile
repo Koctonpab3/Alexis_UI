@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('InstallPackages') {
             steps {
-                bash 'npm install'
+                sh 'npm install'
             }
         }
         stage('Lint'){
