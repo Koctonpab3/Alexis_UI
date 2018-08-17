@@ -3,9 +3,6 @@ pipeline {
     
     tools {nodejs "node"}
     
-    environment {
-        CI = 'true'
-    }
     stages {
         stage('InstallPackages') {
             steps {
