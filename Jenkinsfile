@@ -1,24 +1,25 @@
 pipeline {
     agent any
-    environment {
-        CI = 'true'
-    }
+    
+    tools {nodejs "node"}
+    
     stages {
-        stage('InstallPackages') {
-            steps {
-                bat 'npm install'
-            }
-        }
+        
         stage('Lint'){
             steps{
-                bat 'npm run lint'
-                bat 'npm run lint:fix'
+                sh 'npm run lint'
+                sh 'npm run lint:fix'
+            }
+        }
+        stage('Test'){
+            steps{
+                sh 'npm run test'
             }
         }
 
         stage('Build'){
             steps{
-                bat 'npm run build'
+                sh 'npm run build'
             }
         }
     }
