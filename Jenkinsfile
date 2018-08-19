@@ -4,11 +4,7 @@ pipeline {
     tools {nodejs "node"}
     
     stages {
-        stage('InstallPackages') {
-            steps {
-               sudo sh 'npm install'
-            }
-        }
+        
         stage('Lint'){
             steps{
                 sh 'npm run lint'
