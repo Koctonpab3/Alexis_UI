@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 // components
-import Header from './main/header';
+import Header from '../components/main/header';
 
 // pages
 import Wordgroups from './wordgroups/index';

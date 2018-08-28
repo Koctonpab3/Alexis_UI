@@ -3,6 +3,9 @@
   .top-navbar{
     width: 77%;
     margin: 0 auto;
+    .ant-menu-item-selected{
+      background-color: #001529;
+    }
     #logo{
       width: 130px;
       background-color: #5c5c5c;
