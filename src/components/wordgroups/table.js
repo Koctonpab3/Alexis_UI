@@ -7,11 +7,14 @@ const columns = [{
   title: 'Status',
   dataIndex: 'status',
   key: 'status',
+  width: '10%',
   render: text => <a href="#">{text}</a>,
+
 }, {
   title: 'Word Group',
   dataIndex: 'group',
   key: 'group',
+  width: '30%',
 }, {
   title: 'Actions',
   key: 'actions',
@@ -24,6 +27,7 @@ const columns = [{
       <a href="#">Delete</a>
     </span>
   ),
+  width: '60%',
 }];
 
 const data = [{
@@ -61,11 +65,33 @@ const data = [{
   status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
   group: 'irregular verbs',
 
+},
+{
+  key: '10',
+  status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+  group: 'irregular verbs',
+},
+{
+  key: '11',
+  status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+  group: 'irregular verbs',
+},
+{
+  key: '12',
+  status: <Icon type="frown" style={{ fontSize: 24, color: '#fa541c' }} />,
+  group: 'irregular verbs',
+},
+{
+  key: '13',
+  status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+  group: 'irregular verbs',
 }];
 
 const WordTable = () => (
-  <div>
-    <Table columns={columns} dataSource={data} />
+  <div className="tableWrap">
+    <div className="wordTable">
+      <Table columns={columns} dataSource={data} pagination={{ pageSize: 9 }} />
+    </div>
   </div>
 );
 export default WordTable;

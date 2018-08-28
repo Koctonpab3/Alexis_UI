@@ -1,9 +1,12 @@
  @import './base/settings';
+ body{
+   background-color: #f5f5f5;
+ }
 .wrapper{
-  background-color: #f5f5f5;
     .mainBlock{
       width: 77%;
       margin: 0 auto;
+      padding-bottom: 174px;
     }
   }
 

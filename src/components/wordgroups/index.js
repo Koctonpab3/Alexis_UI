@@ -5,7 +5,7 @@ import WordTable from './table';
 import Path from './path';
 
 const Wordgroups = () => (
-  <div className="wordTable">
+  <div className="wordTableContainer">
     <Path />
     <WordTable />
   </div>
