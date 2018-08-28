@@ -8,6 +8,9 @@
     .wordTable{
       width: 92%;
       margin: 0 auto;
+      .ant-table-thead > tr > th.ant-table-column-sort{
+        background-color: #fafafa;;
+      }
     }
   }
 }

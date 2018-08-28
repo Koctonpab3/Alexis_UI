@@ -14,7 +14,9 @@ const columns = [{
   title: 'Word Group',
   dataIndex: 'group',
   key: 'group',
-  width: '30%',
+  width: '70%',
+  defaultSortOrder: 'ascend',
+  sorter: (a, b) => a.group.localeCompare(b.group),
 }, {
   title: 'Actions',
   key: 'actions',
@@ -27,64 +29,76 @@ const columns = [{
       <a href="#">Delete</a>
     </span>
   ),
-  width: '60%',
+  width: '18%',
 }];
 
 const data = [{
   key: '1',
   status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-  group: 'irregular verbs',
+  activation: 'enabled',
+  group: 'Irregular verbs',
 }, {
   key: '2',
   status: <Icon type="frown" style={{ fontSize: 24, color: '#fa541c' }} />,
-  group: 'irregular verbs',
+  activation: 'disabled',
+  group: 'Animals',
 }, {
   key: '4',
   status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-  group: 'irregular verbs',
+  activation: 'enabled',
+  group: 'Birds',
 }, {
   key: '5',
   status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-  group: 'irregular verbs',
+  activation: 'enabled',
+  group: 'Insects',
 }, {
   key: '6',
   status: <Icon type="frown" style={{ fontSize: 24, color: '#fa541c' }} />,
-  group: 'irregular verbs',
+  activation: 'disabled',
+  group: 'Snakes',
 }, {
   key: '7',
   status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-  group: 'irregular verbs',
+  activation: 'disabled',
+  group: 'Human body',
 },
 {
   key: '8',
   status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-  group: 'irregular verbs',
+  activation: 'enabled',
+  group: 'Business English nouns',
 },
 {
   key: '9',
   status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-  group: 'irregular verbs',
+  activation: 'enabled',
+  group: 'Business English verbs',
 
 },
 {
   key: '10',
   status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-  group: 'irregular verbs',
+  activation: 'enabled',
+  group: 'Clothes',
 },
 {
   key: '11',
   status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-  group: 'irregular verbs',
+  activation: 'enabled',
+  group: 'Appearance',
 },
 {
   key: '12',
   status: <Icon type="frown" style={{ fontSize: 24, color: '#fa541c' }} />,
-  group: 'irregular verbs',
+  activation: 'disabled',
+  group: 'Nature',
 },
 {
   key: '13',
   status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-  group: 'irregular verbs',
+  activation: 'enabled',
+  group: 'Education',
 }];
 
 const WordTable = () => (
