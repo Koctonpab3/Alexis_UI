@@ -1,16 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Button } from 'antd';
+import LoginPage from './Login/constansts/LoginPage';
 import './styles/styles.scss';
 
-
-const TestMe = () => (
-  <div>
-    <input type="text" />
-    <p>
-      {'some text'}
-      <Button type="primary">Primary</Button>
-    </p>
-  </div>
+const App = () => (
+  <LoginPage />
 );
-ReactDOM.render(<TestMe />, document.getElementById('app'));
+
+ReactDOM.render(<App />, document.getElementById('app'));
