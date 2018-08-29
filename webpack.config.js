@@ -48,9 +48,7 @@ module.exports = (env, options) => {
           isProduction ? MiniCssExtractPlugin.loader : 'style-loader', 
           {
             loader: "css-loader", options: {
-                sourceMap: true,
-                modules: true,
-                localIdentName: "[local]___[hash:base64:5]"
+                sourceMap: true
             }
         }, {
             loader: "sass-loader", options: {
