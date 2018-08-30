@@ -3,13 +3,17 @@ pipeline {
     
     tools {nodejs 'node8'}
     
-    steps {
+    stages {
         stage('InstallPackages'){
-            sh 'npm install'
+            steps{
+                sh 'npm install'
+            }
         }
         stage('Lint'){
-            sh 'npm run lint'
-            sh 'npm run lint:fix'
+            steps{
+                sh 'npm run lint'
+                sh 'npm run lint:fix'
+            }
         }
         stage('Test'){
             steps{
