@@ -1,4 +1,4 @@
- @import './base/settings';
+ @import 'base/settings';
  body{
    background-color: #f5f5f5;
  }
@@ -12,5 +12,5 @@
 
  // components styles
 
- @import './components/worgroup.scss';
- @import './components/navigation.scss';
+ @import 'components/worgroup';
+ @import 'components/navigation';

@@ -2,17 +2,17 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 // components
-import Header from '../components/main/header';
+import Header from '../Header/components/header';
 
 // pages
-import Wordgroups from './wordgroups/index';
-import Setup from './setup/index';
-import Profile from './profile/index';
-import Statistics from './statistics/index';
+import Wordgroups from '../WordGroups/components/index';
+import Setup from '../Setup/components/index';
+import Profile from '../Profile/components/index';
+import Statistics from '../Statistics/components/index';
 
 
 //  styles
-import '../styles/styles.scss';
+import './styles/styles.scss';
 
 //  app
 const App = () => (

@@ -1,20 +1,12 @@
 import React from 'react';
 
+// antd
 import {
-  Table, Input, Button, Popconfirm, Form, Icon,
+  Table, Input, Button, Popconfirm, Form, Icon, Divider,
 } from 'antd';
-
-const Statistics = () => (
-  <div>
-    <p>Test Statistics Page</p>
-    <EditableTable />
-  </div>
-);
-export default Statistics;
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
-
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
     <tr {...props} />
@@ -140,12 +132,13 @@ class EditableTable extends React.Component {
       title: 'Actions',
       key: 'actions',
       render: (text, record) => (
-        this.state.dataSource.length > 1
-          ? (
-            <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
-              <a href="javascript:;">Delete</a>
-            </Popconfirm>
-          ) : null
+        <span>
+          <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
+            <a href="javascript:;">Delete</a>
+            <Divider type="vertical" />
+          </Popconfirm>
+        </span>
+
       ),
     }];
 
@@ -278,7 +271,7 @@ class EditableTable extends React.Component {
       return (
         <div>
           <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
-                   + Add new word group
+                + Add new word group
           </Button>
           <Table
             components={components}
@@ -291,3 +284,12 @@ class EditableTable extends React.Component {
       );
     }
 }
+
+const WordTable = () => (
+  <div className="tableWrap">
+    <div className="wordTable">
+      <EditableTable />
+    </div>
+  </div>
+);
+export default WordTable;
