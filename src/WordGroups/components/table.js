@@ -180,8 +180,10 @@ class EditableTable extends React.Component {
             <a href="javascript:;">Delete</a>
             <Divider type="vertical" />
           </Popconfirm>
+          <Popconfirm title="Sure to deactivate?">
+            <a href="javascript:;">Deactivate</a>
+          </Popconfirm>
         </span>
-
       ),
     }];
     const statusIcons = {
