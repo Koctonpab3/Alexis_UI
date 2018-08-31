@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import LoginPage from './Login/constansts/LoginPage';
+import LoginPage from './LoginPage/constansts/LoginPage';
 import './styles/styles.scss';
 
 const App = () => (
