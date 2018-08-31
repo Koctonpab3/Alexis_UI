@@ -118,6 +118,15 @@ class EditableTable extends React.Component {
       key: 'status',
       width: '10%',
       editable: false,
+      filters: [{
+        text: 'Show enabled',
+        value: 'enabled',
+      }, {
+        text: 'Show disabled',
+        value: 'disabled',
+      }],
+      onFilter: (value, record) => record.activation.indexOf(value) === 0,
+
     }, {
       title: 'Word Group',
       dataIndex: 'group',
@@ -138,6 +147,7 @@ class EditableTable extends React.Component {
           <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
         </div>
       ),
+      filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
       onFilter: (value, record) => record.group.toLowerCase().includes(value.toLowerCase()),
       onFilterDropdownVisibleChange: (visible) => {
         if (visible) {
@@ -174,75 +184,82 @@ class EditableTable extends React.Component {
 
       ),
     }];
+    const statusIcons = {
+      enabledIcon: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+      disabledIcon: <Icon type="frown" style={{ fontSize: 24, color: '#fa541c' }} />,
+    };
     this.state = {
       searchText: '',
       dataSource:
           [{
             key: '0',
             activation: 'enabled',
-            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: statusIcons.enabledIcon,
+            say() {
+              console.log(this.activation);
+            },
             group: 'Irregular verbs',
           }, {
             key: '1',
-            status: <Icon type="frown" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: statusIcons.disabledIcon,
             activation: 'disabled',
             group: 'Animals',
           }, {
             key: '2',
-            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: statusIcons.enabledIcon,
             activation: 'enabled',
             group: 'Birds',
           }, {
             key: '3',
-            status:<Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: statusIcons.enabledIcon,
             activation: 'enabled',
             group: 'Insects',
           }, {
             key: '4',
-            status: <Icon type="frown" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: statusIcons.disabledIcon,
             activation: 'disabled',
             group: 'Snakes',
           }, {
             key: '5',
-            status: <Icon type="frown" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: statusIcons.disabledIcon,
             activation: 'disabled',
             group: 'Human body',
           },
           {
             key: '6',
-            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: statusIcons.enabledIcon,
             activation: 'enabled',
             group: 'Business English nouns',
           },
           {
             key: '7',
-            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: statusIcons.enabledIcon,
             activation: 'enabled',
             group: 'Business English verbs',
 
           },
           {
             key: '8',
-            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: statusIcons.enabledIcon,
             activation: 'enabled',
             group: 'Clothes',
           },
           {
             key: '9',
-            status:<Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: statusIcons.enabledIcon,
             activation: 'enabled',
             group: 'Appearance',
           },
           {
             key: '10',
-            status: <Icon type="frown" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: statusIcons.disabledIcon,
             activation: 'disabled',
             group: 'Nature',
           },
           {
             key: '11',
             activation: 'enabled',
-            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: statusIcons.enabledIcon,
             group: 'Education',
           }],
       count: 12,
