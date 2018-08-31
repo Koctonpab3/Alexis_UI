@@ -109,7 +109,6 @@ class EditableCell extends React.Component {
       );
     }
 }
-
 class EditableTable extends React.Component {
   constructor(props) {
     super(props);
@@ -124,6 +123,40 @@ class EditableTable extends React.Component {
       dataIndex: 'group',
       key: 'group',
       width: '70%',
+      filterDropdown: ({
+        setSelectedKeys, selectedKeys, confirm, clearFilters,
+      }) => (
+        <div className="custom-filter-dropdown">
+          <Input
+            ref={ele => this.searchInput = ele}
+            placeholder="Search Word Group"
+            value={selectedKeys[0]}
+            onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+            onPressEnter={this.handleSearch(selectedKeys, confirm)}
+          />
+          <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
+          <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+        </div>
+      ),
+      onFilter: (value, record) => record.group.toLowerCase().includes(value.toLowerCase()),
+      onFilterDropdownVisibleChange: (visible) => {
+        if (visible) {
+          setTimeout(() => {
+            this.searchInput.focus();
+          });
+        }
+      },
+      render: (text) => {
+        const { searchText } = this.state;
+        return searchText ? (
+          <span>
+            {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
+              fragment.toLowerCase() === searchText.toLowerCase()
+                    ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
+            ))}
+          </span>
+        ) : text;
+      },
       defaultSortOrder: 'ascend',
       sorter: (a, b) => a.group.localeCompare(b.group),
       editable: true,
@@ -141,79 +174,90 @@ class EditableTable extends React.Component {
 
       ),
     }];
-
     this.state = {
-      dataSource: [{
-        key: '0',
-        status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-        activation: 'enabled',
-        group: 'Irregular verbs',
-      }, {
-        key: '1',
-        status: <Icon type="frown" style={{ fontSize: 24, color: '#fa541c' }} />,
-        activation: 'disabled',
-        group: 'Animals',
-      }, {
-        key: '2',
-        status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-        activation: 'enabled',
-        group: 'Birds',
-      }, {
-        key: '3',
-        status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-        activation: 'enabled',
-        group: 'Insects',
-      }, {
-        key: '4',
-        status: <Icon type="frown" style={{ fontSize: 24, color: '#fa541c' }} />,
-        activation: 'disabled',
-        group: 'Snakes',
-      }, {
-        key: '5',
-        status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-        activation: 'disabled',
-        group: 'Human body',
-      },
-      {
-        key: '6',
-        status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-        activation: 'enabled',
-        group: 'Business English nouns',
-      },
-      {
-        key: '7',
-        status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-        activation: 'enabled',
-        group: 'Business English verbs',
+      searchText: '',
+      dataSource:
+          [{
+            key: '0',
+            activation: 'enabled',
+            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            group: 'Irregular verbs',
+          }, {
+            key: '1',
+            status: <Icon type="frown" style={{ fontSize: 24, color: '#52c41a' }} />,
+            activation: 'disabled',
+            group: 'Animals',
+          }, {
+            key: '2',
+            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            activation: 'enabled',
+            group: 'Birds',
+          }, {
+            key: '3',
+            status:<Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            activation: 'enabled',
+            group: 'Insects',
+          }, {
+            key: '4',
+            status: <Icon type="frown" style={{ fontSize: 24, color: '#52c41a' }} />,
+            activation: 'disabled',
+            group: 'Snakes',
+          }, {
+            key: '5',
+            status: <Icon type="frown" style={{ fontSize: 24, color: '#52c41a' }} />,
+            activation: 'disabled',
+            group: 'Human body',
+          },
+          {
+            key: '6',
+            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            activation: 'enabled',
+            group: 'Business English nouns',
+          },
+          {
+            key: '7',
+            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            activation: 'enabled',
+            group: 'Business English verbs',
 
-      },
-      {
-        key: '8',
-        status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-        activation: 'enabled',
-        group: 'Clothes',
-      },
-      {
-        key: '9',
-        status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-        activation: 'enabled',
-        group: 'Appearance',
-      },
-      {
-        key: '10',
-        status: <Icon type="frown" style={{ fontSize: 24, color: '#fa541c' }} />,
-        activation: 'disabled',
-        group: 'Nature',
-      },
-      {
-        key: '11',
-        status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-        activation: 'enabled',
-        group: 'Education',
-      }],
+          },
+          {
+            key: '8',
+            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            activation: 'enabled',
+            group: 'Clothes',
+          },
+          {
+            key: '9',
+            status:<Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            activation: 'enabled',
+            group: 'Appearance',
+          },
+          {
+            key: '10',
+            status: <Icon type="frown" style={{ fontSize: 24, color: '#52c41a' }} />,
+            activation: 'disabled',
+            group: 'Nature',
+          },
+          {
+            key: '11',
+            activation: 'enabled',
+            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            group: 'Education',
+          }],
       count: 12,
     };
   }
+
+    handleSearch = (selectedKeys, confirm) => () => {
+      confirm();
+      this.setState({ searchText: selectedKeys[0] });
+    };
+
+    handleReset = clearFilters => () => {
+      clearFilters();
+      this.setState({ searchText: '' });
+    };
 
     handleDelete = (key) => {
       const dataSource = [...this.state.dataSource];
