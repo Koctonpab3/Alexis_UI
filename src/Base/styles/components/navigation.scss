@@ -1,0 +1,25 @@
+.top-navbar-wrapper{
+  background: #001529;
+  .top-navbar{
+    width: 77%;
+    margin: 0 auto;
+    .ant-menu-item-selected{
+      background-color: #001529;
+    }
+    #logo{
+      width: 130px;
+      background-color: #5c5c5c;
+      height: 36px;
+      border-radius: 4px;
+      top: 12px;
+      margin-right: 22px;
+    }
+    #userIcon{
+      float: right;
+      padding: 0;
+    }
+    .nav-item{
+      padding: 7px 22px;
+    }
+  }
+}

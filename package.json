@@ -43,7 +43,7 @@
     }
   },
   "dependencies": {
-    "antd": "^3.7.3",
+    "antd": "^3.8.4",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -69,9 +69,9 @@
     "eslint-plugin-react-native": "^3.2.1",
     "eslint-plugin-standard": "^3.1.0",
     "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.4.1",
+    "mini-css-extract-plugin": "^0.4.2",
     "node-sass": "^4.9.2",
-    "optimize-css-assets-webpack-plugin": "^5.0.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-google-login": "^3.2.1",
@@ -83,11 +83,11 @@
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "uuid": "^3.3.2",
-    "webpack": "^4.16.3",
+    "webpack": "^4.17.1",
     "webpack-cli": "^3.1.0"
   },
   "devDependencies": {
     "jest": "^23.4.2",
-    "webpack-dev-server": "^3.1.5"
+    "webpack-dev-server": "^3.1.7"
   }
 }
