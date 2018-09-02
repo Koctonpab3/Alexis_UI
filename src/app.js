@@ -2,6 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
-import App from './Base/app';
+import App, {histoty} from './Base/app';
 
-ReactDOM.render((<BrowserRouter><App /></BrowserRouter>), document.getElementById('app'));
+const jsx = (
+    <App />
+)
+
+ReactDOM.render(jsx, document.getElementById('app'));

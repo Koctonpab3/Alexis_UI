@@ -1,14 +1,17 @@
 import React from 'react';
 import GoogleLogin from 'react-google-login';
-
+import { history } from '../../Base/app'
 class GoogleLoginBtn extends React.Component {
   responseGoogle = (response) => {
+
     const profile = response.getBasicProfile();
-    console.log(`ID: ${profile.getId()}`); // Do not send to your backend! Use an ID token instead.
-    console.log(`Name: ${profile.getName()}`);
-    console.log(`Image URL: ${profile.getImageUrl()}`);
-    console.log(`Email: ${profile.getEmail()}`); // This is null if the 'email' scope is not
-    console.log(`Token: ${response.getAuthResponse().id_token}`); // This is null if the 'email' scope is not
+    const userInfo = {
+      name: profile.getName(),
+      image: profile.getImageUrl()
+    }
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+
+       history.push('/home')
   };
 
   render() {
