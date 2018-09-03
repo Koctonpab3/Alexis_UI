@@ -1,13 +1,13 @@
 import React from 'react';
 
 // components
-import WordGroupsTable from './WordGroupsTable';
 import Path from './Path';
+import WordGroupsTable from './WordGroupsTable';
 
-const Wordgroups = () => (
+const WordGroups = () => (
   <div className="wordTableContainer">
     <Path />
     <WordGroupsTable />
   </div>
 );
-export default Wordgroups;
+export default WordGroups;

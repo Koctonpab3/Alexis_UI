@@ -5,7 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import Header from '../Header/components/header';
 
 // pages
-import Wordgroups from '../WordGroups/components/index';
+import WordGroups from '../WordGroups/components/index';
 import Setup from '../Setup/components/index';
 import Profile from '../Profile/components/index';
 import Statistics from '../Statistics/components/index';
@@ -20,10 +20,10 @@ const App = () => (
     <Header />
     <main className="mainBlock">
       <Switch>
-        <Route exact path="/" component={Wordgroups} />
+        <Route exact path="/" component={WordGroups} />
         <Route path="/setup" component={Setup} />
-          <Route path="/statistics" component={Statistics} />
-          <Route path="/Profile" component={Profile} />
+        <Route path="/statistics" component={Statistics} />
+        <Route path="/Profile" component={Profile} />
       </Switch>
     </main>
   </div>
