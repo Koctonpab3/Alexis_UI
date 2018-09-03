@@ -9,6 +9,18 @@
     .wordTable{
       width: 92%;
       margin: 0 auto;
+      .ant-table-bordered .ant-table-thead > tr > th{
+        border-right: none;
+      }
+       .ant-table-bordered .ant-table-body > table{
+       border: none;
+      }
+      .ant-table-bordered .ant-table-tbody > tr > td{
+        border-right: none;
+      }
+      .wordsStatus{
+        text-align: center;
+      }
       .ant-table-thead > tr > th.ant-table-column-sort{
         background-color: #fafafa;;
       }
