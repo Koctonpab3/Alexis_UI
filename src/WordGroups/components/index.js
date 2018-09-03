@@ -2,7 +2,7 @@ import React from 'react';
 
 // components
 import WordTable from './table';
-import Path from './path';
+import Path from './Path';
 
 const Wordgroups = () => (
   <div className="wordTableContainer">
