@@ -1,6 +1,8 @@
 import React from 'react';
-import {Router, Switch, Route, BrowserRouter } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory'
+import {
+  Router, Switch, Route, BrowserRouter,
+} from 'react-router-dom';
+import createHistory from 'history/createBrowserHistory';
 
 // components
 import Header from '../Header/components/header';
@@ -10,7 +12,7 @@ import Wordgroups from '../WordGroups/components/index';
 import Setup from '../Setup/components/index';
 import Profile from '../Profile/components/index';
 import Statistics from '../Statistics/components/index';
-import LoginPage from '../LoginPage/constansts/LoginPage'
+import LoginPage from '../LoginPage/constansts/LoginPage';
 
 //  styles
 import './styles/styles.scss';
@@ -29,15 +31,14 @@ const mainPages = () => (
           <Route path="/Profile" component={Profile} />
         </Switch>
       </main>
-  </div>
+    </div>
   </BrowserRouter>
-)
+);
 
 //  app
 const App = () => (
   <Router history={history}>
     <Switch>
-
       <Route exact path="/" component={LoginPage} />
       <Route path="/home" component={mainPages} />
     </Switch>

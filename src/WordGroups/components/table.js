@@ -134,8 +134,12 @@ class EditableTable extends React.Component {
             onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
             onPressEnter={this.handleSearch(selectedKeys, confirm)}
           />
-          <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
-          <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+          <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+Search
+          </Button>
+          <Button onClick={this.handleReset(clearFilters)}>
+Reset
+          </Button>
         </div>
       ),
       onFilter: (value, record) => record.group.toLowerCase().includes(value.toLowerCase()),
@@ -167,7 +171,9 @@ class EditableTable extends React.Component {
       render: (text, record) => (
         <span>
           <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
-            <a href="javascript:;">Delete</a>
+            <a href="javascript:;">
+Delete
+            </a>
             <Divider type="vertical" />
           </Popconfirm>
         </span>
@@ -194,7 +200,7 @@ class EditableTable extends React.Component {
             group: 'Birds',
           }, {
             key: '3',
-            status:<Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
             activation: 'enabled',
             group: 'Insects',
           }, {
@@ -229,7 +235,7 @@ class EditableTable extends React.Component {
           },
           {
             key: '9',
-            status:<Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+            status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
             activation: 'enabled',
             group: 'Appearance',
           },
@@ -315,6 +321,7 @@ class EditableTable extends React.Component {
       return (
         <div>
           <Button onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
+
                 + Add new word group
           </Button>
           <Table

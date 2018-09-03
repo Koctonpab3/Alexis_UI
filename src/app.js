@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
 
-import App, {histoty} from './Base/app';
+import App from './Base/app';
 
 const jsx = (
-    <App />
-)
+  <App />
+);
 
 ReactDOM.render(jsx, document.getElementById('app'));

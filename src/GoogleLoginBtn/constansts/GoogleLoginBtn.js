@@ -1,17 +1,17 @@
 import React from 'react';
 import GoogleLogin from 'react-google-login';
-import { history } from '../../Base/app'
+import { history } from '../../Base/app';
+
 class GoogleLoginBtn extends React.Component {
   responseGoogle = (response) => {
-
     const profile = response.getBasicProfile();
     const userInfo = {
       name: profile.getName(),
-      image: profile.getImageUrl()
-    }
+      image: profile.getImageUrl(),
+    };
     localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
-       history.push('/home')
+    history.push('/home');
   };
 
   render() {
