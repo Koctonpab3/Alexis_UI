@@ -68,6 +68,7 @@ export default class EditableTable extends React.Component {
       width: '10%',
       className: 'wordsStatus',
       editable: false,
+      // if active atatus - render enable icon, if not active - disable
       filters: [{
         text: 'Show enabled',
         value: 'enabled',
@@ -151,6 +152,14 @@ export default class EditableTable extends React.Component {
             ) : (
               <a onClick={() => this.edit(record.key)}>Edit</a>
             )}
+            {/* , */}
+            {/* { */}
+            {/* active == true ? ( */}
+            {/* <span><a href="javascript:;">Deactivate</a></span> */}
+            {/* ) : ( */}
+            {/* <span><a href="javascript:;">Activate</a></span> */}
+            {/* ) */}
+            {/* } */}
             <span>
               <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
                 <Divider type="vertical" />
@@ -174,72 +183,69 @@ export default class EditableTable extends React.Component {
       dataSource:
                 [{
                   key: '0',
-                  activation: 'enabled',
+                  active: true,
                   status: statusIcons.enabledIcon,
-                  say() {
-                    console.log(this.activation);
-                  },
                   group: 'Irregular verbs',
                 }, {
                   key: '1',
                   status: statusIcons.disabledIcon,
-                  activation: 'disabled',
+                  active: false,
                   group: 'Animals',
                 }, {
                   key: '2',
                   status: statusIcons.enabledIcon,
-                  activation: 'enabled',
+                  active: true,
                   group: 'Birds',
                 }, {
                   key: '3',
                   status: statusIcons.enabledIcon,
-                  activation: 'enabled',
+                  active: true,
                   group: 'Insects',
                 }, {
                   key: '4',
                   status: statusIcons.disabledIcon,
-                  activation: 'disabled',
+                  active: false,
                   group: 'Snakes',
                 }, {
                   key: '5',
                   status: statusIcons.disabledIcon,
-                  activation: 'disabled',
+                  active: false,
                   group: 'Human body',
                 },
                 {
                   key: '6',
                   status: statusIcons.enabledIcon,
-                  activation: 'enabled',
+                  active: true,
                   group: 'Business English nouns',
                 },
                 {
                   key: '7',
                   status: statusIcons.enabledIcon,
-                  activation: 'enabled',
+                  active: true,
                   group: 'Business English verbs',
 
                 },
                 {
                   key: '8',
                   status: statusIcons.enabledIcon,
-                  activation: 'enabled',
+                  active: true,
                   group: 'Clothes',
                 },
                 {
                   key: '9',
                   status: statusIcons.enabledIcon,
-                  activation: 'enabled',
+                  active: true,
                   group: 'Appearance',
                 },
                 {
                   key: '10',
                   status: statusIcons.disabledIcon,
-                  activation: 'disabled',
+                  active: false,
                   group: 'Nature',
                 },
                 {
                   key: '11',
-                  activation: 'enabled',
+                  active: true,
                   status: statusIcons.enabledIcon,
                   group: 'Education',
                 }],
@@ -306,7 +312,7 @@ export default class EditableTable extends React.Component {
       const newData = {
         key: count,
         status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-        activation: 'enabled',
+        active: true,
         group: ' Click to enter the name of word group',
       };
       this.setState({
