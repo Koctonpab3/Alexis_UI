@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Router, Switch, Route, BrowserRouter,
+  Router, Switch, Route,
 } from 'react-router-dom';
 import createHistory from 'history/createBrowserHistory';
 
@@ -19,29 +19,21 @@ import './styles/styles.scss';
 
 export const history = createHistory();
 
-const mainPages = () => (
-  <BrowserRouter>
+//  app
+const App = () => (
+  <Router history={history}>
     <div className="wrapper">
       <Header />
       <main className="mainBlock">
         <Switch>
-          <Route path="/home" component={Wordgroups} />
+          <Route exact path="/" component={LoginPage} />
+          <Route path="/wordgroups/" component={Wordgroups} />
           <Route path="/setup" component={Setup} />
           <Route path="/statistics" component={Statistics} />
-          <Route path="/Profile" component={Profile} />
+          <Route path="/profile" component={Profile} />
         </Switch>
       </main>
     </div>
-  </BrowserRouter>
-);
-
-//  app
-const App = () => (
-  <Router history={history}>
-    <Switch>
-      <Route exact path="/" component={LoginPage} />
-      <Route path="/home" component={mainPages} />
-    </Switch>
   </Router>
 );
 export default App;

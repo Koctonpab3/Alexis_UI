@@ -1,10 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { GoogleLogout } from 'react-google-login';
 import { history } from '../../Base/app';
+import { logout } from '../../GoogleLoginBtn/actions/actions';
 
 class Logout extends React.Component {
   logout = () => {
     history.push('/');
+    this.props.dispatch(logout());
     localStorage.clear();
   };
 
@@ -18,4 +21,9 @@ class Logout extends React.Component {
   }
 }
 
-export default Logout;
+
+const mapStateToProps = state => ({
+  userInfo: state.userInfo,
+});
+
+export default connect(mapStateToProps)(Logout);
