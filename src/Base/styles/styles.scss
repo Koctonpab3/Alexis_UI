@@ -10,20 +10,7 @@
     }
   }
 
-  .loginpage{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-  }
-
-  .custom-avatar{
-    width: 50px;
-    height: 50px;
-    border-radius: 50%
-  }
-
  // components styles
-
  @import 'components/worgroup';
  @import 'components/navigation';
+ @import 'components/login';

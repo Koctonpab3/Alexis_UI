@@ -29,10 +29,7 @@ module.exports = (env, options) => {
         filename: "styles.css",
       }),
       new HtmlWebpackPlugin({
-        title: 'Alexis UI',
-        template: './src/index.html',
-        filename: isProduction ? '../index.html' : 'index.html'
-        
+        filename: '../index.html'
       })
     ],
   
@@ -61,10 +58,10 @@ module.exports = (env, options) => {
     },
     devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map',
     devServer: {
-      contentBase: path.join(__dirname, 'src'),
-      open: true,
+      contentBase: path.join(__dirname, 'public'),
       historyApiFallback: true,
-      publicPath: ''
+      open: true,
+      publicPath: '/dist/'
     }
   };
 };

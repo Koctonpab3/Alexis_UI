@@ -1,11 +1,12 @@
 import React from 'react';
 import GoogleLogin from 'react-google-login';
+import { Icon } from 'antd';
 import { connect } from 'react-redux';
-import { history } from '../../Base/app';
-import { login } from '../actions/actions';
+import { history } from '../../Base/routers/AppRouter';
+import { login } from '../actions/auth';
+
 
 class GoogleLoginBtn extends React.Component {
-
   responseGoogle = (response) => {
     const profile = response.getBasicProfile();
     const userInfo = {
@@ -21,10 +22,15 @@ class GoogleLoginBtn extends React.Component {
     return (
       <GoogleLogin
         clientId="287017643183-hv088oebvuoriu5dd4sq5eton7go8im9.apps.googleusercontent.com"
-        buttonText="Login"
         onSuccess={this.responseGoogle}
         onFailure={this.responseGoogle}
-      />
+        className="ant-btn ant-btn-primary ant-btn-lg"
+      >
+        <span>
+Login with
+        </span>
+        <Icon type="google-plus" theme="outlined" />
+      </GoogleLogin>
     );
   }
 }

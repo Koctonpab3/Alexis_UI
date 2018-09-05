@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Menu, Avatar, Popover } from 'antd';
-import Logout from '../../Logout/constansts/LogOut';
+import Logout from '../../Login/components/LogOut';
 
 const Navigation = props => (
   <div className="top-navbar-wrapper">
@@ -31,7 +31,9 @@ const Navigation = props => (
       <Menu.Item id="userIcon">
         <Popover
           content={(
-            <Logout />
+            <div className="logout-wrapper">
+              <Logout />
+            </div>
           )}
           title={props.userInfo.name}
           trigger="click"
@@ -43,10 +45,8 @@ const Navigation = props => (
   </div>
 );
 
-const mapStateToProps = (state) => {
-  return {
-    userInfo: state.userInfo,
-  };
-};
+const mapStateToProps = state => ({
+  userInfo: state.userInfo,
+});
 
 export default connect(mapStateToProps)(Navigation);

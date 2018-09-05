@@ -1,5 +1,5 @@
 import React from 'react';
-import GoogleLoginBtn from '../../GoogleLoginBtn/constansts/GoogleLoginBtn';
+import GoogleLoginBtn from './GoogleLoginBtn';
 
 const LoginPage = () => (
   <div className="loginpage">

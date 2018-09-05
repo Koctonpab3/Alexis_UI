@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { GoogleLogout } from 'react-google-login';
-import { history } from '../../Base/app';
-import { logout } from '../../GoogleLoginBtn/actions/actions';
+import { history } from '../../Base/routers/AppRouter';
+import { logout } from '../actions/auth';
 
 class Logout extends React.Component {
   logout = () => {
@@ -16,6 +16,7 @@ class Logout extends React.Component {
       <GoogleLogout
         buttonText="Logout"
         onLogoutSuccess={this.logout}
+        className="ant-btn ant-btn-primary"
       />
     );
   }
