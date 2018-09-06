@@ -9,12 +9,13 @@ import { login } from '../actions/auth';
 class GoogleLoginBtn extends React.Component {
   responseGoogle = (response) => {
     const profile = response.getBasicProfile();
+    const args = this.props;
     const userInfo = {
       name: profile.getName(),
       image: profile.getImageUrl(),
     };
     localStorage.setItem('userInfo', JSON.stringify(userInfo));
-    this.props.dispatch(login({ name: profile.getName(), image: profile.getImageUrl() }));
+    args.dispatch(login({ name: profile.getName(), image: profile.getImageUrl() }));
     history.push('/wordgroups');
   };
 
@@ -27,7 +28,7 @@ class GoogleLoginBtn extends React.Component {
         className="ant-btn ant-btn-primary ant-btn-lg"
       >
         <span>
-Login with
+          {'Login with'}
         </span>
         <Icon type="google-plus" theme="outlined" />
       </GoogleLogin>

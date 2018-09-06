@@ -5,7 +5,7 @@ import {
 import createHistory from 'history/createBrowserHistory';
 
 // components
-import PrivateRoute from './PrivateRoute';
+import Private from './PrivateRoute';
 // pages
 import Wordgroups from '../../WordGroups/components/index';
 import Setup from '../../Setup/components/index';
@@ -22,10 +22,10 @@ const AppRouter = () => (
     <div className="wrapper">
       <Switch>
         <Route path="/" component={LoginPage} exact />
-        <PrivateRoute path="/wordgroups" component={Wordgroups} />
-        <PrivateRoute path="/setup" component={Setup} />
-        <PrivateRoute path="/statistics" component={Statistics} />
-        <PrivateRoute path="/profile" component={Profile} />
+        <Private path="/wordgroups" component={Wordgroups} />
+        <Private path="/setup" component={Setup} />
+        <Private path="/statistics" component={Statistics} />
+        <Private path="/profile" component={Profile} />
       </Switch>
 
     </div>
