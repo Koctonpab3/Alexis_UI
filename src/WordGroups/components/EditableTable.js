@@ -61,6 +61,10 @@ class EditableCell extends React.Component {
 export default class EditableTable extends React.Component {
   constructor(props) {
     super(props);
+    const statusIcons = {
+      enabledIcon: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
+      disabledIcon: <Icon type="frown" style={{ fontSize: 24, color: '#fa541c' }} />,
+    };
     this.columns = [{
       title: 'Status',
       dataIndex: 'status',
@@ -68,7 +72,17 @@ export default class EditableTable extends React.Component {
       width: '10%',
       className: 'wordsStatus',
       editable: false,
-      // if active atatus - render enable icon, if not active - disable
+      render: (text, record) => (
+        <div>
+          {
+                        record.active === true ? (
+                          statusIcons.enabledIcon
+                        ) : (
+                          statusIcons.disabledIcon
+                        )
+                    }
+        </div>
+      ),
       filters: [{
         text: 'Show enabled',
         value: 'enabled',
@@ -127,8 +141,27 @@ export default class EditableTable extends React.Component {
       key: 'actions',
       render: (text, record) => {
         const editable = this.isEditing(record);
+        // const activeState = this.isActive(record);
         return (
           <div>
+            {
+                  record.active === true ? (
+                    <span>
+                      <a
+                        href="javascript:;"
+                      >
+
+                          Deactivate
+                      </a>
+                      <Divider type="vertical" />
+                    </span>
+                  ) : (
+                    <span>
+                      <a href="javascript:;"> Activate </a>
+                      <Divider type="vertical" />
+                    </span>
+                  )
+              }
             {editable ? (
               <span>
                 <EditableContext.Consumer>
@@ -152,31 +185,17 @@ export default class EditableTable extends React.Component {
             ) : (
               <a onClick={() => this.edit(record.key)}>Edit</a>
             )}
-            {/* , */}
-            {/* { */}
-            {/* active == true ? ( */}
-            {/* <span><a href="javascript:;">Deactivate</a></span> */}
-            {/* ) : ( */}
-            {/* <span><a href="javascript:;">Activate</a></span> */}
-            {/* ) */}
-            {/* } */}
             <span>
               <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
                 <Divider type="vertical" />
-                <a href="javascript:;">Delete</a>
+                <a href="javascript:;"> Delete </a>
               </Popconfirm>
-
             </span>
           </div>
         );
       },
     }];
 
-
-    const statusIcons = {
-      enabledIcon: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-      disabledIcon: <Icon type="frown" style={{ fontSize: 24, color: '#fa541c' }} />,
-    };
     this.state = {
       searchText: '',
       editingKey: '',
@@ -184,103 +203,91 @@ export default class EditableTable extends React.Component {
                 [{
                   key: '0',
                   active: true,
-                  status: statusIcons.enabledIcon,
                   group: 'Irregular verbs',
                 }, {
                   key: '1',
-                  status: statusIcons.disabledIcon,
                   active: false,
                   group: 'Animals',
                 }, {
                   key: '2',
-                  status: statusIcons.enabledIcon,
                   active: true,
                   group: 'Birds',
                 }, {
                   key: '3',
-                  status: statusIcons.enabledIcon,
                   active: true,
                   group: 'Insects',
                 }, {
                   key: '4',
-                  status: statusIcons.disabledIcon,
                   active: false,
                   group: 'Snakes',
                 }, {
                   key: '5',
-                  status: statusIcons.disabledIcon,
                   active: false,
                   group: 'Human body',
                 },
                 {
                   key: '6',
-                  status: statusIcons.enabledIcon,
                   active: true,
                   group: 'Business English nouns',
                 },
                 {
                   key: '7',
-                  status: statusIcons.enabledIcon,
                   active: true,
                   group: 'Business English verbs',
 
                 },
                 {
                   key: '8',
-                  status: statusIcons.enabledIcon,
                   active: true,
                   group: 'Clothes',
                 },
                 {
                   key: '9',
-                  status: statusIcons.enabledIcon,
                   active: true,
                   group: 'Appearance',
                 },
                 {
                   key: '10',
-                  status: statusIcons.disabledIcon,
                   active: false,
                   group: 'Nature',
                 },
                 {
                   key: '11',
                   active: true,
-                  status: statusIcons.enabledIcon,
                   group: 'Education',
                 }],
       count: 12,
     };
   }
 
-    // editing cell
+  // editing word groups
 
-    isEditing = record => record.key === this.state.editingKey;
+  isEditing = record => record.key === this.state.editingKey;
 
-    edit(key) {
-      this.setState({ editingKey: key });
-    }
+  edit(key) {
+    this.setState({ editingKey: key });
+  }
 
-    save(form, key) {
-      form.validateFields((error, row) => {
-        if (error) {
-          return;
-        }
-        const newData = [...this.state.dataSource];
-        const index = newData.findIndex(item => key === item.key);
-        if (index > -1) {
-          const item = newData[index];
-          newData.splice(index, 1, {
-            ...item,
-            ...row,
-          });
-          this.setState({ dataSource: newData, editingKey: '' });
-        } else {
-          newData.push(row);
-          this.setState({ dataSource: newData, editingKey: '' });
-        }
-      });
-    }
+  save(form, key) {
+    form.validateFields((error, row) => {
+      if (error) {
+        return;
+      }
+      const newData = [...this.state.dataSource];
+      const index = newData.findIndex(item => key === item.key);
+      if (index > -1) {
+        const item = newData[index];
+        newData.splice(index, 1, {
+          ...item,
+          ...row,
+        });
+        this.setState({ dataSource: newData, editingKey: '' });
+      } else {
+        newData.push(row);
+        this.setState({ dataSource: newData, editingKey: '' });
+      }
+    });
+  }
 
     cancel = () => {
       this.setState({ editingKey: '' });
@@ -353,8 +360,6 @@ export default class EditableTable extends React.Component {
           onCell: record => ({
             record,
             inputType: col.dataIndex === 'age' ? 'number' : 'text',
-            // editable: col.editable,
-
             dataIndex: col.dataIndex,
             title: col.title,
             handleSave: this.handleSave,
