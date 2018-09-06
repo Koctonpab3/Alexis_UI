@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 // import { GoogleLogout, GoogleLogin } from 'react-google-login';
 import { history } from '../../Base/routers/AppRouter';
 import { logout } from '../actions/auth';
+import { LogoutText } from '../constants/constanst';
 
 
 class Logout extends React.Component {
@@ -10,7 +11,7 @@ class Logout extends React.Component {
     const args = this.props;
     history.push('/');
     args.dispatch(logout());
-    localStorage.clear();
+    localStorage.removeItem('userInfo');
   };
 
   render() {
@@ -20,7 +21,7 @@ class Logout extends React.Component {
         onClick={this.logout}
         className="ant-btn ant-btn-primary"
       >
-        {'Logout'}
+        {LogoutText}
       </button>
     );
   }
