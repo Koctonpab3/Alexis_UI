@@ -9,6 +9,9 @@
     .wordTable{
       width: 92%;
       margin: 0 auto;
+      .actionsCol{
+        text-align: end;
+      }
       .ant-table-bordered .ant-table-thead > tr > th{
         border-right: none;
       }

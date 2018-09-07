@@ -75,28 +75,28 @@ export default class EditableTable extends React.Component {
       render: (text, record) => (
         <div>
           {
-                        record.active === true ? (
-                          statusIcons.enabledIcon
-                        ) : (
-                          statusIcons.disabledIcon
-                        )
-                    }
+             record.active === true ? (
+               statusIcons.enabledIcon
+             ) : (
+               statusIcons.disabledIcon
+             )
+           }
         </div>
       ),
       filters: [{
         text: 'Show enabled',
-        value: 'enabled',
+        value: true,
       }, {
         text: 'Show disabled',
-        value: 'disabled',
+        value: false,
       }],
-      onFilter: (value, record) => record.activation.indexOf(value) === 0,
+      onFilter: (value, record) => record.active.toString().indexOf(value) === 0,
 
     }, {
       title: 'Word Group',
       dataIndex: 'group',
       key: 'group',
-      width: '70%',
+      width: '71.3%',
       filterDropdown: ({
         setSelectedKeys, selectedKeys, confirm, clearFilters,
       }) => (
@@ -141,27 +141,23 @@ export default class EditableTable extends React.Component {
       key: 'actions',
       render: (text, record) => {
         const editable = this.isEditing(record);
-        // const activeState = this.isActive(record);
         return (
-          <div>
-            {
-                  record.active === true ? (
-                    <span>
-                      <a
-                        href="javascript:;"
-                      >
-
-                          Deactivate
-                      </a>
-                      <Divider type="vertical" />
-                    </span>
-                  ) : (
-                    <span>
-                      <a href="javascript:;"> Activate </a>
-                      <Divider type="vertical" />
-                    </span>
-                  )
-              }
+          <div className="actionsCol">
+            <span className="changeStatus">
+              {
+                 record.active === true ? (
+                   <span>
+                     <a onClick={() => this.toggleGroupStatus(record)}> Deactivate </a>
+                     <Divider type="vertical" />
+                   </span>
+                 ) : (
+                   <span>
+                     <a onClick={() => this.toggleGroupStatus(record)}> Activate </a>
+                     <Divider type="vertical" />
+                   </span>
+                 )
+             }
+            </span>
             {editable ? (
               <span>
                 <EditableContext.Consumer>
@@ -206,7 +202,7 @@ export default class EditableTable extends React.Component {
                   group: 'Irregular verbs',
                 }, {
                   key: '1',
-                  active: false,
+                  active: true,
                   group: 'Animals',
                 }, {
                   key: '2',
@@ -243,7 +239,7 @@ export default class EditableTable extends React.Component {
                 },
                 {
                   key: '9',
-                  active: true,
+                  active: false,
                   group: 'Appearance',
                 },
                 {
@@ -318,9 +314,8 @@ export default class EditableTable extends React.Component {
       const { count, dataSource } = this.state;
       const newData = {
         key: count,
-        status: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
         active: true,
-        group: ' Click to enter the name of word group',
+        group: ' New group ',
       };
       this.setState({
         dataSource: [...dataSource, newData],
@@ -341,6 +336,13 @@ export default class EditableTable extends React.Component {
       this.setState({ dataSource: newData });
     }
 
+    //
+    toggleGroupStatus = (record) => {
+      const dataStatus = this.state.dataSource;
+      dataStatus[record.key].active = !dataStatus[record.key].active;
+      this.setState({ dataSource: dataStatus });
+    };
+
     // rendering
 
     render() {
@@ -359,7 +361,6 @@ export default class EditableTable extends React.Component {
           ...col,
           onCell: record => ({
             record,
-            inputType: col.dataIndex === 'age' ? 'number' : 'text',
             dataIndex: col.dataIndex,
             title: col.title,
             handleSave: this.handleSave,
