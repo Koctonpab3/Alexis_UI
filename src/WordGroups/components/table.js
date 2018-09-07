@@ -136,9 +136,11 @@ class EditableTable extends React.Component {
           />
           <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
 
+
 Search
           </Button>
           <Button onClick={this.handleReset(clearFilters)}>
+
 
 Reset
           </Button>
@@ -174,6 +176,7 @@ Reset
         <span>
           <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.key)}>
             <a href="javascript:;">
+
 
 Delete
             </a>

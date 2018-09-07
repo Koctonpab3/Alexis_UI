@@ -7,9 +7,11 @@ const Path = () => (
     <Breadcrumb>
       <Breadcrumb.Item>
 
+
 Home
       </Breadcrumb.Item>
       <Breadcrumb.Item>
+
 
 Word Groups
       </Breadcrumb.Item>

@@ -4,6 +4,7 @@ const Statistics = () => (
   <div>
     <p>
 
+
 Test Statistics Page
     </p>
   </div>

@@ -5,15 +5,17 @@ const defaultUserState = {
   image: '',
 };
 export default (state = {}, action) => {
+  const { name, image } = action;
   switch (action.type) {
-    case LOGIN:
-      return {
-        name: action.name,
-        image: action.image,
-      };
-    case LOGOUT:
-      return {
-      };
+    case LOGIN: {
+      return Object.assign(defaultUserState, state, {
+        name,
+        image,
+      });
+    }
+    case LOGOUT: {
+      return Object.assign(defaultUserState, state);
+    }
     default:
       return state;
   }
