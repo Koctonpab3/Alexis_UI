@@ -29,6 +29,6 @@ if (user) {
   }
   renderApp();
 } else {
-  renderApp();
   history.push('/');
+  renderApp();
 }

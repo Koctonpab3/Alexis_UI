@@ -1,16 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import { GoogleLogout, GoogleLogin } from 'react-google-login';
 import { history } from '../../Base/routers/AppRouter';
 import { logout } from '../actions/auth';
 import { LogoutText } from '../constants/constanst';
 
 
 class Logout extends React.Component {
-  logout = () => {
-    const args = this.props;
+  logoutBtn = () => {
     history.push('/');
-    args.dispatch(logout());
+    const { logout } = this.props;
+    logout();
     localStorage.removeItem('userInfo');
   };
 
@@ -18,7 +17,7 @@ class Logout extends React.Component {
     return (
       <button
         type="submit"
-        onClick={this.logout}
+        onClick={this.logoutBtn}
         className="ant-btn ant-btn-primary"
       >
         {LogoutText}
@@ -32,4 +31,10 @@ const mapStateToProps = state => ({
   userInfo: state.userInfo,
 });
 
-export default connect(mapStateToProps)(Logout);
+const mapDispatchToProps = dispatch => ({
+  logout: () => {
+    dispatch(logout());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Logout);

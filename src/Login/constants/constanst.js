@@ -7,3 +7,4 @@ export const clietID = '287017643183-hv088oebvuoriu5dd4sq5eton7go8im9.apps.googl
 
 /* Strings */
 export const LogoutText = 'Logout';
+export const LoginText = 'Login with';

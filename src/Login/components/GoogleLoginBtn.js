@@ -4,7 +4,7 @@ import { Icon } from 'antd';
 import { connect } from 'react-redux';
 import { history } from '../../Base/routers/AppRouter';
 import { login } from '../actions/auth';
-import { clietID } from '../constants/constanst';
+import { clietID, LoginText } from '../constants/constanst';
 
 class GoogleLoginBtn extends React.Component {
   responseGoogle = (response) => {
@@ -28,7 +28,7 @@ class GoogleLoginBtn extends React.Component {
         className="ant-btn ant-btn-primary ant-btn-lg"
       >
         <span>
-          {'Login with'}
+          {LoginText}
         </span>
         <Icon type="google-plus" theme="outlined" />
       </GoogleLogin>
