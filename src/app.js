@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-//import App from './Base/app';
+// import App from './Base/app';
 import { history } from './Base/routers/AppRouter';
 import configureStore from './Base/store/configureStore';
 import { login } from './Login/actions/auth';
@@ -45,7 +45,6 @@ class App extends React.Component {
   }
 
 fetchSomethig = () => {
-
   // {"name":"Mihail Medinskiy","email":"medinskiym@gmail.com","picture":"https://lh6.googleusercontent.com/-X8lKkYn0dXM/AAAAAAAAAAI/AAAAAAAABFw/rQ6nDDXdwIk/photo.jpg","awsExist":false}
 /*   var XHR = ("onload" in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
   var xhr = new XHR();
@@ -59,17 +58,25 @@ fetchSomethig = () => {
   }
   xhr.send()
  */
-  
-  fetch('https://2d887e8a.ngrok.io/oauth_login')
-  .then(res => res.json())
-  .then(
-    (result) => {
-      console.log(result);
-    },
-    (error) => {
-      console.log(error);
-    },
-  ); 
+  const request = new Request('', {
+    headers: new Headers({
+      'Access-Control-Allow-Credentials': true,
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET',
+      'Access-Control-Allow-Headers': 'application/json',
+    }),
+  });
+
+  fetch('https://2d887e8a.ngrok.io/oauth_login', { mode: 'no-cors' })
+    .then(res => res.json())
+    .then(
+      (result) => {
+        console.log(result);
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
 }
 
 render() {
