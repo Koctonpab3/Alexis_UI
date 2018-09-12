@@ -6,20 +6,37 @@ import { history } from './Base/routers/AppRouter';
 import configureStore from './Base/store/configureStore';
 import { login } from './Login/actions/auth';
 
-/* const store = configureStore();
+const store = configureStore();
 const jsx = (
   <Provider store={store}>
     <App />
   </Provider>
 );
 
-let hasRenderred = false;
-const renderApp = () => {
+class renderApp extends React.Component {
+  componentDidMount() {
+    fetch('https://formula-test-api.herokuapp.com/menu')
+      .then(res => res.json())
+      .then(
+        (result) => {
+          // get result with user. then we add it to our reudx store
+          // and push page to wordGroup
+          // Succes
+          // maube save it ti our local storage I dont now
+        },
+        (error) => {
+          // if we get erro we reloacare again to login page
+        },
+      );
+  }
+}
+
+/* const renderApp = () => {
   if (!hasRenderred) {
     ReactDOM.render(jsx, document.getElementById('app'));
     hasRenderred = true;
   }
-};
+}; */
 
 const user = JSON.parse(localStorage.getItem('userInfo'));
 if (user) {
@@ -32,7 +49,7 @@ if (user) {
   history.push('/');
   renderApp();
 }
- */
+
 
 class App extends React.Component {
   constructor(props) {
@@ -44,52 +61,34 @@ class App extends React.Component {
     };
   }
 
-fetchSomethig = () => {
-  // {"name":"Mihail Medinskiy","email":"medinskiym@gmail.com","picture":"https://lh6.googleusercontent.com/-X8lKkYn0dXM/AAAAAAAAAAI/AAAAAAAABFw/rQ6nDDXdwIk/photo.jpg","awsExist":false}
-/*   var XHR = ("onload" in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
-  var xhr = new XHR();
-  // (2) запрос на другой домен :)
-  xhr.open('GET', 'https://2d887e8a.ngrok.io/oauth_login', true);
-  xhr.onload = function() {
-    alert( this.responseText );
-  }
-  xhr.onerror = function() {
-    alert( 'Ошибка ' + this.status );
-  }
-  xhr.send()
- */
-  const request = new Request('', {
-    headers: new Headers({
-      'Access-Control-Allow-Credentials': true,
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET',
-      'Access-Control-Allow-Headers': 'application/json',
-    }),
-  });
+  fetchSomethig = () => {
+    // {"name":"Mihail Medinskiy","email":"medinskiym@gmail.com","picture":"https://lh6.googleusercontent.com/-X8lKkYn0dXM/AAAAAAAAAAI/AAAAAAAABFw/rQ6nDDXdwIk/photo.jpg","awsExist":false}
+  /*   var XHR = ("onload" in new XMLHttpRequest()) ? XMLHttpRequest : XDomainRequest;
+    var xhr = new XHR();
+    // (2) запрос на другой домен :)
+    xhr.open('GET', 'https://2d887e8a.ngrok.io/oauth_login', true);
+    xhr.onload = function() {
+      alert( this.responseText );
+    }
+    xhr.onerror = function() {
+      alert( 'Ошибка ' + this.status );
+    }
+    xhr.send()
+  */
 
-  fetch('https://2d887e8a.ngrok.io/oauth_login', { mode: 'no-cors' })
-    .then(res => res.json())
-    .then(
-      (result) => {
-        console.log(result);
-      },
-      (error) => {
-        console.log(error);
-      },
+  }
+
+  render() {
+    return (
+      <button
+        type="submit"
+        className="product-inner"
+        onClick={this.fetchSomethig}
+      >
+        {'Pull somethisg'}
+      </button>
     );
-}
-
-render() {
-  return (
-    <button
-      type="submit"
-      className="product-inner"
-      onClick={this.fetchSomethig}
-    >
-      {'Pull somethisg'}
-    </button>
-  );
-}
+  }
 }
 
 ReactDOM.render(<App />, document.getElementById('app'));
