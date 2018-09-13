@@ -1,10 +1,11 @@
 import React from 'react';
-import Login from './Login';
+import Registration from './Registration';
+
 
 const LoginPage = () => (
   <div className="loginpage">
     <div className="loginpage__box">
-      <Login />
+        <Registration />
     </div>
   </div>
 );

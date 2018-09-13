@@ -12,6 +12,7 @@ import Setup from '../../Setup/components/index';
 import Profile from '../../Profile/components/index';
 import Statistics from '../../Statistics/components/index';
 import LoginPage from '../../Login/components/LoginPage';
+import RegistrationPage from '../../Login/components/RegistrationPage';
 
 
 export const history = createHistory();
@@ -22,6 +23,7 @@ const AppRouter = () => (
     <div className="wrapper">
       <Switch>
         <Route path="/" component={LoginPage} exact />
+        <Route path="/registration" component={RegistrationPage} />
         <Private path="/wordgroups" component={Wordgroups} />
         <Private path="/setup" component={Setup} />
         <Private path="/statistics" component={Statistics} />
