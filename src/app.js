@@ -30,6 +30,7 @@ const jsx = (
       );
   }
 } */
+
 let hasRenderred = false;
 const renderApp = () => {
   if (!hasRenderred) {
@@ -38,6 +39,7 @@ const renderApp = () => {
   }
 };
 const user = JSON.parse(localStorage.getItem('userInfo'));
+console.log(user)
 if (user) {
   store.dispatch(login({ ...user }));
   if (history.location.pathname === '/') {
