@@ -77,11 +77,11 @@ export default class EditableTable extends React.Component {
         render: (text, record) => (
           <div>
             {
-                            record.activeState === true ? (
-                              statusIcons.enabledIcon
-                            ) : (
-                              statusIcons.disabledIcon
-                            )
+              record.activeState === true ? (
+                statusIcons.enabledIcon
+              ) : (
+                statusIcons.disabledIcon
+              )
                         }
           </div>
         ),
@@ -148,12 +148,16 @@ export default class EditableTable extends React.Component {
                 {
                     record.activeState === true ? (
                       <span>
-                        <a onClick={() => this.toggleGroupStatus(record.id)}> Deactivate </a>
+                        <a onClick={() => this.toggleGroupStatus(record.id, record.name)}>
+                          Deactivate
+                        </a>
                         <Divider type="vertical" />
                       </span>
                     ) : (
                       <span>
-                        <a onClick={() => this.toggleGroupStatus(record.id)}> Activate </a>
+                        <a onClick={() => this.toggleGroupStatus(record.id, record.name)}>
+                          Activate
+                        </a>
                         <Divider type="vertical" />
                       </span>
                     )
@@ -165,7 +169,7 @@ export default class EditableTable extends React.Component {
                     {form => (
                       <a
                         href="javascript:;"
-                        onClick={() => this.save(form, record.id)}
+                        onClick={() => this.save(form, record.id, record.activeState)}
                         style={{ marginRight: 8 }}
                       >
                           Save
@@ -199,7 +203,7 @@ export default class EditableTable extends React.Component {
       editingKey: '',
       stateKey: '',
       dataSource: [],
-      count: '50',
+      // count: '50',
       pagination: {},
       loading: false,
     };
@@ -212,7 +216,7 @@ export default class EditableTable extends React.Component {
       this.setState({ editingKey: id });
     }
 
-    save(form, id) {
+    save(form, id, activeState) {
       form.validateFields((error, row) => {
         if (error) {
           return;
@@ -234,7 +238,7 @@ export default class EditableTable extends React.Component {
         axios.post('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
           id,
           name: row.name,
-          activeState: true,
+          activeState,
           userId: 0,
         })
           .then((response) => {
@@ -278,26 +282,29 @@ export default class EditableTable extends React.Component {
     // adding new row
 
     handleAdd = () => {
-      // axios({
-      //   method: 'put',
-      //   url: 'http://koctonpab.asuscomm.com:8080/protected/wordgroups/',
-      //   data: {
-      //     name: 'New Group',
-      //     activeState: true,
-      //     userId: 1,
-      //   },
-      // });
-
-      const { count, dataSource } = this.state;
-      const newData = {
-        id: count,
-        activeState: true,
+      axios.put('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
         name: ' New group ',
-      };
-      this.setState({
-        dataSource: [...dataSource, newData],
-        count: count + 1,
-      });
+        activeState: true,
+        userId: 1,
+      })
+        .then((response) => {
+          // console.log(response);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      // const { count, dataSource } = this.state;
+      // const newData = {
+      //   id: 0,
+      //   activeState: true,
+      //   name: ' New group ',
+      // };
+      // this.setState({
+      //   dataSource: [...dataSource, newData],
+      //   count: count + 1,
+      // });
     };
 
     // saving new row
@@ -315,7 +322,7 @@ export default class EditableTable extends React.Component {
 
     // changing the status of word group
 
-    toggleGroupStatus(id) {
+    toggleGroupStatus(id, name) {
       this.setState({ stateKey: id });
 
       const newData = [...this.state.dataSource];
@@ -327,6 +334,20 @@ export default class EditableTable extends React.Component {
       });
 
       this.setState({ dataSource: newData, stateKey: '' });
+
+      // posting new status to the server
+      axios.post('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
+        id,
+        name,
+        activeState: item.activeState,
+        userId: 0,
+      })
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
 
     handleTableChange = (pagination, filters, sorter) => {
