@@ -38,7 +38,7 @@ class NormalLoginForm extends React.Component {
           if (!err) {
             console.log('Received values of form: ', values);
 
-            axios.post('https://formula-test-api.herokuapp.com/contact', { ...user })
+            axios.post('http://1a54339c.ngrok.io/user_login', { ...user })
               .then((res) => {
                 console.log(res);
                 console.log(res.data);

@@ -38,11 +38,13 @@ class RegistrationForm extends React.Component {
         if (!err) {
           console.log('Received values of form: ', values);
 
-          axios.post('https://formula-test-api.herokuapp.com/contact', { ...user })
+          axios.post('http://1a54339c.ngrok.io/user_registration', { ...user })
             .then((res) => {
               if(res.status === res.status){ 
 
-                localStorage.setItem('userInfo', JSON.stringify(user));
+                // localStorage.setItem('userInfo', JSON.stringify(user));
+                console.log(res.data)
+                console.log(res.status)
 
               }
             });
