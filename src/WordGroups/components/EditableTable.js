@@ -241,12 +241,6 @@ export default class EditableTable extends React.Component {
           activeState,
           userId: 0,
         });
-        // .then((response) => {
-        //   console.log(response);
-        // })
-        // .catch((error) => {
-        //   console.log(error);
-        // });
       });
     }
 
@@ -270,11 +264,6 @@ export default class EditableTable extends React.Component {
 
     handleDelete = (id) => {
       axios.delete(`http://koctonpab.asuscomm.com:8080/protected/wordgroups/${id}`);
-      // .then((res) => {
-      //   console.log(res);
-      //   console.log(res.data);
-      // });
-
       const dataSource = [...this.state.dataSource];
       this.setState({ dataSource: dataSource.filter(item => item.id !== id) });
     }
@@ -301,12 +290,6 @@ export default class EditableTable extends React.Component {
         .catch((error) => {
           console.log(error);
         });
-
-      // const newData = response.data;
-      // this.setState({
-      //   dataSource: [...dataSource, newData],
-      //   count: count + 1,
-      // });
     };
 
     // saving new row
@@ -344,12 +327,6 @@ export default class EditableTable extends React.Component {
         activeState: item.activeState,
         userId: 0,
       });
-      // .then((response) => {
-      //   console.log(response);
-      // })
-      // .catch((error) => {
-      //   console.log(error);
-      // });
     }
 
     handleTableChange = (pagination, filters, sorter) => {
