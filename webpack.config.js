@@ -8,7 +8,9 @@ module.exports = (env, options) => {
   const isProduction = options.mode === 'production';
 
   return {
-    entry: ['babel-polyfill', './src/app.js'],
+    entry: ['babel-polyfill', 
+    './src/app.js',
+    'webpack-dev-server/client?http://0.0.0.0:3000'],
     output: {
       path: path.join(__dirname, 'public', 'dist'),
       filename: 'bundle.js'
