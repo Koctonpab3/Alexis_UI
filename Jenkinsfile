@@ -1,13 +1,14 @@
 pipeline {
     agent any
-    
-    tools {nodejs "node"}
 
-    environment {
-            CI = 'true'
-        }
+    tools {nodejs 'node8'}
+
     stages {
-        
+        stage('InstallPackages'){
+            steps{
+                sh 'npm install'
+            }
+        }
         stage('Lint'){
             steps{
                 sh 'npm run lint'
@@ -25,14 +26,5 @@ pipeline {
                 sh 'npm run build'
             }
         }
-
-        stage('Deliver') {
-                    steps {
-                        sh './jenkins/scripts/deliver.sh'
-                        input message: 'Finished using the web site? (Click "Proceed" to continue)'
-                        sh './jenkins/scripts/kill.sh'
-                    }
-                }
-
     }
 }
