@@ -1,9 +1,14 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { Form, Input, Button } from 'antd';
 import { connect } from 'react-redux';
 import { history } from '../../Base/routers/AppRouter';
+import { login } from '../actions/auth';
 
-import { Form, Input, Button } from 'antd';
+import {
+  RegistrationText, NicknameText, RegisterBtnText, BackToLoginText,
+} from '../constants/constanst';
 
 const FormItem = Form.Item;
 
@@ -16,36 +21,35 @@ class RegistrationForm extends React.Component {
 
     handleChangeEmail = (event) => {
       this.setState({ email: event.target.value });
-      console.log(this.state.email);
     }
 
     handleChangePass = (event) => {
       this.setState({ password: event.target.value });
-      console.log(this.state.password);
     }
 
     handleChangeName = (event) => {
       this.setState({ name: event.target.value });
-      console.log(this.state.name);
     }
 
     handleSubmit = (e) => {
+      e.preventDefault();
+
+      const { form, login } = this.props;
+
       const user = {
         ...this.state,
       };
-      e.preventDefault();
-      this.props.form.validateFieldsAndScroll((err, values) => {
+
+      form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
 
-          axios.post('http://1a54339c.ngrok.io/user_registration', { ...user })
+          axios.post('https://formula-test-api.herokuapp.com/contact', { ...user })
             .then((res) => {
-              if(res.status === res.status){ 
-
-                // localStorage.setItem('userInfo', JSON.stringify(user));
-                console.log(res.data)
-                console.log(res.status)
-
+              if (res.status) {
+                localStorage.setItem('userInfo', JSON.stringify({ ...user }));
+                login({ ...user });
+                history.push('/wordgroups');
               }
             });
         }
@@ -53,7 +57,7 @@ class RegistrationForm extends React.Component {
     };
 
     compareToFirstPassword = (rule, value, callback) => {
-      const form = this.props.form;
+      const { form } = this.props;
       if (value && value !== form.getFieldValue('password')) {
         callback('Two passwords that you enter is inconsistent!');
       } else {
@@ -62,21 +66,21 @@ class RegistrationForm extends React.Component {
     }
 
     render() {
-      const { getFieldDecorator } = this.props.form;
+      const { form } = this.props;
       return (
         <Form onSubmit={this.handleSubmit}>
 
           <h4 className="login-form__title">
-Registration
+            {RegistrationText}
           </h4>
           <FormItem
             label={(
               <span>
-              Nickname&nbsp;
+                {NicknameText}
               </span>
           )}
           >
-            {getFieldDecorator('nickname', {
+            {form.getFieldDecorator('nickname', {
               rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
             })(
               <Input onChange={this.handleChangeName} />,
@@ -85,7 +89,7 @@ Registration
           <FormItem
             label="E-mail"
           >
-            {getFieldDecorator('email', {
+            {form.getFieldDecorator('email', {
               rules: [{
                 type: 'email', message: 'The input is not valid E-mail!',
               }, {
@@ -98,7 +102,7 @@ Registration
           <FormItem
             label="Password"
           >
-            {getFieldDecorator('password', {
+            {form.getFieldDecorator('password', {
               rules: [{
                 required: true, message: 'Please input your password!',
               }, {
@@ -111,7 +115,7 @@ Registration
           <FormItem
             label="Confirm Password"
           >
-            {getFieldDecorator('confirm', {
+            {form.getFieldDecorator('confirm', {
               rules: [{
                 required: true, message: 'Please confirm your password!',
               }, {
@@ -122,9 +126,14 @@ Registration
             )}
           </FormItem>
           <FormItem>
-            <Button type="primary" htmlType="submit">
-Register
-            </Button>
+            <div className="space-between">
+              <Link to="/">
+                { BackToLoginText }
+              </Link>
+              <Button type="primary" htmlType="submit">
+                {RegisterBtnText}
+              </Button>
+            </div>
           </FormItem>
         </Form>
       );
@@ -133,9 +142,12 @@ Register
 const mapStateToProps = state => ({
   userInfo: state.userInfo,
 });
+const mapDispatchToProps = dispatch => ({
+  login: (name) => {
+    dispatch(login(name));
+  },
+});
 
 const WrappedRegistrationForm = Form.create()(RegistrationForm);
 
-/* const RegisterConnect = connect(mapStateToProps)(RegistrationForm); */
-
-export default WrappedRegistrationForm;
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedRegistrationForm);

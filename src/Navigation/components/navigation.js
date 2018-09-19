@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Menu, Avatar, Popover } from 'antd';
+import { Menu, Popover } from 'antd';
 import Logout from '../../Login/components/LogOut';
 
 const Navigation = props => (
@@ -28,17 +28,18 @@ const Navigation = props => (
           {'Profile'}
         </Link>
       </Menu.Item>
-      <Menu.Item id="userIcon">
+      <Menu.Item id="userIcon" className="nav-item">
         <Popover
           content={(
             <div className="logout-wrapper">
               <Logout />
             </div>
           )}
-          title={props.userInfo.name}
           trigger="click"
         >
-          <Avatar src={props.userInfo.image} />
+          
+          {props.userInfo.name}
+        
         </Popover>
       </Menu.Item>
     </Menu>

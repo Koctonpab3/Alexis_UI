@@ -3,6 +3,7 @@ import { LOGIN, LOGOUT } from '../constants/constanst';
 const defaultUserState = {
   name: '',
   image: '',
+  email: '',
 };
 export default (state = {}, action) => {
   const { name, image } = action;
