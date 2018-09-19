@@ -10,7 +10,7 @@ module.exports = (env, options) => {
   return {
     entry: ['babel-polyfill', 
     './src/app.js',
-    'webpack-dev-server/client?http://backend.alexis.formula1.cloud.provectus-it.com:8082'],
+    'webpack-dev-server/client?http://localhost:8082'],
     output: {
       path: path.join(__dirname, 'public', 'dist'),
       filename: 'bundle.js'
@@ -58,9 +58,7 @@ module.exports = (env, options) => {
       contentBase: path.join(__dirname, 'public'),
       open: true,
       historyApiFallback: true,
-      publicPath: '/dist/',
-      host: 'backend.alexis.formula1.cloud.provectus-it.com',
-      port:8082
+      publicPath: '/dist/'
     }
   };
 };
