@@ -10,7 +10,7 @@ module.exports = (env, options) => {
   return {
     entry: ['babel-polyfill', 
     './src/app.js',
-    'webpack-dev-server/client?http://localhost:8082'],
+    'webpack-dev-server/client?http://0.0.0.0:8082'],
     output: {
       path: path.join(__dirname, 'public', 'dist'),
       filename: 'bundle.js'
@@ -58,7 +58,9 @@ module.exports = (env, options) => {
       contentBase: path.join(__dirname, 'public'),
       open: true,
       historyApiFallback: true,
-      publicPath: '/dist/'
+      publicPath: '/dist/',
+      host: '0.0.0.0',
+        port:8082
     }
   };
 };
