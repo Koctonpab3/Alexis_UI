@@ -1,5 +1,5 @@
 {
-  "name": "templates",
+  "name": "Alexis.UI",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "antd": "^3.8.2",
+    "axios": "^0.18.0",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",

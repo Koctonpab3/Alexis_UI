@@ -1,12 +1,6 @@
-import React from 'react';
+export const LOAD_DATA = 'LOAD_DATA';
 
-const FormItem = Form.Item;
-const EditableContext = React.createContext();
-const EditableRow = ({ form, index, ...props }) => (
-    <EditableContext.Provider value={form}>
-        <tr {...props} />
-    </EditableContext.Provider>
-);
+export const ADD_WORDGROUP = 'ADD_WORDGROUP';
 
+export const DELETE_WORDGROUP = 'DELETE_WORDGROUP';
 
-const EditableFormRow = Form.create()(EditableRow);

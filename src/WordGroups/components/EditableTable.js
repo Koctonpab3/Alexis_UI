@@ -6,6 +6,10 @@ import {
 
 import axios from 'axios';
 
+import { connect } from 'react-redux';
+import { loadData } from '../actions/action';
+
+
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => (
@@ -59,7 +63,7 @@ class EditableCell extends React.Component {
 }
 
 
-export default class EditableTable extends React.Component {
+class EditableTable extends React.Component {
   constructor(props) {
     super(props);
     const statusIcons = {
@@ -272,6 +276,7 @@ export default class EditableTable extends React.Component {
 
     handleAdd = () => {
       const { count, dataSource } = this.state;
+      console.log(dataSource.props);
 
       axios.put('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
         name: ' New group ',
@@ -348,6 +353,7 @@ export default class EditableTable extends React.Component {
 
     loadWordGroups = (params = {}) => {
       // console.log('params:', params);
+      const { loadData } = this.props;
       this.setState({ loading: true });
       axios({
         method: 'get',
@@ -371,7 +377,11 @@ export default class EditableTable extends React.Component {
             pagination,
             // count,
           });
+          localStorage.setItem('wordGroups', {...dataSource });
+          loadData({ ...dataSource });
         });
+
+      // this.props.loadData(this.state.dataSource);
     };
 
     componentDidMount() {
@@ -421,3 +431,38 @@ export default class EditableTable extends React.Component {
       );
     }
 }
+
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     loadData(dataSource) {
+//       dispatch({
+//         type: 'LOAD_DATA',
+//         dataSource,
+//       });
+//     },
+//   };
+// }
+// const mapDispatchToProps = dispatch => ({
+//   loadData: () => {
+//     dispatch(loadData());
+//   },
+// });
+
+// const mapDispatchToProps = dispatch => ({
+//   loadData: (dataSource) => {
+//     dispatch(loadData(dataSource));
+//   },
+// });
+
+const mapDispatchToProps = dispatch => ({
+  loadData: (dataSource) => {
+    dispatch(loadData(dataSource));
+  },
+});
+
+const mapStateToProps = state => ({
+  dataSource: state.dataSource,
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditableTable);
