@@ -40,10 +40,10 @@ class NormalLoginForm extends React.Component {
           ...this.state,
         };
 
-        axios.post('https://formula-test-api.herokuapp.com/contact', { ...user })
+        axios.post('http://backend.alexis.formula1.cloud.provectus-it.com:8080/user_login', { ...user })
           .then((res) => {
-            localStorage.setItem('userInfo', JSON.stringify({ ...res.data, name: res.data.email }));
-            login({ ...res.data, name: res.data.email });
+            localStorage.setItem('userInfo', JSON.stringify({ ...res.data }));
+            login({ ...res.data });
             history.push('/wordgroups');
           });
       }
