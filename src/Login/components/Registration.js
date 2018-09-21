@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 import { connect } from 'react-redux';
@@ -44,14 +44,14 @@ class RegistrationForm extends React.Component {
         if (!err) {
           console.log('Received values of form: ', values);
 
-          axios.post('http://backend.alexis.formula1.cloud.provectus-it.com:8080/user_registration', { ...user })
+         /*  axios.post('http://backend.alexis.formula1.cloud.provectus-it.com:8080/user_registration', { ...user })
             .then((res) => {
               if (res.status) {
                 localStorage.setItem('userInfo', JSON.stringify({ ...user }));
                 login({ ...user });
                 history.push('/wordgroups');
               }
-            });
+            }); */
         }
       });
     };

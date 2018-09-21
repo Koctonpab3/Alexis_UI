@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+//import axios from 'axios';
 import {
   Form, Icon, Input, Button,
 } from 'antd';
@@ -40,12 +40,12 @@ class NormalLoginForm extends React.Component {
           ...this.state,
         };
 
-        axios.post('http://backend.alexis.formula1.cloud.provectus-it.com:8080/user_login', { ...user })
+       /*  axios.post('http://backend.alexis.formula1.cloud.provectus-it.com:8080/user_login', { ...user })
           .then((res) => {
             localStorage.setItem('userInfo', JSON.stringify({ ...res.data }));
             login({ ...res.data });
             history.push('/wordgroups');
-          });
+          }); */
       }
     });
   }
