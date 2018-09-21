@@ -29,7 +29,7 @@ module.exports = (env, options) => {
         filename: "styles.css",
       }),
       new HtmlWebpackPlugin({
-        filename: '../index.html'
+        filename: '../index.html',
       })
     ],
   

@@ -1,5 +1,6 @@
 import { login, logout } from '../../../Login/actions/auth';
 import { LOGIN, LOGOUT } from '../../../Login/constants/constanst';
+import { shallow, configure } from 'enzyme';
 
 // test login
 test('should sava user info', () => {

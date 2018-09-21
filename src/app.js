@@ -17,6 +17,9 @@ const jsx = (
 let hasRenderred = false;
 const renderApp = () => {
   if (!hasRenderred) {
+    const app = document.createElement('div');
+    app.setAttribute('id', 'app');
+    document.body.appendChild(app);
     ReactDOM.render(jsx, document.getElementById('app'));
     hasRenderred = true;
   }
