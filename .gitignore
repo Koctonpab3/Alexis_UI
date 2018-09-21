@@ -1,9 +1,5 @@
 node_modules/
 public/dist/
-<<<<<<< HEAD
-public/index.html
-=======
->>>>>>> AL-18-Word-Groups
 .DS_Store
 .vscode/
 .idea/
