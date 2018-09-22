@@ -4,28 +4,26 @@ const initialState = {
   dataSource: [],
 };
 
-
 export default (state = {}, action) => {
   switch (action.type) {
     case LOAD_DATA: {
-      const newState = { ...initialState };
-      return {
-        ...newState,
-        dataSource: [...newState.dataSource],
-      };
+      return Object.assign(initialState, state, {
+        dataSource: action.dataSource,
+      });
     }
     case ADD_WORDGROUP: {
-      const newState = { ...state };
-      return {
-        ...newState,
-        dataSource: [...newState.dataSource],
-      };
+      return Object.assign({}, state, {
+        dataSource: [...state.dataSource, action.newWordGroup],
+      });
     }
     case DELETE_WORDGROUP: {
-      const dataSource = state.dataSource.filter(item => item.id !== id);
-      return { ...state, dataSource };
+      return Object.assign({}, state, {
+        dataSource: [...state.dataSource.filter(item => item.id !== action.id)],
+      });
     }
     default:
       return state;
   }
 };
+
+

@@ -5,13 +5,13 @@ export const loadData = dataSource => ({
   dataSource,
 });
 
-export const addWordGroup = dataSource => ({
+export const addWordGroup = newWordGroup => ({
   type: ADD_WORDGROUP,
-  dataSource,
+  newWordGroup,
 });
 
 
-export const deleteWordGroup = dataSource => ({
+export const deleteWordGroup = id => ({
   type: DELETE_WORDGROUP,
-  dataSource,
+  id,
 });
