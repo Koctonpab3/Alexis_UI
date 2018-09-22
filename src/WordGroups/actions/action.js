@@ -1,4 +1,6 @@
-import { LOAD_DATA, ADD_WORDGROUP, DELETE_WORDGROUP } from '../constans/WordTable';
+import {
+  LOAD_DATA, ADD_WORDGROUP, DELETE_WORDGROUP, TOGGLE_STATUS,
+} from '../constans/WordTable';
 
 export const loadData = dataSource => ({
   type: LOAD_DATA,
@@ -14,4 +16,9 @@ export const addWordGroup = newWordGroup => ({
 export const deleteWordGroup = id => ({
   type: DELETE_WORDGROUP,
   id,
+});
+
+export const toggleStatus = newData => ({
+  type: TOGGLE_STATUS,
+  newData,
 });

@@ -4,3 +4,4 @@ export const ADD_WORDGROUP = 'ADD_WORDGROUP';
 
 export const DELETE_WORDGROUP = 'DELETE_WORDGROUP';
 
+export const TOGGLE_STATUS = 'TOGGLE_STATUS';

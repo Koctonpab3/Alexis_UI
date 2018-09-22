@@ -8,7 +8,10 @@ import axios from 'axios';
 
 import { connect } from 'react-redux';
 
-import { loadData, addWordGroup, deleteWordGroup } from '../actions/action';
+// actions
+import {
+  loadData, addWordGroup, deleteWordGroup, toggleStatus,
+} from '../actions/action';
 // import wordGroupsReducer from '../reducers/wordGroupsReducer';
 
 const FormItem = Form.Item;
@@ -205,7 +208,7 @@ class EditableTable extends React.Component {
   }
 
     state = {
-      editingKey: '',
+      // editingKey: '',
       stateKey: '',
       // dataSource: [],
       // count: '50',
@@ -311,7 +314,7 @@ class EditableTable extends React.Component {
     toggleGroupStatus(id, name) {
       this.setState({ stateKey: id });
 
-      const newData = [...this.state.dataSource];
+      const newData = [...this.props.dataSource.dataSource];
       const index = newData.findIndex(item => id === item.id);
       const item = newData[index];
       item.activeState = !item.activeState;
@@ -319,7 +322,9 @@ class EditableTable extends React.Component {
         ...item,
       });
 
-      this.setState({ dataSource: newData, stateKey: '' });
+      this.props.toggleStatus(newData);
+
+      this.setState({ stateKey: '' });
 
       // posting new status to the server
       axios.post('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
@@ -435,6 +440,9 @@ const mapDispatchToProps = dispatch => ({
   },
   deleteWordGroup: (id) => {
     dispatch(deleteWordGroup(id));
+  },
+  toggleStatus: (newData) => {
+    dispatch(toggleStatus(newData));
   },
 });
 

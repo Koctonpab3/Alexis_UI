@@ -1,6 +1,10 @@
-import { LOAD_DATA, ADD_WORDGROUP, DELETE_WORDGROUP } from '../constans/WordTable';
+import {
+  LOAD_DATA, ADD_WORDGROUP, DELETE_WORDGROUP, TOGGLE_STATUS,
+} from '../constans/WordTable';
 
 const initialState = {
+  editingKey: '',
+  stateKey: '',
   dataSource: [],
 };
 
@@ -21,9 +25,13 @@ export default (state = {}, action) => {
         dataSource: [...state.dataSource.filter(item => item.id !== action.id)],
       });
     }
+    case TOGGLE_STATUS: {
+      return Object.assign({}, state, {
+        dataSource: action.newData,
+      });
+    }
     default:
       return state;
   }
 };
-
 
