@@ -1,6 +1,6 @@
 import {
-  LOAD_DATA, ADD_WORDGROUP, DELETE_WORDGROUP, TOGGLE_STATUS,
-} from '../constans/WordTable';
+  LOAD_DATA, ADD_WORDGROUP, DELETE_WORDGROUP, TOGGLE_STATUS, EDIT_WORDGROUP,
+} from '../constans/constants';
 
 const initialState = {
   editingKey: '',
@@ -30,8 +30,12 @@ export default (state = {}, action) => {
         dataSource: action.newData,
       });
     }
+    case EDIT_WORDGROUP: {
+      return Object.assign({}, state, {
+        dataSource: action.newData,
+      });
+    }
     default:
       return state;
   }
 };
-

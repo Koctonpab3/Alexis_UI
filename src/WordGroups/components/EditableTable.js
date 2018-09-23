@@ -1,18 +1,13 @@
 import React from 'react';
-
 import {
   Table, Input, InputNumber, Button, Popconfirm, Form, Icon, Divider,
 } from 'antd';
-
 import axios from 'axios';
-
 import { connect } from 'react-redux';
-
 // actions
 import {
-  loadData, addWordGroup, deleteWordGroup, toggleStatus,
-} from '../actions/action';
-// import wordGroupsReducer from '../reducers/wordGroupsReducer';
+  loadData, addWordGroup, deleteWordGroup, toggleStatus, editWordGroup,
+} from '../actions/wordGroups';
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -66,7 +61,6 @@ class EditableCell extends React.Component {
     }
 }
 
-
 class EditableTable extends React.Component {
   constructor(props) {
     super(props);
@@ -106,7 +100,7 @@ class EditableTable extends React.Component {
         title: 'Word Group',
         dataIndex: 'name',
         editable: true,
-        width: '71.3%',
+        width: '58%',
         filterDropdown: ({
           setSelectedKeys, selectedKeys, confirm, clearFilters,
         }) => (
@@ -147,7 +141,7 @@ class EditableTable extends React.Component {
       },
       {
         title: 'Actions',
-        // key: 'actions',
+        className: 'actions-col-name',
         render: (text, record) => {
           const editable = this.isEditing(record);
           return (
@@ -156,9 +150,11 @@ class EditableTable extends React.Component {
                 {
                     record.activeState === true ? (
                       <span>
-                        <a onClick={() => this.toggleGroupStatus(record.id, record.name)}>
+                        <Popconfirm title="Sure to delete?" onConfirm={() => this.toggleGroupStatus(record.id, record.name)}>
+                          <a href="javascript:;">
                           Deactivate
-                        </a>
+                          </a>
+                        </Popconfirm>
                         <Divider type="vertical" />
                       </span>
                     ) : (
@@ -171,35 +167,40 @@ class EditableTable extends React.Component {
                     )
                 }
               </span>
+              <span>
+                <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.id)}>
+                  <a href="javascript:;"> Delete </a>
+                </Popconfirm>
+                <Divider type="vertical" />
+              </span>
               {editable ? (
                 <span>
                   <EditableContext.Consumer>
                     {form => (
-                      <a
-                        href="javascript:;"
-                        onClick={() => this.save(form, record.id, record.activeState)}
-                        style={{ marginRight: 8 }}
-                      >
+                      <span>
+                        <a
+                          href="javascript:;"
+                          onClick={() => this.save(form, record.id, record.activeState)}
+                          style={{ marginRight: 8 }}
+                        >
                           Save
-                      </a>
+                        </a>
+                        <Divider type="vertical" />
+                      </span>
                     )}
                   </EditableContext.Consumer>
                   <Popconfirm
                     title="Sure to cancel?"
                     onConfirm={() => this.cancel(record.id)}
                   >
-                    <a>Cancel</a>
+                    <span>
+                      <a>Cancel</a>
+                    </span>
                   </Popconfirm>
                 </span>
               ) : (
                 <a onClick={() => this.edit(record.id)}>Edit</a>
               )}
-              <span>
-                <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.id)}>
-                  <Divider type="vertical" />
-                  <a href="javascript:;"> Delete </a>
-                </Popconfirm>
-              </span>
             </div>
           );
         },
@@ -208,15 +209,13 @@ class EditableTable extends React.Component {
   }
 
     state = {
-      // editingKey: '',
       stateKey: '',
-      // dataSource: [],
       // count: '50',
       pagination: {},
       loading: false,
     };
-    // editing word groups
 
+    // editing word groups
     isEditing = record => record.id === this.state.editingKey;
 
     edit(id) {
@@ -228,7 +227,7 @@ class EditableTable extends React.Component {
         if (error) {
           return;
         }
-        const newData = [...this.state.dataSource];
+        const newData = [...this.props.dataSource.dataSource];
         const index = newData.findIndex(item => id === item.id);
         if (index > -1) {
           const item = newData[index];
@@ -236,12 +235,13 @@ class EditableTable extends React.Component {
             ...item,
             ...row,
           });
-          this.setState({ dataSource: newData, editingKey: '' });
+          this.setState({ editingKey: '' });
+          this.props.editWordGroup(newData);
         } else {
           newData.push(row);
-          this.setState({ dataSource: newData, editingKey: '' });
+          this.setState({ editingKey: '' });
+          this.props.editWordGroup(newData);
         }
-        // console.log();
         axios.post('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
           id,
           name: row.name,
@@ -277,21 +277,13 @@ class EditableTable extends React.Component {
     // adding new row
 
     handleAdd = () => {
-      // const { count, dataSource } = this.state;
-      // console.log(dataSource.props);
-
       axios.put('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
         name: ' New group ',
         activeState: true,
         userId: 1,
       })
         .then((response) => {
-          // console.log(response);
           const newWordGroup = response.data;
-          // this.setState({
-          //   dataSource: [...dataSource, newData],
-          //   count: count + 1,
-          // });
           this.props.addWordGroup(newWordGroup);
         });
     };
@@ -353,9 +345,8 @@ class EditableTable extends React.Component {
     // load data from server
 
     loadWordGroups = () => {
-      // this.setState({ loading: true });
+      this.setState({ loading: true });
 
-      // const { loadData } = this.props;
       axios({
         method: 'get',
         url: 'http://koctonpab.asuscomm.com:8080/home/wordgroups/',
@@ -371,7 +362,6 @@ class EditableTable extends React.Component {
 
           this.setState({
             loading: false,
-            // dataSource,
             pagination,
             // count,
           });
@@ -443,6 +433,9 @@ const mapDispatchToProps = dispatch => ({
   },
   toggleStatus: (newData) => {
     dispatch(toggleStatus(newData));
+  },
+  editWordGroup: (newData) => {
+    dispatch(editWordGroup(newData));
   },
 });
 
