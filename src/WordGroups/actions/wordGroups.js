@@ -1,5 +1,5 @@
 import {
-  LOAD_DATA, ADD_WORDGROUP, DELETE_WORDGROUP, TOGGLE_STATUS, EDIT_WORDGROUP
+  LOAD_DATA, ADD_WORDGROUP, DELETE_WORDGROUP, TOGGLE_STATUS, EDIT_WORDGROUP,
 } from '../constans/constants';
 
 export const loadData = dataSource => ({
@@ -24,6 +24,6 @@ export const toggleStatus = newData => ({
 });
 
 export const editWordGroup = newData => ({
-    type: EDIT_WORDGROUP,
-    newData,
+  type: EDIT_WORDGROUP,
+  newData,
 });

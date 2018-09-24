@@ -8,10 +8,10 @@ const initialState = {
   dataSource: [],
 };
 
-export default (state = {}, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case LOAD_DATA: {
-      return Object.assign(initialState, state, {
+      return Object.assign({}, state, {
         dataSource: action.dataSource,
       });
     }

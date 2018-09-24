@@ -1,4 +1,5 @@
 import React from 'react';
+// import 'antd/dist/antd.css';
 import {
   Table, Input, InputNumber, Button, Popconfirm, Form, Icon, Divider,
 } from 'antd';
@@ -61,7 +62,7 @@ class EditableCell extends React.Component {
     }
 }
 
-class EditableTable extends React.Component {
+export class EditableTable extends React.Component {
   constructor(props) {
     super(props);
 
@@ -210,7 +211,7 @@ class EditableTable extends React.Component {
 
     state = {
       stateKey: '',
-      // count: '50',
+      count: 0,
       pagination: {},
       loading: false,
     };
@@ -374,9 +375,14 @@ class EditableTable extends React.Component {
       this.loadWordGroups();
     }
 
+    // add = (a, b) => a + b;
+
+    add = (a, b) => a + b;
 
     render() {
-      const dataSt = this.props.dataSource;
+      const { dataSource } = this.props;
+      // const compProps = this.props;
+      // const wordData = this.props.dataSource.dataSource;
       const components = {
         body: {
           row: EditableFormRow,
@@ -400,7 +406,7 @@ class EditableTable extends React.Component {
         };
       });
       return (
-        <div>
+        <div className="wordGroups-table">
           <Button className="addGroupBtn" onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
                 + Add new word group
           </Button>
@@ -410,7 +416,8 @@ class EditableTable extends React.Component {
             rowKey={record => record.id}
             rowClassName={() => 'editable-row'}
             bordered
-            dataSource={dataSt.dataSource}
+            // dataSource={dataSt.dataSource}
+            dataSource={dataSource}
             pagination={this.state.pagination}
             loading={this.state.loading}
             onChange={this.handleTableChange}
@@ -441,7 +448,7 @@ const mapDispatchToProps = dispatch => ({
 
 
 const mapStateToProps = state => ({
-  dataSource: state.wordGroups,
+  dataSource: state.wordGroups.dataSource,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditableTable);
