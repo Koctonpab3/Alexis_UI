@@ -31,7 +31,7 @@ describe('(Shallow + passing the {store} directly)', () => {
     container = shallow(<EditableTable store={store} handleAdd={jest.fn()} />);
   });
 
-  it('+++ render the connected(SMART) component', () => {
+  it('+++ render the connected(SMART) EditableTable component', () => {
     expect(container.length).toEqual(1);
     expect(container.find('.WordGroupTable').exists()).toBe(true);
   });
@@ -40,5 +40,10 @@ describe('(Shallow + passing the {store} directly)', () => {
     container.instance().handleAdd = jest.fn();
     container.find('.addGroupBtn').simulate('click');
     expect(container.instance().handleAdd).toHaveBeenCalled();
+  });
+  it('new', () => {
+    // container.instance().handleDelete = jest.fn();
+    // container.find('.addGroupBtn').simulate('click');
+
   });
 });

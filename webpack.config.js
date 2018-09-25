@@ -31,7 +31,7 @@ module.exports = (env, options) => {
     module: {
       rules: [{
           loaders: [
-              'babel-loader?presets[]=react,presets[]=es2015,presets[]=stage-0'
+              'babel-loader?presets[]=react,presets[]=env,presets[]=stage-0'
           ],
         test: /\.js$/,
         exclude: /node_modules/
