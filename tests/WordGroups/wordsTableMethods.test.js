@@ -4,6 +4,7 @@ import React from 'react';
 
 import Adapter from 'enzyme-adapter-react-16';
 
+
 import {
   shallow, mount, render, configure,
 } from 'enzyme';
@@ -27,16 +28,17 @@ describe('(Shallow + passing the {store} directly)', () => {
 
   beforeEach(() => {
     store = mockStore(initialState);
-    container = shallow(<EditableTable store={store} />);
+    container = shallow(<EditableTable store={store} handleAdd={jest.fn()} />);
   });
 
   it('+++ render the connected(SMART) component', () => {
     expect(container.length).toEqual(1);
+    expect(container.find('.WordGroupTable').exists()).toBe(true);
   });
 
-  // it('+++ check Prop matches with initialState', () => {
-  //   expect(container.prop('dataSource')).toEqual(initialState.dataSource);
-  // });
+  it('should call handleAdd function when addGroupBtn is clicked', () => {
+    container.instance().handleAdd = jest.fn();
+    container.find('.addGroupBtn').simulate('click');
+    expect(container.instance().handleAdd).toHaveBeenCalled();
+  });
 });
-
-

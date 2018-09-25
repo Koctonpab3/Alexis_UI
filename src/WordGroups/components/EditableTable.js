@@ -1,14 +1,10 @@
 import React from 'react';
-// import 'antd/dist/antd.css';
-import {
-  Table, Input, InputNumber, Button, Popconfirm, Form, Icon, Divider,
-} from 'antd';
+import 'antd/dist/antd.css';
+import { Table, Input, InputNumber, Button, Popconfirm, Form, Icon, Divider } from 'antd';
 import axios from 'axios';
 import { connect } from 'react-redux';
 // actions
-import {
-  loadData, addWordGroup, deleteWordGroup, toggleStatus, editWordGroup,
-} from '../actions/wordGroups';
+import { loadData, addWordGroup, deleteWordGroup, toggleStatus, editWordGroup } from '../actions/wordGroups';
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -18,7 +14,6 @@ const EditableRow = ({ form, index, ...props }) => (
   </EditableContext.Provider>
 );
 const EditableFormRow = Form.create()(EditableRow);
-
 class EditableCell extends React.Component {
     getInput = () => {
       if (this.props.inputType === 'number') {
@@ -111,9 +106,10 @@ export class EditableTable extends React.Component {
               placeholder="Search Word Group"
               value={selectedKeys[0]}
               onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-              onPressEnter={this.handleSearch(selectedKeys, confirm)}
+              // onPressEnter={this.handleSearch(selectedKeys, confirm)}
+              onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
             />
-            <Button type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
+            <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
             <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
           </div>
         ),
@@ -151,7 +147,7 @@ export class EditableTable extends React.Component {
                 {
                     record.activeState === true ? (
                       <span>
-                        <Popconfirm title="Sure to delete?" onConfirm={() => this.toggleGroupStatus(record.id, record.name)}>
+                        <Popconfirm title="Sure to deactivate?" onConfirm={() => this.toggleGroupStatus(record.id, record.name)}>
                           <a href="javascript:;">
                           Deactivate
                           </a>
@@ -169,8 +165,8 @@ export class EditableTable extends React.Component {
                 }
               </span>
               <span>
-                <Popconfirm title="Sure to delete?" onConfirm={() => this.handleDelete(record.id)}>
-                  <a href="javascript:;"> Delete </a>
+                <Popconfirm id="delete-confirm" title="Sure to delete?" onConfirm={() => this.handleDelete(record.id)}>
+                  <a id="delete-btn" href="javascript:;"> Delete </a>
                 </Popconfirm>
                 <Divider type="vertical" />
               </span>
@@ -181,7 +177,9 @@ export class EditableTable extends React.Component {
                       <span>
                         <a
                           href="javascript:;"
+                          className="save-btn"
                           onClick={() => this.save(form, record.id, record.activeState)}
+                          onPressEnter={() => this.save(form, record.id, record.activeState)}
                           style={{ marginRight: 8 }}
                         >
                           Save
@@ -200,7 +198,7 @@ export class EditableTable extends React.Component {
                   </Popconfirm>
                 </span>
               ) : (
-                <a onClick={() => this.edit(record.id)}>Edit</a>
+                <a className="edit-btn" onClick={() => this.edit(record.id)}>Edit</a>
               )}
             </div>
           );
@@ -228,7 +226,7 @@ export class EditableTable extends React.Component {
         if (error) {
           return;
         }
-        const newData = [...this.props.dataSource.dataSource];
+        const newData = [...this.props.dataSource];
         const index = newData.findIndex(item => id === item.id);
         if (index > -1) {
           const item = newData[index];
@@ -307,7 +305,7 @@ export class EditableTable extends React.Component {
     toggleGroupStatus(id, name) {
       this.setState({ stateKey: id });
 
-      const newData = [...this.props.dataSource.dataSource];
+      const newData = [...this.props.dataSource];
       const index = newData.findIndex(item => id === item.id);
       const item = newData[index];
       item.activeState = !item.activeState;
@@ -346,7 +344,7 @@ export class EditableTable extends React.Component {
     // load data from server
 
     loadWordGroups = () => {
-      this.setState({ loading: true });
+      this.setState({ loading: false });
 
       axios({
         method: 'get',
@@ -407,10 +405,17 @@ export class EditableTable extends React.Component {
       });
       return (
         <div className="wordGroups-table">
-          <Button className="addGroupBtn" onClick={this.handleAdd} type="primary" style={{ marginBottom: 16 }}>
+          <Button
+            className="addGroupBtn"
+            id="addGroup-Btn"
+            onClick={() => this.handleAdd()}
+            type="primary"
+            style={{ marginBottom: 16 }}
+          >
                 + Add new word group
           </Button>
           <Table
+            className="WordGroupTable"
             components={components}
             columns={columns}
             rowKey={record => record.id}

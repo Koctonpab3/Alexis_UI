@@ -5,7 +5,12 @@ import {
 const initialState = {
   editingKey: '',
   stateKey: '',
-  dataSource: [],
+  dataSource: [{
+    id: 51,
+    name: 'Test WordGroup',
+    activeState: true,
+    userId: 1,
+  }],
 };
 
 export default (state = initialState, action) => {
