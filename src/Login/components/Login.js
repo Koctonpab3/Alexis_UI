@@ -1,5 +1,5 @@
 import React from 'react';
-//import axios from 'axios';
+import axios from 'axios';
 import {
   Form, Icon, Input, Button,
 } from 'antd';
@@ -40,12 +40,18 @@ class NormalLoginForm extends React.Component {
           ...this.state,
         };
 
-       /*  axios.post('http://backend.alexis.formula1.cloud.provectus-it.com:8080/user_login', { ...user })
+        const basicAuth = 'Basic ' + btoa(user.email + ':' + user.password);
+        // Basic bWVkaW5za2l5bUBnbWFpbC5jb206MTIzMTIz
+        // 15:56:15.961 Login.js?2e65:51 {name: "Mikhail", email: "medinskiym@gmail.com", awsExist: false}
+        console.log(basicAuth)
+        axios.defaults.headers.common['Authorization'] = basicAuth;
+        axios.get('http://587ec09b.ngrok.io/home', {})
           .then((res) => {
             localStorage.setItem('userInfo', JSON.stringify({ ...res.data }));
             login({ ...res.data });
+            console.log(res.data)
             history.push('/wordgroups');
-          }); */
+          });
       }
     });
   }
