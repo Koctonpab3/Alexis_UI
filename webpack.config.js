@@ -14,7 +14,6 @@ module.exports = (env, options) => {
       path: path.join(__dirname, 'public', 'dist'),
       filename: 'bundle.js'
     },
-    externals: ['axios'],
     optimization: {
       minimizer: [
         new UglifyJsPlugin({
