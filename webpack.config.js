@@ -1,7 +1,8 @@
 const path = require('path');
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin")
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env, options) => {
   const isProduction = options.mode === 'production';
@@ -26,21 +27,23 @@ module.exports = (env, options) => {
       new MiniCssExtractPlugin({
         filename: "styles.css",
       }),
-      new HtmlWebpackPlugin({
-        filename: '../index.html',
-      })
+        new HtmlWebpackPlugin({
+            filename: '../index.html',
+        })
     ],
-  
+
     module: {
       rules: [{
-        loader: 'babel-loader',
+          loaders: [
+              'babel-loader?presets[]=react,presets[]=env,presets[]=stage-0'
+          ],
         test: /\.js$/,
         exclude: /node_modules/
       },
       {
         test: /\.s?css$/,
         use: [
-          isProduction ? MiniCssExtractPlugin.loader : 'style-loader', 
+          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
           {
             loader: "css-loader", options: {
                 sourceMap: true
