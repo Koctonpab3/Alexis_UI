@@ -5,9 +5,29 @@
   .tableWrap{
     background-color: #ffffff;
     width: 100%;
+    padding: 16px 0;
     .wordTable{
       width: 92%;
       margin: 0 auto;
+      .actions-col-name{
+        text-align: center;
+      }
+      .actionsCol{
+        text-align: right;
+        padding-right: 10px;
+      }
+      .ant-table-bordered .ant-table-thead > tr > th{
+        border-right: none;
+      }
+      .ant-table-bordered .ant-table-body > table{
+        border: none;
+      }
+      .ant-table-bordered .ant-table-tbody > tr > td{
+        border-right: none;
+      }
+      .wordsStatus{
+        text-align: center;
+      }
       .ant-table-thead > tr > th.ant-table-column-sort{
         background-color: #fafafa;;
       }
