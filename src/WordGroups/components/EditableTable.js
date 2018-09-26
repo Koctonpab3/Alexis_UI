@@ -379,8 +379,6 @@ export class EditableTable extends React.Component {
 
     render() {
       const { dataSource } = this.props;
-      // const compProps = this.props;
-      // const wordData = this.props.dataSource.dataSource;
       const components = {
         body: {
           row: EditableFormRow,
@@ -421,7 +419,6 @@ export class EditableTable extends React.Component {
             rowKey={record => record.id}
             rowClassName={() => 'editable-row'}
             bordered
-            // dataSource={dataSt.dataSource}
             dataSource={dataSource}
             pagination={this.state.pagination}
             loading={this.state.loading}

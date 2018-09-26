@@ -6,8 +6,8 @@ import Path from './path';
 
 const Wordgroups = () => (
     <div className="wordTableContainer">
-      <Path />
-      <WordTable />
+        <Path />
+        <WordTable />
     </div>
 );
 export default Wordgroups;
