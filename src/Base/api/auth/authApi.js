@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { loginUrl, registrationUrl } from './constants';
+import { mainUrl } from './constants';
 //login
 const loginApi = async (basicAuth) => {
   axios.defaults.headers.common['Authorization'] = basicAuth;
-  const response = await axios.get(loginUrl, {});
+
+  const response = await axios.get(`${mainUrl}/home`, {});
   if (response.status <= 400) {
     return response.data;
   }
@@ -12,7 +13,7 @@ const loginApi = async (basicAuth) => {
 
 //registration
 const registrationApi = async (user) => {
-  const response = await axios.post(registrationUrl, { ...user });
+  const response = await axios.post(`${mainUrl}/user_registration`, { ...user });
   return response.status;
 };
 
