@@ -10,6 +10,18 @@ const initialState = {
     name: 'Test WordGroup',
     activeState: true,
     userId: 1,
+  },
+  {
+    id: 25,
+    name: 'Animals',
+    activeState: true,
+    userId: 1,
+  },
+  {
+    id: 20,
+    name: 'Bugs',
+    activeState: false,
+    userId: 1,
   }],
 };
 
