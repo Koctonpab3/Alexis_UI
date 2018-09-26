@@ -133,7 +133,7 @@ export class EditableTable extends React.Component {
             </span>
           ) : text;
         },
-        defaultSortOrder: 'ascend',
+        // defaultSortOrder: 'ascend',
         sorter: (a, b) => a.name.localeCompare(b.name),
       },
       {
