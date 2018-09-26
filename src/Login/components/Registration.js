@@ -1,13 +1,13 @@
 import React from 'react';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Form, Input, Button } from 'antd';
 import { connect } from 'react-redux';
+import { Form, Input, Button, message } from 'antd';
 import { history } from '../../Base/routers/AppRouter';
 import { login } from '../actions/auth';
+import { registrationApi } from '../../Base/api/auth/authApi';
 
 import {
-  RegistrationText, NicknameText, RegisterBtnText, BackToLoginText,
+  RegistrationText, NicknameText, RegisterBtnText, BackToLoginText, SuccsedRegistrationPopUp, ErroUserEmailExist, ErrorInputName, WrongPasswordTwo, EmailNotValid, ErrorEmailInput, ErrorPasswordInput, ErrorConfirmPassword
 } from '../constants/constanst';
 
 const FormItem = Form.Item;
@@ -34,24 +34,22 @@ class RegistrationForm extends React.Component {
     handleSubmit = (e) => {
       e.preventDefault();
 
-      const { form, login } = this.props;
+      const { form } = this.props;
 
       const user = {
         ...this.state,
       };
 
-      form.validateFieldsAndScroll((err, values) => {
+      form.validateFieldsAndScroll((err) => {
         if (!err) {
-          console.log('Received values of form: ', values);
-
-          axios.post('http://backend.alexis.formula1.cloud.provectus-it.com:8080/user_registration', { ...user })
-            .then((res) => {
-              if (res.status) {
-                localStorage.setItem('userInfo', JSON.stringify({ ...user }));
-                login({ ...user });
-                history.push('/wordgroups');
-              }
-            });
+          registrationApi(user).then((res) => {
+            if (res) {
+              message.success(SuccsedRegistrationPopUp);
+              history.push('/');
+            }
+          }).catch(() => {
+            message.error(ErroUserEmailExist);
+          });
         }
       });
     };
@@ -59,7 +57,7 @@ class RegistrationForm extends React.Component {
     compareToFirstPassword = (rule, value, callback) => {
       const { form } = this.props;
       if (value && value !== form.getFieldValue('password')) {
-        callback('Two passwords that you enter is inconsistent!');
+        callback(WrongPasswordTwo);
       } else {
         callback();
       }
@@ -81,7 +79,7 @@ class RegistrationForm extends React.Component {
           )}
           >
             {form.getFieldDecorator('nickname', {
-              rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+              rules: [{ required: true, message: ErrorInputName, whitespace: true }],
             })(
               <Input onChange={this.handleChangeName} />,
             )}
@@ -91,9 +89,9 @@ class RegistrationForm extends React.Component {
           >
             {form.getFieldDecorator('email', {
               rules: [{
-                type: 'email', message: 'The input is not valid E-mail!',
+                type: 'email', message: EmailNotValid,
               }, {
-                required: true, message: 'Please input your E-mail!',
+                required: true, message: ErrorEmailInput,
               }],
             })(
               <Input name="email" onChange={this.handleChangeEmail} />,
@@ -104,7 +102,7 @@ class RegistrationForm extends React.Component {
           >
             {form.getFieldDecorator('password', {
               rules: [{
-                required: true, message: 'Please input your password!',
+                required: true, message: ErrorPasswordInput,
               }, {
                 validator: this.validateToNextPassword,
               }],
@@ -117,7 +115,7 @@ class RegistrationForm extends React.Component {
           >
             {form.getFieldDecorator('confirm', {
               rules: [{
-                required: true, message: 'Please confirm your password!',
+                required: true, message: ErrorConfirmPassword,
               }, {
                 validator: this.compareToFirstPassword,
               }],
