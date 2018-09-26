@@ -1,8 +1,8 @@
 import React from 'react';
-import axios from 'axios';
 import {
-  Form, Icon, Input, Button,
+  Form, Icon, Input, Button, message,
 } from 'antd';
+import { ErroLoginPopUp, ErrorEmailInput, ErrorPasswordInput, PlaceholderEmail, PlaceholderPassword } from '../constants/constanst';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login } from '../actions/auth';
@@ -10,6 +10,7 @@ import { history } from '../../Base/routers/AppRouter';
 import {
   LoginTextBnt, RegisterNowText, LoginText, Or,
 } from '../constants/constanst';
+import { loginApi } from '../../Base/api/auth/authApi';
 
 const FormItem = Form.Item;
 
@@ -34,24 +35,20 @@ class NormalLoginForm extends React.Component {
 
     form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
 
         const user = {
           ...this.state,
         };
 
-        const basicAuth = 'Basic ' + btoa(user.email + ':' + user.password);
-        // Basic bWVkaW5za2l5bUBnbWFpbC5jb206MTIzMTIz
-        // 15:56:15.961 Login.js?2e65:51 {name: "Mikhail", email: "medinskiym@gmail.com", awsExist: false}
-        console.log(basicAuth)
-        axios.defaults.headers.common['Authorization'] = basicAuth;
-        axios.get('http://587ec09b.ngrok.io/home', {})
-          .then((res) => {
-            localStorage.setItem('userInfo', JSON.stringify({ ...res.data }));
-            login({ ...res.data });
-            console.log(res.data)
-            history.push('/wordgroups');
-          });
+        const basicAuth = `Basic ${btoa(`${user.email}:${user.password}`)}`;
+
+        loginApi(basicAuth).then((userInfo) => {
+          localStorage.setItem('userInfo', JSON.stringify({ ...userInfo }));
+          login({ ...userInfo });
+          history.push('/wordgroups');
+        }).catch((error) => {
+          message.error(ErroLoginPopUp)
+        });
       }
     });
   }
@@ -65,16 +62,16 @@ class NormalLoginForm extends React.Component {
         </h4>
         <FormItem>
           {form.getFieldDecorator('userName', {
-            rules: [{ required: true, message: 'Please input your email!' }],
+            rules: [{ required: true, message: ErrorEmailInput }],
           })(
-            <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="E-mail" onChange={this.handleChangeEmail} />,
+            <Input prefix={<Icon type="user" />} placeholder={PlaceholderEmail} onChange={this.handleChangeEmail} />,
           )}
         </FormItem>
         <FormItem>
           {form.getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
+            rules: [{ required: true, message: ErrorPasswordInput }],
           })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" onChange={this.handleChangePass} />,
+            <Input prefix={<Icon type="lock" />} type="password" placeholder={PlaceholderPassword} onChange={this.handleChangePass} />,
           )}
         </FormItem>
         <FormItem>

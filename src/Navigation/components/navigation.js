@@ -37,9 +37,9 @@ const Navigation = props => (
           )}
           trigger="click"
         >
-          
+
           {props.userInfo.name}
-        
+
         </Popover>
       </Menu.Item>
     </Menu>
