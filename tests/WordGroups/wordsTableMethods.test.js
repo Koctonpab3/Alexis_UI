@@ -25,7 +25,7 @@ describe('(Shallow + passing the {store} directly)', () => {
 
   beforeEach(() => {
     store = mockStore(initialState);
-    container = shallow(<EditableTable store={store} handleAdd={jest.fn()} />);
+    container = shallow(<EditableTable store={store} handleAdd={jest.fn()} handleDelete={jest.fn()} />);
   });
 
   it('+++ render the connected(SMART) EditableTable component', () => {

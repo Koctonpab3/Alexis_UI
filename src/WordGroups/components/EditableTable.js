@@ -303,10 +303,21 @@ export class EditableTable extends React.Component {
       };
       toArr();
       const newGroupsArr = namesArr.filter(name => name.indexOf('New group') + 1);
-      const newCount = newGroupsArr.length + 1;
+      const newWGArr = newGroupsArr.filter(name => name.length > 9);
+      const lastNum = newWGArr.map(
+        (name) => {
+          const str = name.split(' ');
+          return str[str.length - 1];
+        },
+      );
+      const maxArrNum = (Math.max(...lastNum));
+      const newCount = maxArrNum + 1;
       const nameGroup = `New group ${newCount}`;
+
+      // random id just for testing(will be deleted)
+      const random = (min, max) => Math.floor(Math.random() * (max - min));
       const newWordGroup = {
-        id: 46,
+        id: random(100, 500),
         name: nameGroup,
         activeState: true,
         userId: 1,
