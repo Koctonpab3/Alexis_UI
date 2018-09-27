@@ -22,6 +22,18 @@ const initialState = {
     name: 'Bugs',
     activeState: false,
     userId: 1,
+  },
+  {
+    id: 83,
+    name: 'New group',
+    activeState: false,
+    userId: 1,
+  },
+  {
+    id: 81,
+    name: 'New group 2',
+    activeState: false,
+    userId: 1,
   }],
 };
 
@@ -34,7 +46,7 @@ export default (state = initialState, action) => {
     }
     case ADD_WORDGROUP: {
       return Object.assign({}, state, {
-        dataSource: [...state.dataSource, action.newWordGroup],
+        dataSource: [action.newWordGroup, ...state.dataSource],
       });
     }
     case DELETE_WORDGROUP: {

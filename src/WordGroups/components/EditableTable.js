@@ -1,10 +1,14 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Table, Input, InputNumber, Button, Popconfirm, Form, Icon, Divider } from 'antd';
+import {
+  Table, Input, InputNumber, Button, Popconfirm, Form, Icon, Divider,
+} from 'antd';
 import axios from 'axios';
 import { connect } from 'react-redux';
 // actions
-import { loadData, addWordGroup, deleteWordGroup, toggleStatus, editWordGroup } from '../actions/wordGroups';
+import {
+  loadData, addWordGroup, deleteWordGroup, toggleStatus, editWordGroup,
+} from '../actions/wordGroups';
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -276,15 +280,40 @@ export class EditableTable extends React.Component {
     // adding new row
 
     handleAdd = () => {
-      axios.put('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
-        name: ' New group ',
+      // receiving data from server
+
+      // axios.put('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
+      //   name: ' New group ',
+      //   activeState: true,
+      //   userId: 1,
+      // })
+      //   .then((response) => {
+      //     const newWordGroup = response.data;
+      //     this.props.addWordGroup(newWordGroup);
+      //   });
+      // console.log(this.props.dataSource);
+
+      // --adding number to new group due to the count
+      const obj = [...this.props.dataSource];
+      const namesArr = [];
+      const toArr = () => {
+        for (const value of obj.values()) {
+          namesArr.push(value.name);
+        }
+      };
+      toArr();
+      const newGroupsArr = namesArr.filter(name => name.indexOf('New group') + 1);
+      const newCount = newGroupsArr.length + 1;
+      const nameGroup = `New group ${newCount}`;
+      const newWordGroup = {
+        id: 46,
+        name: nameGroup,
         activeState: true,
         userId: 1,
-      })
-        .then((response) => {
-          const newWordGroup = response.data;
-          this.props.addWordGroup(newWordGroup);
-        });
+      };
+      //---
+
+      this.props.addWordGroup(newWordGroup);
     };
 
     // saving new row
@@ -379,8 +408,6 @@ export class EditableTable extends React.Component {
 
     render() {
       const { dataSource } = this.props;
-      // const compProps = this.props;
-      // const wordData = this.props.dataSource.dataSource;
       const components = {
         body: {
           row: EditableFormRow,
@@ -421,7 +448,6 @@ export class EditableTable extends React.Component {
             rowKey={record => record.id}
             rowClassName={() => 'editable-row'}
             bordered
-            // dataSource={dataSt.dataSource}
             dataSource={dataSource}
             pagination={this.state.pagination}
             loading={this.state.loading}
@@ -450,7 +476,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(editWordGroup(newData));
   },
 });
-
 
 const mapStateToProps = state => ({
   dataSource: state.wordGroups.dataSource,
