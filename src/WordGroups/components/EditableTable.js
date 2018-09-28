@@ -19,12 +19,9 @@ const EditableRow = ({ form, index, ...props }) => (
 );
 const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends React.Component {
-    getInput = () => {
-      if (this.props.inputType === 'number') {
-        return <InputNumber />;
-      }
-      return <Input />;
-    };
+    getInput = () => (
+      <Input />
+    );
 
     render() {
       const {
@@ -183,7 +180,6 @@ export class EditableTable extends React.Component {
                           href="javascript:;"
                           className="save-btn"
                           onClick={() => this.save(form, record.id, record.activeState)}
-                          onPressEnter={() => this.save(form, record.id, record.activeState)}
                           style={{ marginRight: 8 }}
                         >
                           Save
@@ -356,6 +352,8 @@ export class EditableTable extends React.Component {
       this.props.toggleStatus(newData);
 
       this.setState({ stateKey: '' });
+
+      console.log(name.length);
 
       // posting new status to the server
       axios.post('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {

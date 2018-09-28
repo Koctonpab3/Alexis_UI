@@ -1,10 +1,10 @@
 import {
   loadData, addWordGroup, deleteWordGroup, toggleStatus, editWordGroup,
-} from '../../src/WordGroups/actions/wordGroups';
+} from '../../WordGroups/actions/wordGroups';
 
 import {
   LOAD_DATA, ADD_WORDGROUP, DELETE_WORDGROUP, TOGGLE_STATUS, EDIT_WORDGROUP,
-} from '../../src/WordGroups/constans/constants';
+} from '../../WordGroups/constans/constants';
 
 // test loadData
 test('should keep data from server in store', () => {

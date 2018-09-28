@@ -1,7 +1,4 @@
 import React from 'react';
-
-// import { configure } from 'enzyme';
-
 import Adapter from 'enzyme-adapter-react-16';
 
 import {
@@ -9,7 +6,7 @@ import {
 } from 'enzyme';
 
 import configureStore from 'redux-mock-store';
-import { EditableTable } from '../../src/WordGroups/components/EditableTable';
+import { EditableTable } from '../../WordGroups/components/EditableTable';
 
 configure({ adapter: new Adapter() });
 
@@ -25,10 +22,10 @@ describe('(Shallow + passing the {store} directly)', () => {
 
   beforeEach(() => {
     store = mockStore(initialState);
-    container = shallow(<EditableTable store={store} handleAdd={jest.fn()} handleDelete={jest.fn()} />);
+    container = shallow(<EditableTable store={store} handleAdd={jest.fn()} />);
   });
 
-  it('+++ render the connected(SMART) EditableTable component', () => {
+  it('render the connected EditableTable component', () => {
     expect(container.length).toEqual(1);
     expect(container.find('.WordGroupTable').exists()).toBe(true);
   });
