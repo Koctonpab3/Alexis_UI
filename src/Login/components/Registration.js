@@ -7,7 +7,7 @@ import { login } from '../actions/auth';
 import { registrationApi } from '../../Base/api/auth/authApi';
 
 import {
-    RegistrationText, NicknameText, RegisterBtnText, BackToLoginText, SuccsedRegistrationPopUp, ErroUserEmailExist, ErrorInputName, WrongPasswordTwo, EmailNotValid, ErrorEmailInput, ErrorPasswordInput, ErrorConfirmPassword
+    RegistrationText, NicknameText, RegisterBtnText, BackToLoginText, SuccsedRegistrationPopUp, ErroUserEmailExist, ErrorInputName, WrongPasswordTwo, EmailNotValid, ErrorEmailInput, ErrorPasswordInput, ErrorConfirmPassword, ErrorPasswordlength
 } from '../constants/constanst';
 
 const FormItem = Form.Item;
@@ -103,6 +103,9 @@ class RegistrationForm extends React.Component {
                     {form.getFieldDecorator('password', {
                         rules: [{
                             required: true, message: ErrorPasswordInput,
+                        },{
+                            min: 6,
+                            message: ErrorPasswordlength
                         }, {
                             validator: this.validateToNextPassword,
                         }],
@@ -116,6 +119,9 @@ class RegistrationForm extends React.Component {
                     {form.getFieldDecorator('confirm', {
                         rules: [{
                             required: true, message: ErrorConfirmPassword,
+                        },{
+                            min: 6,
+                            message: ErrorPasswordlength
                         }, {
                             validator: this.compareToFirstPassword,
                         }],
