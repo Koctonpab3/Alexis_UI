@@ -3,27 +3,25 @@ import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import Header from '../../Header/components/header';
 
-export const PrivateRoute = ({ isAuthenticated, component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    component={props => (
-      isAuthenticated ? (
-        <div>
-          <Header />
-          <main className="mainBlock">
-            <Component {...props} />
-          </main>
-        </div>
-      ) : (
-        <Redirect to="/" />
-      )
-    )}
-  />
-);
+export const PrivateRoute = ({ component: Component, ...rest }) => {
+  const isAuthenticated = !!JSON.parse(localStorage.getItem('userInfo'));
+  return (
+    <Route
+      {...rest}
+      component={props => (
+        isAuthenticated ? (
+          <div>
+            <Header />
+            <main className="mainBlock">
+              <Component {...props} />
+            </main>
+          </div>
+        ) : (
+          <Redirect to="/" />
+        )
+      )}
+    />
+  );
+};
 
-const mapStateToProps = state => ({
-  isAuthenticated: !!state.userInfo.name,
-});
-
-
-export default connect(mapStateToProps)(PrivateRoute);
+export default connect()(PrivateRoute);
