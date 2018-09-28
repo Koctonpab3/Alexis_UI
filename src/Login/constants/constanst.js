@@ -17,7 +17,7 @@ export const RegisterNowText = ' register now!';
 export const Or = 'Or';
 export const ErrorInputName = 'Please input your nickname!';
 export const ErroLoginPopUp = 'Wrong password or user email';
-export const WrongPasswordTwo = 'Two passwords that you enter is inconsistent!'
+export const WrongPasswordTwo = 'Password confirmation does not match!'
 export const SuccsedRegistrationPopUp = 'Registration was success. Please login =)';
 export const ErroUserEmailExist = 'User with such email exist';
 export const ErrorEmailInput = 'Please input your email!';
