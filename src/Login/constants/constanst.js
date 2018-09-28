@@ -26,3 +26,4 @@ export const ErrorPasswordInput = 'Please input your Password!';
 export const ErrorConfirmPassword = 'Please confirm your password!';
 export const PlaceholderEmail = 'E-mail';
 export const PlaceholderPassword = 'password';
+export const ErrorPasswordlength = 'Password min lenght 6 symbols.';
