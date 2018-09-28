@@ -7,7 +7,7 @@ import { login } from '../actions/auth';
 import { registrationApi } from '../../Base/api/auth/authApi';
 
 import {
-    RegistrationText, NicknameText, RegisterBtnText, BackToLoginText, SuccsedRegistrationPopUp, ErroUserEmailExist, ErrorInputName, WrongPasswordTwo, EmailNotValid, ErrorEmailInput, ErrorPasswordInput, ErrorConfirmPassword, ErrorPasswordlength
+    RegistrationText, NicknameText, RegisterBtnText, BackToLoginText, SuccsedRegistrationPopUp, ErroUserEmailExist, ErrorInputName, WrongPasswordTwo, EmailNotValid, ErrorEmailInput, ErrorPasswordInput, ErrorConfirmPassword, ErrorPasswordlength, ErrorNiknamelength
 } from '../constants/constanst';
 
 const FormItem = Form.Item;
@@ -79,7 +79,10 @@ class RegistrationForm extends React.Component {
                     )}
                 >
                     {form.getFieldDecorator('nickname', {
-                        rules: [{ required: true, message: ErrorInputName, whitespace: true }],
+                        rules: [{ required: true, message: ErrorInputName, whitespace: true },{
+                            max: 6,
+                            message: ErrorNiknamelength
+                        }],
                     })(
                         <Input onChange={this.handleChangeName} />,
                     )}
