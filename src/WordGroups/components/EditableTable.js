@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import {
   loadData, addWordGroup, deleteWordGroup, toggleStatus, editWordGroup,
 } from '../actions/wordGroups';
+import { errWordGroupName } from '../constans/constants';
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -44,7 +45,8 @@ class EditableCell extends React.Component {
                     {getFieldDecorator(dataIndex, {
                       rules: [{
                         required: true,
-                        message: `Please Input ${title}!`,
+                        message: errWordGroupName,
+                        whitespace: true,
                       }],
                       initialValue: record[dataIndex],
                     })(this.getInput())}
@@ -279,7 +281,7 @@ export class EditableTable extends React.Component {
       // receiving data from server
 
       // axios.put('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
-      //   name: ' New group ',
+      //   name: 'New group',
       //   activeState: true,
       //   userId: 1,
       // })
