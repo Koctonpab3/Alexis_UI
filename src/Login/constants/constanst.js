@@ -21,7 +21,7 @@ export const WrongPasswordTwo = 'Password confirmation does not match!';
 export const SuccsedRegistrationPopUp = 'Registration was success. Please login =)';
 export const ErroUserEmailExist = 'User with such email exist';
 export const ErrorEmailInput = 'Please enter your email!';
-export const EmailNotValid = 'Please enter a valid E-mail address';
+export const EmailNotValid = 'Please enter a valid  e-mail address';
 export const ErrorPasswordInput = 'Please enter your Password!';
 export const ErrorConfirmPassword = 'Please confirm your password!';
 export const PlaceholderEmail = 'E-mail';
