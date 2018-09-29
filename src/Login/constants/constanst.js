@@ -27,4 +27,4 @@ export const ErrorConfirmPassword = 'Please confirm your password!';
 export const PlaceholderEmail = 'E-mail';
 export const PlaceholderPassword = 'password';
 export const ErrorPasswordlength = 'Password min lenght 6 symbols.';
-export const ErrorNiknamelength = 'Nickname must be not more than 6 characters';
+export const ErrorNiknamelength = 'Nickname must be not more than 25 characters';
