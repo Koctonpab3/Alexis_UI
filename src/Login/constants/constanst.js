@@ -25,6 +25,6 @@ export const EmailNotValid = 'Please enter a valid E-mail address';
 export const ErrorPasswordInput = 'Please enter your Password!';
 export const ErrorConfirmPassword = 'Please confirm your password!';
 export const PlaceholderEmail = 'E-mail';
-export const PlaceholderPassword = 'password';
+export const PlaceholderPassword = 'Password';
 export const ErrorPasswordlength = 'Password must be at least 6 characters';
 export const ErrorNiknamelength = 'Nickname must be not more than 6 characters';
