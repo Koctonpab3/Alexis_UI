@@ -68,14 +68,13 @@ export class EditableTable extends React.Component {
     super(props);
 
     const statusIcons = {
-      enabledIcon: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-      disabledIcon: <Icon type="frown" style={{ fontSize: 24, color: '#fa541c' }} />,
+      enabledIcon: <Icon type="smile" className="status-icon active-status-icon" />,
+      disabledIcon: <Icon type="frown" className="status-icon disabled-status-icon"  />,
     };
     this.columns = [
       {
         title: 'Status',
         dataIndex: 'activeState',
-        width: '10%',
         className: 'wordsStatus',
         editable: false,
         render: (text, record) => (
@@ -102,7 +101,7 @@ export class EditableTable extends React.Component {
         title: 'Word Group',
         dataIndex: 'name',
         editable: true,
-        width: '58%',
+        className: 'group-name-col',
         filterDropdown: ({
           setSelectedKeys, selectedKeys, confirm, clearFilters,
         }) => (
@@ -112,7 +111,6 @@ export class EditableTable extends React.Component {
               placeholder="Search Word Group"
               value={selectedKeys[0]}
               onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-              // onPressEnter={this.handleSearch(selectedKeys, confirm)}
               onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
             />
             <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
@@ -139,7 +137,6 @@ export class EditableTable extends React.Component {
             </span>
           ) : text;
         },
-        // defaultSortOrder: 'ascend',
         sorter: (a, b) => a.name.localeCompare(b.name),
       },
       {
@@ -158,14 +155,14 @@ export class EditableTable extends React.Component {
                           Deactivate
                           </a>
                         </Popconfirm>
-                        <Divider type="vertical" />
+                        <Divider className ="vertical-divider" type="vertical" />
                       </span>
                     ) : (
                       <span>
                         <a onClick={() => this.toggleGroupStatus(record.id, record.name)}>
                           Activate
                         </a>
-                        <Divider type="vertical" />
+                        <Divider className ="vertical-divider" type="vertical" />
                       </span>
                     )
                 }
@@ -174,7 +171,7 @@ export class EditableTable extends React.Component {
                 <Popconfirm id="delete-confirm" title="Sure to delete?" onConfirm={() => this.handleDelete(record.id)}>
                   <a id="delete-btn" href="javascript:;"> Delete </a>
                 </Popconfirm>
-                <Divider type="vertical" />
+                <Divider className ="vertical-divider" type="vertical" />
               </span>
               {editable ? (
                 <span>
@@ -189,7 +186,7 @@ export class EditableTable extends React.Component {
                         >
                           Save
                         </a>
-                        <Divider type="vertical" />
+                        <Divider className ="vertical-divider" type="vertical" />
                       </span>
                     )}
                   </EditableContext.Consumer>
@@ -203,7 +200,7 @@ export class EditableTable extends React.Component {
                   </Popconfirm>
                 </span>
               ) : (
-                <a className="edit-btn" onClick={() => this.edit(record.id)}>Edit</a>
+               <span> <a className="edit-btn" onClick={() => this.edit(record.id)}>Edit</a></span>
               )}
             </div>
           );

@@ -11,4 +11,4 @@ export const EDIT_WORDGROUP = 'EDIT_WORDGROUP';
 
 // component constants
 
-export const errWordGroupName = 'Please input a valid name of word group';
+export const errWordGroupName = 'Please enter a valid word group name';
