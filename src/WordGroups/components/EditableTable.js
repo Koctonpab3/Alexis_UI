@@ -20,13 +20,72 @@ const EditableRow = ({ form, index, ...props }) => (
 );
 const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends React.Component {
-    getInput = () => (
-      <Input />
-    );
+  // getInput = () => (
+  //   <Input />
+  // );
+
+  // state = {
+  //   editing: false,
+  // };
+
+  // componentDidMount() {
+  //   if (this.props.editable) {
+  //     document.addEventListener('click', this.handleClickOutside, true);
+  //   }
+  // }
+  //
+  // componentWillUnmount() {
+  //   if (this.props.editable) {
+  //     document.removeEventListener('click', this.handleClickOutside, true);
+  //   }
+  // }
+  //
+  // toggleEdit = () => {
+  //   const editing = !this.state.editing;
+  //   this.setState({ editing }, () => {
+  //     if (editing) {
+  //       this.input.focus();
+  //     }
+  //   });
+  // }
+  //
+  // handleClickOutside = (e) => {
+  //   const { editing } = this.state;
+  //   if (editing && this.cell !== e.target && !this.cell.contains(e.target)) {
+  //     this.save();
+  //   }
+  // }
+
+  // save = () => {
+  //   const { record, save } = this.props;
+  //   this.form.validateFields((error, values) => {
+  //     if (error) {
+  //       return;
+  //     }
+  //     this.toggleEdit();
+  //     save({ ...record, ...values });
+  //   });
+  // }
+
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.escFunction, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.escFunction, false);
+  }
+
+    escFunction = (event) => {
+      if (event.keyCode === 27) {
+        // Do whatever when esc is pressed
+      }
+    }
 
     render() {
       const {
         editing,
+        escFunction,
         dataIndex,
         title,
         inputType,
@@ -52,7 +111,10 @@ class EditableCell extends React.Component {
                         max: 30,
                       }],
                       initialValue: record[dataIndex],
-                    })(this.getInput())}
+                    })(<Input
+                      onPressEnter={() => this.props.save(form, record.id, record.activeState)}
+                      onKeyDown={() => this.props.cancel(record.id)}
+                    />)}
                   </FormItem>
                 ) : restProps.children}
               </td>
@@ -69,7 +131,7 @@ export class EditableTable extends React.Component {
 
     const statusIcons = {
       enabledIcon: <Icon type="smile" className="status-icon active-status-icon" />,
-      disabledIcon: <Icon type="frown" className="status-icon disabled-status-icon"  />,
+      disabledIcon: <Icon type="frown" className="status-icon disabled-status-icon" />,
     };
     this.columns = [
       {
@@ -155,14 +217,14 @@ export class EditableTable extends React.Component {
                           Deactivate
                           </a>
                         </Popconfirm>
-                        <Divider className ="vertical-divider" type="vertical" />
+                        <Divider className="vertical-divider" type="vertical" />
                       </span>
                     ) : (
                       <span>
                         <a onClick={() => this.toggleGroupStatus(record.id, record.name)}>
                           Activate
                         </a>
-                        <Divider className ="vertical-divider" type="vertical" />
+                        <Divider className="vertical-divider" type="vertical" />
                       </span>
                     )
                 }
@@ -171,7 +233,7 @@ export class EditableTable extends React.Component {
                 <Popconfirm id="delete-confirm" title="Sure to delete?" onConfirm={() => this.handleDelete(record.id)}>
                   <a id="delete-btn" href="javascript:;"> Delete </a>
                 </Popconfirm>
-                <Divider className ="vertical-divider" type="vertical" />
+                <Divider className="vertical-divider" type="vertical" />
               </span>
               {editable ? (
                 <span>
@@ -186,7 +248,7 @@ export class EditableTable extends React.Component {
                         >
                           Save
                         </a>
-                        <Divider className ="vertical-divider" type="vertical" />
+                        <Divider className="vertical-divider" type="vertical" />
                       </span>
                     )}
                   </EditableContext.Consumer>
@@ -200,7 +262,10 @@ export class EditableTable extends React.Component {
                   </Popconfirm>
                 </span>
               ) : (
-               <span> <a className="edit-btn" onClick={() => this.edit(record.id)}>Edit</a></span>
+                <span>
+                  {' '}
+                  <a className="edit-btn" onClick={() => this.edit(record.id)}>Edit</a>
+                </span>
               )}
             </div>
           );
@@ -223,7 +288,7 @@ export class EditableTable extends React.Component {
       this.setState({ editingKey: id });
     }
 
-    save(form, id, activeState) {
+    save = (form, id, activeState) => {
       form.validateFields((error, row) => {
         if (error) {
           return;
@@ -436,8 +501,11 @@ export class EditableTable extends React.Component {
             record,
             dataIndex: col.dataIndex,
             title: col.title,
-            handleSave: this.handleSave,
+            // handleSave: this.save(record.id, record.activeState),
+            // save: this.save(form, record.id, record.activeState),
+            save: this.save,
             editing: this.isEditing(record),
+            cancel: this.cancel,
           }),
         };
       });
