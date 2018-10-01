@@ -23,14 +23,17 @@ const renderApp = () => {
 };
 
 const user = JSON.parse(localStorage.getItem('userInfo'));
+const currentPageUrl = history.location.pathname;
 
 if (user) {
     store.dispatch(login({ ...user }));
-    if (history.location.pathname === '/') {
+    if (currentPageUrl === '/' && currentPageUrl === '/registration' ) {
         history.push('/wordgroups');
     }
     renderApp();
-} else {
+} else if (currentPageUrl !== '/registration') {
     history.push('/');
+    renderApp();
+} else {
     renderApp();
 }
