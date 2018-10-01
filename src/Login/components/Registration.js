@@ -80,7 +80,7 @@ class RegistrationForm extends React.Component {
                 >
                     {form.getFieldDecorator('nickname', {
                         rules: [{ required: true, message: ErrorInputName, whitespace: true },{
-                            max: 6,
+                            max: 25,
                             message: ErrorNiknamelength
                         }],
                     })(
