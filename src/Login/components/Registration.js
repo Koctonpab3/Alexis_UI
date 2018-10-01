@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message, notification } from 'antd';
 import { history } from '../../Base/routers/AppRouter';
 import { login } from '../actions/auth';
 import { registrationApi } from '../../Base/api/auth/authApi';
 
 import {
-    RegistrationText, NicknameText, RegisterBtnText, BackToLoginText, SuccsedRegistrationPopUp, ErroUserEmailExist, ErrorInputName, WrongPasswordTwo, EmailNotValid, ErrorEmailInput, ErrorPasswordInput, ErrorConfirmPassword, ErrorPasswordlength, ErrorNiknamelength
+    RegistrationText, NicknameText, RegisterBtnText, BackToLoginText, SuccsedRegistrationPopUp, ErroUserEmailExist, ErrorInputName, WrongPasswordTwo, EmailNotValid, ErrorEmailInput, ErrorPasswordInput, ErrorConfirmPassword, ErrorPasswordlength, ErrorNiknamelength, 
 } from '../constants/constanst';
 
 const FormItem = Form.Item;
@@ -17,10 +17,27 @@ class RegistrationForm extends React.Component {
         name: '',
         email: '',
         password: '',
+        isCapsLockOn: false,
     }
 
     handleChangeEmail = (event) => {
         this.setState({ email: event.target.value });
+    }
+
+    checkCapsLock = (event) => {
+        if(event.getModifierState('CapsLock')) {
+            if (!this.state.isCapsLockOn) {
+                this.setState({ isCapsLockOn: true });
+                notification.open({
+                    message: 'CapsLock is on',
+                    duration: 0,
+                    description: 'Please notice that CapsLock is on, and letters will be uppercase'
+                })
+            } 
+        } else {
+            this.setState({ isCapsLockOn: false });
+            notification.destroy()
+        }
     }
 
     handleChangePass = (event) => {
@@ -113,7 +130,7 @@ class RegistrationForm extends React.Component {
                             validator: this.validateToNextPassword,
                         }],
                     })(
-                        <Input type="password" name="password" onChange={this.handleChangePass} />,
+                        <Input type="password" name="password" onKeyDown={this.handleChangePass, this.checkCapsLock} />,
                     )}
                 </FormItem>
                 <FormItem
@@ -129,7 +146,7 @@ class RegistrationForm extends React.Component {
                             validator: this.compareToFirstPassword,
                         }],
                     })(
-                        <Input type="password" onBlur={this.handleConfirmBlur} />,
+                        <Input type="password" onKeyDown={this.checkCapsLock} />,
                     )}
                 </FormItem>
                 <FormItem>

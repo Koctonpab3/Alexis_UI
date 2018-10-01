@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    Form, Icon, Input, Button, message,
+    Form, Icon, Input, Button, message, notification 
 } from 'antd';
 import { ErroLoginPopUp, ErrorEmailInput, ErrorPasswordInput, PlaceholderEmail, PlaceholderPassword } from '../constants/constanst';
 import { Link } from 'react-router-dom';
@@ -18,10 +18,27 @@ class NormalLoginForm extends React.Component {
     state = {
         email: '',
         password: '',
+        isCapsLockOn: false
     }
 
     handleChangeEmail = (event) => {
         this.setState({ email: event.target.value });
+    }
+
+    checkCapsLock = (event) => {
+        if(event.getModifierState('CapsLock')) {
+            if (!this.state.isCapsLockOn) {
+                this.setState({ isCapsLockOn: true });
+                notification.open({
+                    message: 'CapsLock is on',
+                    duration: 0,
+                    description: 'Please notice that CapsLock is on, and letters will be uppercase'
+                })
+            } 
+        } else {
+            this.setState({ isCapsLockOn: false });
+            notification.destroy()
+        }
     }
 
     handleChangePass = (event) => {
@@ -71,7 +88,7 @@ class NormalLoginForm extends React.Component {
                     {form.getFieldDecorator('password', {
                         rules: [{ required: true, message: ErrorPasswordInput }],
                     })(
-                        <Input prefix={<Icon type="lock" />} type="password" placeholder={PlaceholderPassword} onChange={this.handleChangePass} />,
+                        <Input prefix={<Icon type="lock" />} type="password" placeholder={PlaceholderPassword} onKeyDown={this.handleChangePass, this.checkCapsLock} />,
                     )}
                 </FormItem>
                 <FormItem>
