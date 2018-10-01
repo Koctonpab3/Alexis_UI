@@ -25,9 +25,7 @@ class NormalLoginForm extends React.Component {
         this.setState({ email: event.target.value });
     }
 
-    handleChangePass = (event) => {
-        this.setState({ password: event.target.value });
-
+    checkCapsLock = (event) => {
         if(event.getModifierState('CapsLock')) {
             if (!this.state.isCapsLockOn) {
                 this.setState({ isCapsLockOn: true });
@@ -41,6 +39,10 @@ class NormalLoginForm extends React.Component {
             this.setState({ isCapsLockOn: false });
             notification.destroy()
         }
+    }
+
+    handleChangePass = (event) => {
+        this.setState({ password: event.target.value });
     }
 
     handleSubmit = (e) => {
@@ -86,7 +88,7 @@ class NormalLoginForm extends React.Component {
                     {form.getFieldDecorator('password', {
                         rules: [{ required: true, message: ErrorPasswordInput }],
                     })(
-                        <Input prefix={<Icon type="lock" />} type="password" placeholder={PlaceholderPassword} onKeyDown={this.handleChangePass} />,
+                        <Input prefix={<Icon type="lock" />} type="password" placeholder={PlaceholderPassword} onKeyDown={this.handleChangePass, this.checkCapsLock} />,
                     )}
                 </FormItem>
                 <FormItem>
