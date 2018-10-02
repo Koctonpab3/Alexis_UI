@@ -11,7 +11,9 @@ import {
   loadData, addWordGroup, deleteWordGroup, toggleStatus, editWordGroup,
 } from '../actions/wordGroups';
 // constants
-import { errWordGroupName, newWordGroupName, errServerConnection, existingGroupNameErr } from '../constans/constants';
+import {
+  errWordGroupName, newWordGroupName, errServerConnection, existingGroupNameErr, user,
+} from '../constans/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
 import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
 
@@ -253,10 +255,18 @@ export class EditableTable extends React.Component {
           });
           this.setState({ editingKey: '' });
           const saveGroupName = async () => {
-            const response = await axios.post('http://backend.alexis.formula1.cloud.provectus-it.com:8080/home/wordgroups/', {
-              id,
-              name: row.name,
-              activeState,
+            const response = await axios({
+              method: 'post',
+              url: `${mainUrl}/home/wordgroups`,
+              data: {
+                id,
+                name: row.name,
+                activeState,
+              },
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: user.token,
+              },
             });
             return response.status;
           };
@@ -265,10 +275,10 @@ export class EditableTable extends React.Component {
               this.props.editWordGroup(newData);
             }
           }).catch((error) => {
-              notification.open({
-                  type: 'error',
-                  message:existingGroupNameErr,
-              });
+            notification.open({
+              type: 'error',
+              message: existingGroupNameErr,
+            });
           });
         } else {
           newData.push(row);
@@ -297,7 +307,19 @@ export class EditableTable extends React.Component {
     // deleting wordgroups
 
     handleDelete = (id) => {
-      axios.delete(`${mainUrl}/home/wordgroups/${id}`).then((response) => {
+      axios(
+        {
+          method: 'delete',
+          url: `${mainUrl}/home/wordgroups/${id}`,
+          headers:
+                    {
+                      'Content-Type': 'application/json',
+                      Authorization: user.token,
+                    },
+          data: {
+          },
+        },
+      ).then((response) => {
         this.props.deleteWordGroup(id);
       })
         .catch((error) => {
@@ -343,9 +365,17 @@ export class EditableTable extends React.Component {
 
       // adding new group to the server
       const addGroupReq = async () => {
-        const response = await axios.put(`${mainUrl}/home/wordgroups`, {
-          name: naming(),
-          activeState: true,
+        const response = await axios({
+          method: 'put',
+          url: `${mainUrl}/home/wordgroups`,
+          data: {
+            name: naming(),
+            activeState: true,
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: user.token,
+          },
         });
         if (response.status <= 400) {
           return response.data;
@@ -375,14 +405,31 @@ export class EditableTable extends React.Component {
       newData.splice(index, 1, {
         ...item,
       });
-      this.props.toggleStatus(newData);
       this.setState({ stateKey: '' });
-      // changing status of word group
-      axios.post(`${mainUrl}/home/wordgroups`, {
-        id,
-        name,
-        activeState: item.activeState,
-      });
+      axios(
+        {
+          method: 'post',
+          url: `${mainUrl}/home/wordgroups`,
+          headers:
+                  {
+                    'Content-Type': 'application/json',
+                    Authorization: user.token,
+                  },
+          data: {
+            id,
+            name,
+            activeState: item.activeState,
+          },
+        },
+      ).then((response) => {
+        this.props.toggleStatus(newData);
+      })
+        .catch((error) => {
+          notification.open({
+            type: 'error',
+            message: errServerConnection,
+          });
+        });
     }
 
     handleTableChange = (pagination, filters, sorter) => {
@@ -412,7 +459,10 @@ export class EditableTable extends React.Component {
         });
         this.props.loadData(dataNew);
       }).catch((error) => {
-        console.log(error);
+        notification.open({
+          type: 'error',
+          message: errServerConnection,
+        });
         this.setState({
           loading: false,
         });

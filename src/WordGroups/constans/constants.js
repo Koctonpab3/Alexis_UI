@@ -15,3 +15,6 @@ export const errWordGroupName = 'Please enter a valid word group name';
 export const errServerConnection = 'The server connection failed';
 export const existingGroupNameErr = 'This group name is already exist!';
 export const newWordGroupName = 'New group 1';
+
+// user const from local storage
+export const user = JSON.parse(localStorage.getItem('userInfo'));
