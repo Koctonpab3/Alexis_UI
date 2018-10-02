@@ -387,6 +387,7 @@ export class EditableTable extends React.Component {
         const newWordGroup = res.data;
         this.props.addWordGroup(newWordGroup);
       }).catch((error) => {
+          console.log(error);
         notification.open({
           type: 'error',
           message: errServerConnection,
