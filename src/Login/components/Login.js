@@ -1,14 +1,16 @@
 import React from 'react';
 import {
-    Form, Icon, Input, Button, message, notification 
+    Form, Icon, Input, Button, message, notification
 } from 'antd';
-import { ErroLoginPopUp, ErrorEmailInput, ErrorPasswordInput, PlaceholderEmail, PlaceholderPassword } from '../constants/constanst';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import {
+  ErroLoginPopUp, ErrorEmailInput, ErrorPasswordInput, PlaceholderEmail, PlaceholderPassword,
+} from '../constants/constanst';
 import { login } from '../actions/auth';
 import { history } from '../../Base/routers/AppRouter';
 import {
-    LoginTextBnt, RegisterNowText, LoginText, Or,
+  LoginTextBnt, RegisterNowText, LoginText, Or,
 } from '../constants/constanst';
 import { loginApi } from '../../Base/api/auth/authApi';
 
@@ -22,7 +24,7 @@ class NormalLoginForm extends React.Component {
     }
 
     handleChangeEmail = (event) => {
-        this.setState({ email: event.target.value });
+      this.setState({ email: event.target.value });
     }
 
     checkCapsLock = (event) => {
@@ -42,37 +44,35 @@ class NormalLoginForm extends React.Component {
     }
 
     handleChangePass = (event) => {
-        this.setState({ password: event.target.value });
-        console.log(this.state.password)
+      this.setState({ password: event.target.value });
     }
 
     handleSubmit = (e) => {
-        e.preventDefault();
+      e.preventDefault();
 
-        const { login, form } = this.props;
+      const { login, form } = this.props;
 
-        form.validateFields((err, values) => {
-            if (!err) {
+      form.validateFields((err, values) => {
+        if (!err) {
+          const user = {
+            ...this.state,
+          };
 
-                const user = {
-                    ...this.state,
-                };
+          const basicAuth = `Basic ${btoa(`${user.email}:${user.password}`)}`;
 
-                const basicAuth = `Basic ${btoa(`${user.email}:${user.password}`)}`;
-                console.log(basicAuth)
-                console.log(user.password)
-                loginApi(basicAuth).then((userInfo) => {
-                    localStorage.setItem('userInfo', JSON.stringify({ ...userInfo }));
-                    login({ ...userInfo });
-                    history.push('/wordgroups');
-                }).catch((error) => {
-                    message.error(ErroLoginPopUp)
-                });
-            }
-        });
+          loginApi(basicAuth).then((userInfo) => {
+            localStorage.setItem('userInfo', JSON.stringify({ ...userInfo }));
+            login({ ...userInfo });
+            history.push('/wordgroups');
+          }).catch((error) => {
+            message.error(ErroLoginPopUp);
+          });
+        }
+      });
     }
 
     render() {
+
         const { form } = this.props;
         return (
             <Form onSubmit={this.handleSubmit} className="login-form">
@@ -110,13 +110,13 @@ class NormalLoginForm extends React.Component {
 const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
 
 const mapDispatchToProps = dispatch => ({
-    login: (name) => {
-        dispatch(login(name));
-    },
+  login: (name) => {
+    dispatch(login(name));
+  },
 });
 
 const mapStateToProps = state => ({
-    userInfo: state.userInfo,
+  userInfo: state.userInfo,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedNormalLoginForm);

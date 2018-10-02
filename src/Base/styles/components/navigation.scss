@@ -1,24 +1,62 @@
+$break-medium-2: 764px;
+$break-sm-medium-2: 746px;
+$break-small: 480px;
+$break-small-2: 340px;
+
 .top-navbar-wrapper{
   background: #001529;
-  .top-navbar{
+  .top-container{
     width: 77%;
     margin: 0 auto;
-    .ant-menu-item-selected{
-      background-color: #001529;
+    display: flex;
+    flex-wrap: wrap;
+    @media screen and (max-width: $break-sm-medium-2) {
+      width:95%;
     }
     #logo{
       width: 130px;
-      background-color: #5c5c5c;
       height: 36px;
+      margin: 10px 0;
+      background-color: #5c5c5c;
       border-radius: 4px;
-      top: -13px;
-      margin-right: 22px;
+      @media screen and (max-width: $break-small) {
+        width: 43px;
+        height: 18px;
+        margin: 20px 0;
+      }
+      @media screen and (max-width: $break-small-2) {
+        width: 43px;
+        height: 18px;
+        margin: 10px 0 0 10px;
+      }
+    }
+
+    .top-navbar{
+      display: flex;
+      .ant-menu-item-selected{
+        background-color: #001529;
+      }
+      .nav-item{
+        padding: 7px 22px;
+        @media screen and (max-width: $break-sm-medium-2) {
+          font-size: 0.8em;
+          padding: 7px 10px;
+        }
+        @media screen and (max-width: $break-small-2) {
+          padding: 0 10px;
+        }
+      }
     }
     #userIcon{
-      float: right;
-    }
-    .nav-item{
-      padding: 7px 22px;
+      margin: 20px 0 20px auto;
+      color: rgba(255, 255, 255, 0.65);
+      @media screen and (max-width: $break-sm-medium-2) {
+        font-size: 0.8em;
+      }
+      @media screen and (max-width: $break-small-2) {
+        margin: 0 0 10px 10px;
+      }
     }
   }
+
 }
