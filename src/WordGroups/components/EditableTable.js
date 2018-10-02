@@ -459,6 +459,7 @@ export class EditableTable extends React.Component {
         });
         this.props.loadData(dataNew);
       }).catch((error) => {
+          console.log(error);
         notification.open({
           type: 'error',
           message: errServerConnection,
