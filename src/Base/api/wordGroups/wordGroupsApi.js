@@ -1,9 +1,19 @@
 import axios from 'axios';
 import { mainUrl } from '../auth/constants';
+import { user } from './constants';
 
 // load data from server
 const wordGroupsApi = async () => {
-  const response = await axios.get(`${mainUrl}/home/wordgroups`, {});
+  const response = await axios({
+    method: 'get',
+    url: `${mainUrl}/home/wordgroups`,
+    data: {},
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: user.token,
+    },
+  });
+
   if (response.status <= 400) {
     return response.data;
   }
