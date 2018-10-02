@@ -333,7 +333,6 @@ export class EditableTable extends React.Component {
     // adding new row
 
     handleAdd = () => {
-        console.log(user.token);
       // --adding number to new group due to the count
       const obj = [...this.props.dataSource];
       const namesArr = [];
@@ -384,18 +383,14 @@ export class EditableTable extends React.Component {
         throw new Error(response.status);
       };
       addGroupReq().then((res) => {
-          console.log(res);
         const newWordGroup = res;
-        setTimeout(() => {
-  this.props.addWordGroup(newWordGroup);
-}, 4000);
-        // this.props.addWordGroup(newWordGroup);
+        this.props.addWordGroup(newWordGroup);
       }).catch((error) => {
-          console.log(error);
-        // notification.open({
-        //   type: 'error',
-        //   message: errServerConnection,
-        // });
+          
+        notification.open({
+          type: 'error',
+          message: errServerConnection,
+        });
       });
     };
 
@@ -465,7 +460,6 @@ export class EditableTable extends React.Component {
         });
         this.props.loadData(dataNew);
       }).catch((error) => {
-          console.log(error);
         notification.open({
           type: 'error',
           message: errServerConnection,
