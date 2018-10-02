@@ -356,10 +356,10 @@ export class EditableTable extends React.Component {
       const nameGroup = `New group ${newCount}`;
 
       const naming = () => {
-        if (newGroupsArr.length === 0) {
-          return newWordGroupName;
+        if (newGroupsArr.length !== 0) {
+          return nameGroup;
         }
-        return nameGroup;
+        return newWordGroupName;
       };
 
       //---
@@ -385,7 +385,7 @@ export class EditableTable extends React.Component {
       };
       addGroupReq().then((res) => {
           console.log(res);
-          console.log(red.data);
+          console.log(res.data);
         const newWordGroup = res.data;
         setTimeout(() => {
   this.props.addWordGroup(newWordGroup);
