@@ -1,24 +1,18 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import {
-  Table, Input, InputNumber, Button, Popconfirm, Form, Icon, Divider,
+  Table, Input, Button, Popconfirm, Form, Icon, Divider,
 } from 'antd';
 import axios from 'axios';
 import { connect } from 'react-redux';
 // actions
-
-import { Provider as AlertProvider } from 'react-alert';
-import AlertTemplate from 'react-alert-template-basic';
-
 import {
   loadData, addWordGroup, deleteWordGroup, toggleStatus, editWordGroup,
 } from '../actions/wordGroups';
+// constants
 import { errWordGroupName, newWordGoupName } from '../constans/constants';
-
+import { mainUrl } from '../../Base/api/auth/constants';
 import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
-
-
-import modalWindow from './modalWindow';
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -261,16 +255,25 @@ export class EditableTable extends React.Component {
         } else {
           newData.push(row);
           this.setState({ editingKey: '' });
-          this.props.editWordGroup(newData);
+          // this.props.editWordGroup(newData);
         }
-        axios.post('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
+        const saveNewGroupName = {
           id,
           name: row.name,
           activeState,
-          userId: 0,
+
+        };
+        const saveGroupName = async () => {
+          const response = await axios.post(`${mainUrl}/home/wordgroups`, { ...saveNewGroupName });
+          return response.data;
+        };
+        saveGroupName().then(() => {
+          this.props.editWordGroup(newData);
+        }).catch((error) => {
+          console.log(error);
         });
       });
-    }
+    };
 
     cancel = () => {
       this.setState({ editingKey: '' });
@@ -291,27 +294,13 @@ export class EditableTable extends React.Component {
     // deleting wordgroups
 
     handleDelete = (id) => {
-      axios.delete(`http://koctonpab.asuscomm.com:8080/protected/wordgroups/${id}`);
+      axios.delete(`${mainUrl}/home/wordgroups/${id}`);
       this.props.deleteWordGroup(id);
     };
 
     // adding new row
 
     handleAdd = () => {
-      // receiving data from server
-
-      // axios.put('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
-      //   name: 'New group',
-      //   activeState: true,
-      //   userId: 1,
-      // })
-      //   .then((response) => {
-      //     const newWordGroup = response.data;
-      //     this.props.addWordGroup(newWordGroup);
-      //   });
-      // console.log(this.props.dataSource);
-
-
       // --adding number to new group due to the count
       const obj = [...this.props.dataSource];
       const namesArr = [];
@@ -340,35 +329,29 @@ export class EditableTable extends React.Component {
         return nameGroup;
       };
 
-      // random id just for testing(will be deleted)
-      const random = (min, max) => Math.floor(Math.random() * (max - min));
-      const newWordGroup = {
-        id: random(100, 500),
-        // name: nameGroup,
+      const newWGroup = {
         name: naming(),
         activeState: true,
-        userId: 1,
       };
       //---
 
-      this.props.addWordGroup(newWordGroup);
-    };
-
-    // saving new row
-
-    handleSave = (row) => {
-      const newData = [...this.state.dataSource];
-      const index = newData.findIndex(item => row.id === item.id);
-      const item = newData[index];
-      newData.splice(index, 1, {
-        ...item,
-        ...row,
+      // adding new group to the server
+      const addGroupReq = async () => {
+        const response = await axios.put(`${mainUrl}/home/wordgroups`, { ...newWGroup });
+        if (response.status <= 400) {
+          return response.data;
+        }
+        throw new Error(response.status);
+      };
+      addGroupReq().then((res) => {
+        const newWordGroup = res.data;
+        this.props.addWordGroup(newWordGroup);
+      }).catch((error) => {
+        console.log(error);
       });
-      this.setState({ dataSource: newData });
     };
 
     // changing the status of word group
-
     toggleGroupStatus(id, name) {
       this.setState({ stateKey: id });
 
@@ -379,17 +362,13 @@ export class EditableTable extends React.Component {
       newData.splice(index, 1, {
         ...item,
       });
-
       this.props.toggleStatus(newData);
-
       this.setState({ stateKey: '' });
-
-      // posting new status to the server
-      axios.post('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
+      // changing status of word group
+      axios.post(`${mainUrl}/home/wordgroups`, {
         id,
         name,
         activeState: item.activeState,
-        userId: 0,
       });
     }
 
@@ -411,30 +390,6 @@ export class EditableTable extends React.Component {
     // load data from server
 
     loadWordGroups = () => {
-      // this.setState({ loading: false });
-
-      // axios({
-      //   method: 'get',
-      //   url: 'http://koctonpab.asuscomm.com:8080/home/wordgroups/',
-      //   responseType: 'json',
-      // })
-      //   .then((res) => {
-      //     const dataNew = res.data;
-      //     const pagination = { ...this.state.pagination };
-      //     // Read total count from server
-      //     // pagination.total = dataSource.totalCount;
-      //     // const count = dataSource.totalCount;
-      //     // pagination.total = 10;
-      //
-      //     this.setState({
-      //       loading: false,
-      //       pagination,
-      //       // count,
-      //     });
-      //
-      //     this.props.loadData(dataNew);
-      //   });
-
       wordGroupsApi().then((data) => {
         const dataNew = data;
         const pagination = { ...this.state.pagination };
@@ -442,7 +397,6 @@ export class EditableTable extends React.Component {
           loading: false,
           pagination,
         });
-        console.log(data);
         this.props.loadData(dataNew);
       }).catch((error) => {
         console.log(error);
@@ -456,10 +410,6 @@ export class EditableTable extends React.Component {
     componentDidMount() {
       this.loadWordGroups();
     }
-
-    // add = (a, b) => a + b;
-
-    add = (a, b) => a + b;
 
     render() {
       const { dataSource } = this.props;
@@ -509,10 +459,7 @@ export class EditableTable extends React.Component {
             loading={this.state.loading}
             onChange={this.handleTableChange}
           />
-
         </div>
-
-
       );
     }
 }
