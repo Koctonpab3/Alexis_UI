@@ -1,16 +1,22 @@
- @import 'base/settings';
- body{
-   background-color: #f5f5f5;
- }
+@import 'base/settings';
+
+$break-sm-medium: 600px;
+
+body{
+  background-color: #f5f5f5;
+}
 .wrapper{
-    .mainBlock{
-      width: 77%;
-      margin: 0 auto;
-      padding-bottom: 174px;
+  .mainBlock{
+    width: 77%;
+    margin: 0 auto;
+    padding-bottom: 174px;
+    @media screen and (max-width: $break-sm-medium) {
+      width: 96%;
     }
   }
+}
 
- // components styles
-
- @import 'components/worgroup';
- @import 'components/navigation';
+// components styles
+@import 'components/worgroup';
+@import 'components/navigation';
+@import 'components/login';

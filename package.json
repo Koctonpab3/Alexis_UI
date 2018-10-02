@@ -1,5 +1,5 @@
 {
-  "name": "templates",
+  "name": "Alexis.UI",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -12,7 +12,17 @@
   },
   "jest": {
     "verbose": true,
-    "testURL": "http://localhost/"
+    "testURL": "http://localhost/",
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js"
+    },
+    "transform": {
+      "^.+\\.(js|jsx|mjs)$": "<rootDir>/node_modules/babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(antd|rc-pagination|rc-calendar|rc-tooltip|rc-form|css-animation)/)"
+    ]
   },
   "eslintConfig": {
     "parser": "babel-eslint",
@@ -43,18 +53,20 @@
     }
   },
   "dependencies": {
-    "antd": "^3.8.4",
+    "antd": "^3.8.2",
+    "axios": "^0.18.0",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
     "babel-loader": "^7.1.5",
-    "babel-plugin-import": "^1.8.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "css-loader": "^1.0.0",
     "eslint": "^4.15.0",
     "eslint-config-airbnb": "^17.0.0",
@@ -68,25 +80,45 @@
     "eslint-plugin-react": "^7.10.0",
     "eslint-plugin-react-native": "^3.2.1",
     "eslint-plugin-standard": "^3.1.0",
-    "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.4.2",
+    "mini-css-extract-plugin": "^0.4.1",
     "node-sass": "^4.9.2",
-    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.0",
     "react": "^16.4.1",
+    "react-alert": "^4.0.4",
+    "react-alert-template-basic": "^1.0.0",
     "react-dom": "^16.4.1",
+    "react-modal": "^3.6.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
+    "react-s-alert": "^1.4.1",
+    "react-transition-group": "^2.5.0",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0",
     "sass-loader": "^7.0.3",
+    "sinon": "^6.3.4",
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "uuid": "^3.3.2",
-    "webpack": "^4.17.1",
+    "webpack": "^4.16.3",
     "webpack-cli": "^3.1.0"
   },
   "devDependencies": {
-    "jest": "^23.4.2",
-    "webpack-dev-server": "^3.1.7"
+    "babel-jest": "^23.6.0",
+    "babel-plugin-dynamic-import-node": "^2.1.0",
+    "babel-plugin-import": "^1.9.1",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react-hmre": "^1.1.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "enzyme": "^3.6.0",
+    "enzyme-adapter-react-16": "^1.5.0",
+    "jest": "^23.6.0",
+    "jest-enzyme": "^6.1.2",
+    "react-addons-test-utils": "^15.6.2",
+    "react-test-renderer": "^16.5.2",
+    "redux-mock-store": "^1.5.3",
+    "regenerator-runtime": "^0.12.1",
+    "webpack-dev-server": "^3.1.5"
   }
 }

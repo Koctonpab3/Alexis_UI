@@ -1,13 +1,101 @@
+$break-medium: 928px;
+$break-sm-medium: 600px;
+
 .wordTableContainer{
+   font-size: 14px;
   .wordGroupPath{
     padding: 16px 0;
   }
   .tableWrap{
     background-color: #ffffff;
     width: 100%;
+    padding: 16px 0;
     .wordTable{
       width: 92%;
       margin: 0 auto;
+      #addGroup-Btn{
+        margin-bottom: 16px;
+        @media screen and (max-width: $break-medium) {
+          font-size: 0.9em;
+        }
+      }
+      .ant-table-body > table{
+        @media screen and (max-width: $break-medium) {
+          font-size: 0.9em;
+        }
+      }
+      .wordsStatus{
+        width: 15%;
+        text-align: center;
+        .status-icon{
+          font-size: 1.7em;
+          @media screen and (max-width: $break-medium) {
+            font-size: 1.5em;
+          }
+          @media screen and (max-width: $break-sm-medium) {
+            font-size: 1.5em;
+          }
+        }
+        @media screen and (max-width: $break-medium) {
+          width: 21%;
+        }
+        .active-status-icon{
+          color: #52c41a;
+        }
+        .disabled-status-icon{
+          color: #fa541c;
+        }
+      }
+      .group-name-col{
+        width:52%;
+        @media screen and (max-width: $break-medium) {
+          width: 39%;
+        }
+        @media screen and (max-width: $break-sm-medium) {
+          width: 33%;
+        }
+      }
+      th.actions-col-name{
+        text-align: left;
+        @media screen and (max-width: $break-medium) {
+          text-align: center;
+        }
+        span{
+          padding-left: 45%;
+        }
+      }
+      .actions-col-name{
+        text-align: center;
+        @media screen and (max-width: $break-sm-medium) {
+          width: 30%;
+        }
+        .actionsCol{
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: flex-end;
+          padding: 17.5px 10px;
+          span{
+            @media screen and (max-width: $break-medium) {
+              width: 100%;
+              text-align: right;
+            }
+            .vertical-divider{
+              @media screen and (max-width: $break-medium) {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+      .ant-table-bordered .ant-table-thead > tr > th{
+        border-right: none;
+      }
+      .ant-table-bordered .ant-table-body > table{
+        border: none;
+      }
+      .ant-table-bordered .ant-table-tbody > tr > td{
+        border-right: none;
+      }
       .ant-table-thead > tr > th.ant-table-column-sort{
         background-color: #fafafa;;
       }

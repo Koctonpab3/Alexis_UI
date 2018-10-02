@@ -1,28 +1,54 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Menu, Popover } from 'antd';
+import Logout from '../../Login/components/LogOut';
 
-import { Menu, Avatar } from 'antd';
-
-const Navigation = () => (
+const Navigation = props => (
   <div className="top-navbar-wrapper">
-    <Menu className="top-navbar" mode="horizontal" theme="dark">
-      <Menu.Item id="logo" className="nav-item"> </Menu.Item>
-      <Menu.Item className="nav-item">
-        <Link to="/">Word Groups</Link>
-      </Menu.Item>
-      <Menu.Item className="nav-item">
-        <Link to="/setup">Setup</Link>
-      </Menu.Item>
-      <Menu.Item className="nav-item">
-        <Link to="/statistics">Statistics</Link>
-      </Menu.Item>
-      <Menu.Item className="nav-item">
-        <Link to="/profile">Profile</Link>
-      </Menu.Item>
-      <Menu.Item id="userIcon">
-        <Avatar size="small" style={{ backgroundColor: '#6ebb84' }}>T</Avatar>
-      </Menu.Item>
-    </Menu>
+    <div className="top-container">
+      <div id="logo">
+      </div>
+      <Menu className="top-navbar" mode="horizontal" theme="dark">
+        <Menu.Item className="nav-item">
+          <Link to="/wordgroups">
+            {'Word Groups'}
+          </Link>
+        </Menu.Item>
+        <Menu.Item className="nav-item">
+          <Link to="/setup">
+            {'Setup'}
+          </Link>
+        </Menu.Item>
+        <Menu.Item className="nav-item">
+          <Link to="/statistics">
+            {'Statistics'}
+          </Link>
+        </Menu.Item>
+        <Menu.Item className="nav-item">
+          <Link to="/profile">
+            {'Profile'}
+          </Link>
+        </Menu.Item>
+      </Menu>
+      <div id="userIcon">
+        <Popover
+          content={(
+            <div className="logout-wrapper">
+              <Logout />
+            </div>
+            )}
+          trigger="click"
+        >
+          {props.userInfo.name}
+        </Popover>
+      </div>
+    </div>
   </div>
 );
-export default Navigation;
+
+const mapStateToProps = state => ({
+  userInfo: state.userInfo,
+});
+
+export default connect(mapStateToProps)(Navigation);
