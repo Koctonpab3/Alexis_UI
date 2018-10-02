@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Form, Icon, Input, Button, message,
+    Form, Icon, Input, Button, message, notification
 } from 'antd';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -18,12 +18,29 @@ const FormItem = Form.Item;
 
 class NormalLoginForm extends React.Component {
     state = {
-      email: '',
-      password: '',
+        email: '',
+        password: '',
+        isCapsLockOn: false
     }
 
     handleChangeEmail = (event) => {
       this.setState({ email: event.target.value });
+    }
+
+    checkCapsLock = (event) => {
+        if(event.getModifierState('CapsLock')) {
+            if (!this.state.isCapsLockOn) {
+                this.setState({ isCapsLockOn: true });
+                notification.open({
+                    message: 'CapsLock is on',
+                    duration: 0,
+                    description: 'Please notice that CapsLock is on, and letters will be uppercase'
+                })
+            } 
+        } else {
+            this.setState({ isCapsLockOn: false });
+            notification.destroy()
+        }
     }
 
     handleChangePass = (event) => {
@@ -55,37 +72,38 @@ class NormalLoginForm extends React.Component {
     }
 
     render() {
-      const { form } = this.props;
-      return (
-        <Form onSubmit={this.handleSubmit} className="login-form">
-          <h4 className="login-form__title">
-            { LoginText }
-          </h4>
-          <FormItem>
-            {form.getFieldDecorator('userName', {
-              rules: [{ required: true, message: ErrorEmailInput }],
-            })(
-              <Input prefix={<Icon type="user" />} placeholder={PlaceholderEmail} onChange={this.handleChangeEmail} />,
-            )}
-          </FormItem>
-          <FormItem>
-            {form.getFieldDecorator('password', {
-              rules: [{ required: true, message: ErrorPasswordInput }],
-            })(
-              <Input prefix={<Icon type="lock" />} type="password" placeholder={PlaceholderPassword} onChange={this.handleChangePass} />,
-            )}
-          </FormItem>
-          <FormItem>
-            <Button type="primary" htmlType="submit" className="login-form-button">
-              { LoginTextBnt }
-            </Button>
-            {Or}
-            <Link to="/registration">
-              { RegisterNowText }
-            </Link>
-          </FormItem>
-        </Form>
-      );
+
+        const { form } = this.props;
+        return (
+            <Form onSubmit={this.handleSubmit} className="login-form">
+                <h4 className="login-form__title">
+                    { LoginText }
+                </h4>
+                <FormItem>
+                    {form.getFieldDecorator('userName', {
+                        rules: [{ required: true, message: ErrorEmailInput }],
+                    })(
+                        <Input prefix={<Icon type="user" />} placeholder={PlaceholderEmail} onChange={this.handleChangeEmail} />,
+                    )}
+                </FormItem>
+                <FormItem>
+                    {form.getFieldDecorator('password', {
+                        rules: [{ required: true, message: ErrorPasswordInput }],
+                    })(
+                        <Input prefix={<Icon type="lock" />} type="password" placeholder={PlaceholderPassword} onKeyDown={this.handleChangePass, this.checkCapsLock} />,
+                    )}
+                </FormItem>
+                <FormItem>
+                    <Button type="primary" htmlType="submit" className="login-form-button">
+                        { LoginTextBnt }
+                    </Button>
+                    {Or}
+                    <Link to="/registration">
+                        { RegisterNowText }
+                    </Link>
+                </FormItem>
+            </Form>
+        );
     }
 }
 
