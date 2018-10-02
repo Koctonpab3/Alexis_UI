@@ -6,12 +6,7 @@ const initialState = {
   editingKey: '',
   stateKey: '',
   dataSource: [
-    {
-      name: 'nnn',
-      id: 13,
-      activeState: true,
-      userId: 1,
-    },
+    
   ],
 };
 
