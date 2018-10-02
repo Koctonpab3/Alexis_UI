@@ -383,15 +383,16 @@ export class EditableTable extends React.Component {
         throw new Error(response.status);
       };
       addGroupReq().then((res) => {
+         console.log(res);
+         consile.log(res.data)
         const newWordGroup = res.data;
-         setTimeout(() => {
               this.props.addWordGroup(newWordGroup);
-          }, 4000);
       }).catch((error) => {
-        notification.open({
-          type: 'error',
-          message: errServerConnection,
-        });
+          console.log(error)
+        // notification.open({
+        //   type: 'error',
+        //   message: errServerConnection,
+        // });
       });
     };
 
