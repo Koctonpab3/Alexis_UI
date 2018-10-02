@@ -25,20 +25,6 @@ const renderApp = () => {
 const user = JSON.parse(localStorage.getItem('userInfo'));
 const currentPageUrl = history.location.pathname;
 
-/* if (user) {
-    store.dispatch(login({ ...user }));
-    if (currentPageUrl === '/' || currentPageUrl === '/registration' ) {
-        history.push('/wordgroups');
-    }
-    renderApp();
-} else if (currentPageUrl !== '/registration') {
-    history.push('/');
-    renderAppd();
-} else {
-    renderApp();
-} */
-
-console.log(currentPageUrl)
  const loginSet = [
   { user: true, page: '/', response: '/wordgroups' },
   { user: true, page: '/registration', response: '/wordgroups' },
@@ -57,4 +43,4 @@ if (!result.response) {
   store.dispatch(login({ ...user }));
   history.push(result.response);
   renderApp();
-} 
+}
