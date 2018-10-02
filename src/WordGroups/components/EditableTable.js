@@ -257,7 +257,7 @@ export class EditableTable extends React.Component {
           const saveGroupName = async () => {
             const response = await axios({
               method: 'post',
-              url: `${mainUrl}/home/wordgroups`,
+              url: `${mainUrl}/home/wordgroups/`,
               data: {
                 id,
                 name: row.name,
@@ -310,7 +310,7 @@ export class EditableTable extends React.Component {
       axios(
         {
           method: 'delete',
-          url: `${mainUrl}/home/wordgroups/${id}`,
+          url: `${mainUrl}/home/wordgroups/${id}/`,
           headers:
                     {
                       'Content-Type': 'application/json',
@@ -367,7 +367,7 @@ export class EditableTable extends React.Component {
       const addGroupReq = async () => {
         const response = await axios({
           method: 'put',
-          url: `${mainUrl}/home/wordgroups`,
+          url: `${mainUrl}/home/wordgroups/`,
           data: {
             name: naming(),
             activeState: true,
@@ -409,7 +409,7 @@ export class EditableTable extends React.Component {
       axios(
         {
           method: 'post',
-          url: `${mainUrl}/home/wordgroups`,
+          url: `${mainUrl}/home/wordgroups/`,
           headers:
                   {
                     'Content-Type': 'application/json',
