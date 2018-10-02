@@ -27,7 +27,7 @@ const currentPageUrl = history.location.pathname;
 
 if (user) {
     store.dispatch(login({ ...user }));
-    if (currentPageUrl === '/' && currentPageUrl === '/registration' ) {
+    if (currentPageUrl === '/' || currentPageUrl === '/registration' ) {
         history.push('/wordgroups');
     }
     renderApp();
