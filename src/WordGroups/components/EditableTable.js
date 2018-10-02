@@ -333,6 +333,7 @@ export class EditableTable extends React.Component {
     // adding new row
 
     handleAdd = () => {
+        console.log(user.token);
       // --adding number to new group due to the count
       const obj = [...this.props.dataSource];
       const namesArr = [];
