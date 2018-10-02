@@ -412,7 +412,6 @@ export class EditableTable extends React.Component {
         });
         this.props.loadData(dataNew);
       }).catch((error) => {
-        console.log(error);
         this.setState({
           loading: false,
         });
