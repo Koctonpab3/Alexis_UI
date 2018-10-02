@@ -10,8 +10,6 @@ const Navigation = props => (
       <div id="logo">
       </div>
       <Menu className="top-navbar" mode="horizontal" theme="dark">
-        {/* <Menu.Item id="logo" className="nav-item" > */}
-        {/* </Menu.Item> */}
         <Menu.Item className="nav-item">
           <Link to="/wordgroups">
             {'Word Groups'}
@@ -32,20 +30,6 @@ const Navigation = props => (
             {'Profile'}
           </Link>
         </Menu.Item>
-        {/* <Menu.Item id="userIcon" className="nav-item"> */}
-        {/* <Popover */}
-        {/* content={( */}
-        {/* <div className="logout-wrapper"> */}
-        {/* <Logout /> */}
-        {/* </div> */}
-        {/* )} */}
-        {/* trigger="click" */}
-        {/* > */}
-
-        {/* {props.userInfo.name} */}
-
-        {/* </Popover> */}
-        {/* </Menu.Item> */}
       </Menu>
       <div id="userIcon">
         <Popover
@@ -56,9 +40,7 @@ const Navigation = props => (
             )}
           trigger="click"
         >
-
           {props.userInfo.name}
-
         </Popover>
       </div>
     </div>
