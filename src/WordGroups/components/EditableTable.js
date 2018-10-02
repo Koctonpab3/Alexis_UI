@@ -385,8 +385,7 @@ export class EditableTable extends React.Component {
       };
       addGroupReq().then((res) => {
           console.log(res);
-          console.log(res.data);
-        const newWordGroup = res.data;
+        const newWordGroup = res;
         setTimeout(() => {
   this.props.addWordGroup(newWordGroup);
 }, 4000);
