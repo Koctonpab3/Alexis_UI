@@ -43,6 +43,7 @@ class NormalLoginForm extends React.Component {
 
     handleChangePass = (event) => {
         this.setState({ password: event.target.value });
+        console.log(this.state.password)
     }
 
     handleSubmit = (e) => {
@@ -58,7 +59,8 @@ class NormalLoginForm extends React.Component {
                 };
 
                 const basicAuth = `Basic ${btoa(`${user.email}:${user.password}`)}`;
-
+                console.log(basicAuth)
+                console.log(user.password)
                 loginApi(basicAuth).then((userInfo) => {
                     localStorage.setItem('userInfo', JSON.stringify({ ...userInfo }));
                     login({ ...userInfo });
@@ -88,7 +90,7 @@ class NormalLoginForm extends React.Component {
                     {form.getFieldDecorator('password', {
                         rules: [{ required: true, message: ErrorPasswordInput }],
                     })(
-                        <Input prefix={<Icon type="lock" />} type="password" placeholder={PlaceholderPassword} onKeyDown={this.handleChangePass, this.checkCapsLock} />,
+                        <Input prefix={<Icon type="lock" />} type="password" placeholder={PlaceholderPassword} onChange={this.handleChangePass} onKeyDown={this.checkCapsLock} />,
                     )}
                 </FormItem>
                 <FormItem>
