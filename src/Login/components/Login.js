@@ -61,7 +61,7 @@ class NormalLoginForm extends React.Component {
           const basicAuth = `Basic ${btoa(`${user.email}:${user.password}`)}`;
 
           loginApi(basicAuth).then((userInfo) => {
-            localStorage.setItem('userInfo', JSON.stringify({ ...userInfo }));
+            localStorage.setItem('userInfo', JSON.stringify({ ...userInfo, token: basicAuth }));
             login({ ...userInfo });
             history.push('/wordgroups');
           }).catch((error) => {
