@@ -1,10 +1,20 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-import { Table, Input, InputNumber, Button, Popconfirm, Form, Icon, Divider } from 'antd';
+import {
+  Table, Input, Button, Popconfirm, Form, Icon, Divider, notification,
+} from 'antd';
 import axios from 'axios';
 import { connect } from 'react-redux';
 // actions
-import { loadData, addWordGroup, deleteWordGroup, toggleStatus, editWordGroup } from '../actions/wordGroups';
+
+import {
+  loadData, addWordGroup, deleteWordGroup, toggleStatus, editWordGroup,
+} from '../actions/wordGroups';
+// constants
+import { errWordGroupName, newWordGroupName, errServerConnection, existingGroupNameErr } from '../constans/constants';
+import { mainUrl } from '../../Base/api/auth/constants';
+import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
+
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -15,11 +25,11 @@ const EditableRow = ({ form, index, ...props }) => (
 );
 const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends React.Component {
-    getInput = () => {
-      if (this.props.inputType === 'number') {
-        return <InputNumber />;
+    handleOnKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        this.props.cancel();
+        e.preventDefault();
       }
-      return <Input />;
     };
 
     render() {
@@ -32,6 +42,7 @@ class EditableCell extends React.Component {
         index,
         ...restProps
       } = this.props;
+
       return (
         <EditableContext.Consumer>
           {(form) => {
@@ -43,10 +54,17 @@ class EditableCell extends React.Component {
                     {getFieldDecorator(dataIndex, {
                       rules: [{
                         required: true,
-                        message: `Please Input ${title}!`,
+                        message: errWordGroupName,
+                        whitespace: true,
+                        pattern: '[-_a-zA-Z0-9.]',
+                        min: 1,
+                        max: 30,
                       }],
                       initialValue: record[dataIndex],
-                    })(this.getInput())}
+                    })(<Input
+                      onPressEnter={() => this.props.save(form, record.id, record.activeState)}
+                      onKeyDown={this.handleOnKeyDown}
+                    />)}
                   </FormItem>
                 ) : restProps.children}
               </td>
@@ -62,14 +80,13 @@ export class EditableTable extends React.Component {
     super(props);
 
     const statusIcons = {
-      enabledIcon: <Icon type="smile" style={{ fontSize: 24, color: '#52c41a' }} />,
-      disabledIcon: <Icon type="frown" style={{ fontSize: 24, color: '#fa541c' }} />,
+      enabledIcon: <Icon type="smile" className="status-icon active-status-icon" />,
+      disabledIcon: <Icon type="frown" className="status-icon disabled-status-icon" />,
     };
     this.columns = [
       {
         title: 'Status',
         dataIndex: 'activeState',
-        width: '10%',
         className: 'wordsStatus',
         editable: false,
         render: (text, record) => (
@@ -96,7 +113,7 @@ export class EditableTable extends React.Component {
         title: 'Word Group',
         dataIndex: 'name',
         editable: true,
-        width: '58%',
+        className: 'group-name-col',
         filterDropdown: ({
           setSelectedKeys, selectedKeys, confirm, clearFilters,
         }) => (
@@ -106,7 +123,6 @@ export class EditableTable extends React.Component {
               placeholder="Search Word Group"
               value={selectedKeys[0]}
               onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-              // onPressEnter={this.handleSearch(selectedKeys, confirm)}
               onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
             />
             <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
@@ -133,7 +149,6 @@ export class EditableTable extends React.Component {
             </span>
           ) : text;
         },
-        defaultSortOrder: 'ascend',
         sorter: (a, b) => a.name.localeCompare(b.name),
       },
       {
@@ -152,14 +167,14 @@ export class EditableTable extends React.Component {
                           Deactivate
                           </a>
                         </Popconfirm>
-                        <Divider type="vertical" />
+                        <Divider className="vertical-divider" type="vertical" />
                       </span>
                     ) : (
                       <span>
                         <a onClick={() => this.toggleGroupStatus(record.id, record.name)}>
                           Activate
                         </a>
-                        <Divider type="vertical" />
+                        <Divider className="vertical-divider" type="vertical" />
                       </span>
                     )
                 }
@@ -168,7 +183,7 @@ export class EditableTable extends React.Component {
                 <Popconfirm id="delete-confirm" title="Sure to delete?" onConfirm={() => this.handleDelete(record.id)}>
                   <a id="delete-btn" href="javascript:;"> Delete </a>
                 </Popconfirm>
-                <Divider type="vertical" />
+                <Divider className="vertical-divider" type="vertical" />
               </span>
               {editable ? (
                 <span>
@@ -179,12 +194,11 @@ export class EditableTable extends React.Component {
                           href="javascript:;"
                           className="save-btn"
                           onClick={() => this.save(form, record.id, record.activeState)}
-                          onPressEnter={() => this.save(form, record.id, record.activeState)}
                           style={{ marginRight: 8 }}
                         >
                           Save
                         </a>
-                        <Divider type="vertical" />
+                        <Divider className="vertical-divider" type="vertical" />
                       </span>
                     )}
                   </EditableContext.Consumer>
@@ -198,7 +212,10 @@ export class EditableTable extends React.Component {
                   </Popconfirm>
                 </span>
               ) : (
-                <a className="edit-btn" onClick={() => this.edit(record.id)}>Edit</a>
+                <span>
+                  {' '}
+                  <a className="edit-btn" onClick={() => this.edit(record.id)}>Edit</a>
+                </span>
               )}
             </div>
           );
@@ -211,7 +228,7 @@ export class EditableTable extends React.Component {
       stateKey: '',
       count: 0,
       pagination: {},
-      loading: false,
+      loading: true,
     };
 
     // editing word groups
@@ -221,7 +238,7 @@ export class EditableTable extends React.Component {
       this.setState({ editingKey: id });
     }
 
-    save(form, id, activeState) {
+    save = (form, id, activeState) => {
       form.validateFields((error, row) => {
         if (error) {
           return;
@@ -235,20 +252,31 @@ export class EditableTable extends React.Component {
             ...row,
           });
           this.setState({ editingKey: '' });
-          this.props.editWordGroup(newData);
+          const saveGroupName = async () => {
+            const response = await axios.post('http://backend.alexis.formula1.cloud.provectus-it.com:8080/home/wordgroups/', {
+              id,
+              name: row.name,
+              activeState,
+            });
+            return response.status;
+          };
+          saveGroupName().then((res) => {
+            if (res) {
+              this.props.editWordGroup(newData);
+            }
+          }).catch((error) => {
+              notification.open({
+                  type: 'error',
+                  message:existingGroupNameErr,
+              });
+          });
         } else {
           newData.push(row);
           this.setState({ editingKey: '' });
           this.props.editWordGroup(newData);
         }
-        axios.post('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
-          id,
-          name: row.name,
-          activeState,
-          userId: 0,
-        });
       });
-    }
+    };
 
     cancel = () => {
       this.setState({ editingKey: '' });
@@ -269,39 +297,74 @@ export class EditableTable extends React.Component {
     // deleting wordgroups
 
     handleDelete = (id) => {
-      axios.delete(`http://koctonpab.asuscomm.com:8080/protected/wordgroups/${id}`);
-      this.props.deleteWordGroup(id);
+      axios.delete(`${mainUrl}/home/wordgroups/${id}`).then((response) => {
+        this.props.deleteWordGroup(id);
+      })
+        .catch((error) => {
+          notification.open({
+            type: 'error',
+            message: errServerConnection,
+          });
+        });
     };
 
     // adding new row
 
     handleAdd = () => {
-      axios.put('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
-        name: ' New group ',
-        activeState: true,
-        userId: 1,
-      })
-        .then((response) => {
-          const newWordGroup = response.data;
-          this.props.addWordGroup(newWordGroup);
+      // --adding number to new group due to the count
+      const obj = [...this.props.dataSource];
+      const namesArr = [];
+      const toArr = () => {
+        for (const value of obj.values()) {
+          namesArr.push(value.name);
+        }
+      };
+      toArr();
+      const newGroupsArr = namesArr.filter(name => name.indexOf('New group') + 1);
+      const newWGArr = newGroupsArr.filter(name => name.length > 9);
+      const lastNum = newWGArr.map(
+        (name) => {
+          const str = name.split(' ');
+          return str[str.length - 1];
+        },
+      );
+      const maxArrNum = (Math.max(...lastNum));
+      const newCount = maxArrNum + 1;
+      const nameGroup = `New group ${newCount}`;
+
+      const naming = () => {
+        if (newGroupsArr.length === 0) {
+          return newWordGroupName;
+        }
+        return nameGroup;
+      };
+
+      //---
+
+      // adding new group to the server
+      const addGroupReq = async () => {
+        const response = await axios.put(`${mainUrl}/home/wordgroups`, {
+          name: naming(),
+          activeState: true,
         });
-    };
-
-    // saving new row
-
-    handleSave = (row) => {
-      const newData = [...this.state.dataSource];
-      const index = newData.findIndex(item => row.id === item.id);
-      const item = newData[index];
-      newData.splice(index, 1, {
-        ...item,
-        ...row,
+        if (response.status <= 400) {
+          return response.data;
+        }
+        throw new Error(response.status);
+      };
+      addGroupReq().then((res) => {
+        const newWordGroup = res.data;
+        this.props.addWordGroup(newWordGroup);
+      }).catch((error) => {
+        notification.open({
+          type: 'error',
+          message: errServerConnection,
+        });
       });
-      this.setState({ dataSource: newData });
     };
+
 
     // changing the status of word group
-
     toggleGroupStatus(id, name) {
       this.setState({ stateKey: id });
 
@@ -312,17 +375,13 @@ export class EditableTable extends React.Component {
       newData.splice(index, 1, {
         ...item,
       });
-
       this.props.toggleStatus(newData);
-
       this.setState({ stateKey: '' });
-
-      // posting new status to the server
-      axios.post('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
+      // changing status of word group
+      axios.post(`${mainUrl}/home/wordgroups`, {
         id,
         name,
         activeState: item.activeState,
-        userId: 0,
       });
     }
 
@@ -344,38 +403,25 @@ export class EditableTable extends React.Component {
     // load data from server
 
     loadWordGroups = () => {
-      this.setState({ loading: false });
-
-      axios({
-        method: 'get',
-        url: 'http://koctonpab.asuscomm.com:8080/home/wordgroups/',
-        responseType: 'json',
-      })
-        .then((res) => {
-          const dataNew = res.data;
-          const pagination = { ...this.state.pagination };
-          // Read total count from server
-          // pagination.total = dataSource.totalCount;
-          // const count = dataSource.totalCount;
-          // pagination.total = 10;
-
-          this.setState({
-            loading: false,
-            pagination,
-            // count,
-          });
-
-          this.props.loadData(dataNew);
+      wordGroupsApi().then((data) => {
+        const dataNew = data;
+        const pagination = { ...this.state.pagination };
+        this.setState({
+          loading: false,
+          pagination,
         });
+        this.props.loadData(dataNew);
+      }).catch((error) => {
+        this.setState({
+          loading: false,
+        });
+      });
     };
+
 
     componentDidMount() {
       this.loadWordGroups();
     }
-
-    // add = (a, b) => a + b;
-
-    add = (a, b) => a + b;
 
     render() {
       const { dataSource } = this.props;
@@ -396,8 +442,10 @@ export class EditableTable extends React.Component {
             record,
             dataIndex: col.dataIndex,
             title: col.title,
-            handleSave: this.handleSave,
+            save: this.save,
+            escFunction: this.escFunction,
             editing: this.isEditing(record),
+            cancel: this.cancel,
           }),
         };
       });
@@ -408,7 +456,6 @@ export class EditableTable extends React.Component {
             id="addGroup-Btn"
             onClick={() => this.handleAdd()}
             type="primary"
-            style={{ marginBottom: 16 }}
           >
                 + Add new word group
           </Button>
@@ -425,7 +472,6 @@ export class EditableTable extends React.Component {
             onChange={this.handleTableChange}
           />
         </div>
-
       );
     }
 }
@@ -447,7 +493,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(editWordGroup(newData));
   },
 });
-
 
 const mapStateToProps = state => ({
   dataSource: state.wordGroups.dataSource,

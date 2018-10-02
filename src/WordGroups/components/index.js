@@ -5,9 +5,9 @@ import WordTable from './WordTable';
 import Path from './path';
 
 const Wordgroups = () => (
-    <div className="wordTableContainer">
-        <Path />
-        <WordTable />
-    </div>
+  <div className="wordTableContainer">
+    <Path />
+    <WordTable />
+  </div>
 );
 export default Wordgroups;

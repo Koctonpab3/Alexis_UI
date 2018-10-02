@@ -5,12 +5,9 @@ import {
 const initialState = {
   editingKey: '',
   stateKey: '',
-  dataSource: [{
-    id: 51,
-    name: 'Test WordGroup',
-    activeState: true,
-    userId: 1,
-  }],
+  dataSource: [
+    
+  ],
 };
 
 export default (state = initialState, action) => {
@@ -22,7 +19,7 @@ export default (state = initialState, action) => {
     }
     case ADD_WORDGROUP: {
       return Object.assign({}, state, {
-        dataSource: [...state.dataSource, action.newWordGroup],
+        dataSource: [action.newWordGroup, ...state.dataSource],
       });
     }
     case DELETE_WORDGROUP: {

@@ -1,5 +1,5 @@
 import {
-    createStore, combineReducers, applyMiddleware, compose,
+  createStore, combineReducers, applyMiddleware, compose,
 } from 'redux';
 import thunk from 'redux-thunk';
 import userReducer from '../../Login/reducers/auth';
@@ -8,14 +8,13 @@ import wordGroupsReducer from '../../WordGroups/reducers/wordGroupsReducer';
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 /* eslint-enable */
 export default () => {
-    const store = createStore(
-        combineReducers({
-            userInfo: userReducer,
-            wordGroups: wordGroupsReducer,
-        }),
-        composeEnhancers(applyMiddleware(thunk)),
-    );
+  const store = createStore(
+    combineReducers({
+      userInfo: userReducer,
+      wordGroups: wordGroupsReducer,
+    }),
+    composeEnhancers(applyMiddleware(thunk)),
+  );
 
-    return store;
+  return store;
 };
-
