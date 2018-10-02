@@ -13,6 +13,12 @@ $break-sm-medium: 600px;
     .wordTable{
       width: 92%;
       margin: 0 auto;
+      #addGroup-Btn{
+        margin-bottom: 16px;
+        @media screen and (max-width: $break-medium) {
+          font-size: 0.9em;
+        }
+      }
       .ant-table-body > table{
         @media screen and (max-width: $break-medium) {
           font-size: 0.9em;
@@ -46,7 +52,7 @@ $break-sm-medium: 600px;
           width: 39%;
         }
         @media screen and (max-width: $break-sm-medium) {
-          width: 30%;
+          width: 33%;
         }
       }
       th.actions-col-name{

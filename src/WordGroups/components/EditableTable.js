@@ -6,10 +6,19 @@ import {
 import axios from 'axios';
 import { connect } from 'react-redux';
 // actions
+
+import { Provider as AlertProvider } from 'react-alert';
+import AlertTemplate from 'react-alert-template-basic';
+
 import {
   loadData, addWordGroup, deleteWordGroup, toggleStatus, editWordGroup,
 } from '../actions/wordGroups';
-import { errWordGroupName } from '../constans/constants';
+import { errWordGroupName, newWordGoupName } from '../constans/constants';
+
+import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
+
+
+import modalWindow from './modalWindow';
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -20,72 +29,16 @@ const EditableRow = ({ form, index, ...props }) => (
 );
 const EditableFormRow = Form.create()(EditableRow);
 class EditableCell extends React.Component {
-  // getInput = () => (
-  //   <Input />
-  // );
-
-  // state = {
-  //   editing: false,
-  // };
-
-  // componentDidMount() {
-  //   if (this.props.editable) {
-  //     document.addEventListener('click', this.handleClickOutside, true);
-  //   }
-  // }
-  //
-  // componentWillUnmount() {
-  //   if (this.props.editable) {
-  //     document.removeEventListener('click', this.handleClickOutside, true);
-  //   }
-  // }
-  //
-  // toggleEdit = () => {
-  //   const editing = !this.state.editing;
-  //   this.setState({ editing }, () => {
-  //     if (editing) {
-  //       this.input.focus();
-  //     }
-  //   });
-  // }
-  //
-  // handleClickOutside = (e) => {
-  //   const { editing } = this.state;
-  //   if (editing && this.cell !== e.target && !this.cell.contains(e.target)) {
-  //     this.save();
-  //   }
-  // }
-
-  // save = () => {
-  //   const { record, save } = this.props;
-  //   this.form.validateFields((error, values) => {
-  //     if (error) {
-  //       return;
-  //     }
-  //     this.toggleEdit();
-  //     save({ ...record, ...values });
-  //   });
-  // }
-
-
-  componentDidMount() {
-    document.addEventListener('keydown', this.escFunction, false);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('keydown', this.escFunction, false);
-  }
-
-    escFunction = (event) => {
-      if (event.keyCode === 27) {
-        // Do whatever when esc is pressed
+    handleOnKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        this.props.cancel();
+        e.preventDefault();
       }
-    }
+    };
 
     render() {
       const {
         editing,
-        escFunction,
         dataIndex,
         title,
         inputType,
@@ -93,6 +46,7 @@ class EditableCell extends React.Component {
         index,
         ...restProps
       } = this.props;
+
       return (
         <EditableContext.Consumer>
           {(form) => {
@@ -113,7 +67,7 @@ class EditableCell extends React.Component {
                       initialValue: record[dataIndex],
                     })(<Input
                       onPressEnter={() => this.props.save(form, record.id, record.activeState)}
-                      onKeyDown={() => this.props.cancel(record.id)}
+                      onKeyDown={this.handleOnKeyDown}
                     />)}
                   </FormItem>
                 ) : restProps.children}
@@ -278,8 +232,9 @@ export class EditableTable extends React.Component {
       stateKey: '',
       count: 0,
       pagination: {},
-      loading: false,
+      loading: true,
     };
+
 
     // editing word groups
     isEditing = record => record.id === this.state.editingKey;
@@ -356,6 +311,7 @@ export class EditableTable extends React.Component {
       //   });
       // console.log(this.props.dataSource);
 
+
       // --adding number to new group due to the count
       const obj = [...this.props.dataSource];
       const namesArr = [];
@@ -377,11 +333,19 @@ export class EditableTable extends React.Component {
       const newCount = maxArrNum + 1;
       const nameGroup = `New group ${newCount}`;
 
+      const naming = () => {
+        if (newGroupsArr.length === 0) {
+          return newWordGoupName;
+        }
+        return nameGroup;
+      };
+
       // random id just for testing(will be deleted)
       const random = (min, max) => Math.floor(Math.random() * (max - min));
       const newWordGroup = {
         id: random(100, 500),
-        name: nameGroup,
+        // name: nameGroup,
+        name: naming(),
         activeState: true,
         userId: 1,
       };
@@ -420,8 +384,6 @@ export class EditableTable extends React.Component {
 
       this.setState({ stateKey: '' });
 
-      console.log(name.length);
-
       // posting new status to the server
       axios.post('http://koctonpab.asuscomm.com:8080/protected/wordgroups/', {
         id,
@@ -449,30 +411,47 @@ export class EditableTable extends React.Component {
     // load data from server
 
     loadWordGroups = () => {
-      this.setState({ loading: false });
+      // this.setState({ loading: false });
 
-      axios({
-        method: 'get',
-        url: 'http://koctonpab.asuscomm.com:8080/home/wordgroups/',
-        responseType: 'json',
-      })
-        .then((res) => {
-          const dataNew = res.data;
-          const pagination = { ...this.state.pagination };
-          // Read total count from server
-          // pagination.total = dataSource.totalCount;
-          // const count = dataSource.totalCount;
-          // pagination.total = 10;
+      // axios({
+      //   method: 'get',
+      //   url: 'http://koctonpab.asuscomm.com:8080/home/wordgroups/',
+      //   responseType: 'json',
+      // })
+      //   .then((res) => {
+      //     const dataNew = res.data;
+      //     const pagination = { ...this.state.pagination };
+      //     // Read total count from server
+      //     // pagination.total = dataSource.totalCount;
+      //     // const count = dataSource.totalCount;
+      //     // pagination.total = 10;
+      //
+      //     this.setState({
+      //       loading: false,
+      //       pagination,
+      //       // count,
+      //     });
+      //
+      //     this.props.loadData(dataNew);
+      //   });
 
-          this.setState({
-            loading: false,
-            pagination,
-            // count,
-          });
-
-          this.props.loadData(dataNew);
+      wordGroupsApi().then((data) => {
+        const dataNew = data;
+        const pagination = { ...this.state.pagination };
+        this.setState({
+          loading: false,
+          pagination,
         });
+        console.log(data);
+        this.props.loadData(dataNew);
+      }).catch((error) => {
+        console.log(error);
+        this.setState({
+          loading: false,
+        });
+      });
     };
+
 
     componentDidMount() {
       this.loadWordGroups();
@@ -501,9 +480,8 @@ export class EditableTable extends React.Component {
             record,
             dataIndex: col.dataIndex,
             title: col.title,
-            // handleSave: this.save(record.id, record.activeState),
-            // save: this.save(form, record.id, record.activeState),
             save: this.save,
+            escFunction: this.escFunction,
             editing: this.isEditing(record),
             cancel: this.cancel,
           }),
@@ -516,7 +494,6 @@ export class EditableTable extends React.Component {
             id="addGroup-Btn"
             onClick={() => this.handleAdd()}
             type="primary"
-            style={{ marginBottom: 16 }}
           >
                 + Add new word group
           </Button>
@@ -532,7 +509,9 @@ export class EditableTable extends React.Component {
             loading={this.state.loading}
             onChange={this.handleTableChange}
           />
+
         </div>
+
 
       );
     }

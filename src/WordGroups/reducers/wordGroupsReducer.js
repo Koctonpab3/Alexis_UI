@@ -5,36 +5,9 @@ import {
 const initialState = {
   editingKey: '',
   stateKey: '',
-  dataSource: [{
-    id: 51,
-    name: 'Test WordGroup',
-    activeState: true,
-    userId: 1,
-  },
-  {
-    id: 25,
-    name: 'Animals',
-    activeState: true,
-    userId: 1,
-  },
-  {
-    id: 20,
-    name: 'Bugs',
-    activeState: false,
-    userId: 1,
-  },
-  {
-    id: 83,
-    name: 'New group',
-    activeState: false,
-    userId: 1,
-  },
-  {
-    id: 81,
-    name: 'New group 2',
-    activeState: false,
-    userId: 1,
-  }],
+  dataSource: [
+
+  ],
 };
 
 export default (state = initialState, action) => {
