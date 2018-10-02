@@ -1,10 +1,15 @@
 import axios from 'axios';
 import { mainUrl } from './constants';
 //login
-const loginApi = async (basicAuth) => {
-  axios.defaults.headers.common['Authorization'] = basicAuth;
-
-  const response = await axios.get(`${mainUrl}/home`, {});
+const loginApi = async (basicAuth) => {  
+  const response = await axios({
+    method: 'get',
+    url: `${mainUrl}/home`,
+    data: {},
+    headers: {
+      Authorization: basicAuth,
+    },
+  });
   if (response.status <= 400) {
     return response.data;
   }
