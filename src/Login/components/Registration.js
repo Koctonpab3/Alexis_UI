@@ -7,7 +7,8 @@ import { login } from '../actions/auth';
 import { registrationApi } from '../../Base/api/auth/authApi';
 
 import {
-    RegistrationText, NicknameText, RegisterBtnText, BackToLoginText, SuccsedRegistrationPopUp, ErroUserEmailExist, ErrorInputName, WrongPasswordTwo, EmailNotValid, ErrorEmailInput, ErrorPasswordInput, ErrorConfirmPassword, ErrorPasswordlength, ErrorNiknamelength, 
+
+    RegistrationText, NicknameText, RegisterBtnText, BackToLoginText, SuccsedRegistrationPopUp, ErroUserEmailExist, ErrorInputName, WrongPasswordTwo, EmailNotValid, ErrorEmailInput, ErrorPasswordInput, ErrorConfirmPassword, ErrorPasswordlength, ErrorNiknamelength,
 } from '../constants/constanst';
 
 const FormItem = Form.Item;
@@ -21,7 +22,7 @@ class RegistrationForm extends React.Component {
     }
 
     handleChangeEmail = (event) => {
-        this.setState({ email: event.target.value });
+      this.setState({ email: event.target.value });
     }
 
     checkCapsLock = (event) => {
@@ -41,56 +42,56 @@ class RegistrationForm extends React.Component {
     }
 
     handleChangePass = (event) => {
-        this.setState({ password: event.target.value });
+      this.setState({ password: event.target.value });
     }
 
     handleChangeName = (event) => {
-        this.setState({ name: event.target.value });
+      this.setState({ name: event.target.value });
     }
 
     handleSubmit = (e) => {
-        e.preventDefault();
+      e.preventDefault();
 
-        const { form } = this.props;
+      const { form } = this.props;
 
-        const user = {
-            ...this.state,
-        };
+      const user = {
+        ...this.state,
+      };
 
-        form.validateFieldsAndScroll((err) => {
-            if (!err) {
-                registrationApi(user).then((res) => {
-                    if (res) {
-                        message.success(SuccsedRegistrationPopUp);
-                        history.push('/');
-                    }
-                }).catch(() => {
-                    message.error(ErroUserEmailExist);
-                });
+      form.validateFieldsAndScroll((err) => {
+        if (!err) {
+          registrationApi(user).then((res) => {
+            if (res) {
+              message.success(SuccsedRegistrationPopUp);
+              history.push('/');
             }
-        });
+          }).catch(() => {
+            message.error(ErroUserEmailExist);
+          });
+        }
+      });
     };
 
     compareToFirstPassword = (rule, value, callback) => {
-        const { form } = this.props;
-        if (value && value !== form.getFieldValue('password')) {
-            callback(WrongPasswordTwo);
-        } else {
-            callback();
-        }
+      const { form } = this.props;
+      if (value && value !== form.getFieldValue('password')) {
+        callback(WrongPasswordTwo);
+      } else {
+        callback();
+      }
     }
 
     render() {
-        const { form } = this.props;
-        return (
-            <Form onSubmit={this.handleSubmit}>
+      const { form } = this.props;
+      return (
+        <Form onSubmit={this.handleSubmit}>
 
-                <h4 className="login-form__title">
-                    {RegistrationText}
-                </h4>
-                <FormItem
-                    label={(
-                        <span>
+          <h4 className="login-form__title">
+            {RegistrationText}
+          </h4>
+          <FormItem
+            label={(
+              <span>
                 {NicknameText}
               </span>
                     )}
@@ -164,12 +165,12 @@ class RegistrationForm extends React.Component {
     }
 }
 const mapStateToProps = state => ({
-    userInfo: state.userInfo,
+  userInfo: state.userInfo,
 });
 const mapDispatchToProps = dispatch => ({
-    login: (name) => {
-        dispatch(login(name));
-    },
+  login: (name) => {
+    dispatch(login(name));
+  },
 });
 
 const WrappedRegistrationForm = Form.create()(RegistrationForm);
