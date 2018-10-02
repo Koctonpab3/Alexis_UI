@@ -1,18 +1,20 @@
 import React from 'react';
 import 'antd/dist/antd.css';
 import {
-  Table, Input, Button, Popconfirm, Form, Icon, Divider,
+  Table, Input, Button, Popconfirm, Form, Icon, Divider, notification,
 } from 'antd';
 import axios from 'axios';
 import { connect } from 'react-redux';
 // actions
+
 import {
   loadData, addWordGroup, deleteWordGroup, toggleStatus, editWordGroup,
 } from '../actions/wordGroups';
 // constants
-import { errWordGroupName, newWordGoupName } from '../constans/constants';
+import { errWordGroupName, newWordGroupName, errServerConnection, existingGroupNameErr } from '../constans/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
 import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
+
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -229,7 +231,6 @@ export class EditableTable extends React.Component {
       loading: true,
     };
 
-
     // editing word groups
     isEditing = record => record.id === this.state.editingKey;
 
@@ -251,27 +252,29 @@ export class EditableTable extends React.Component {
             ...row,
           });
           this.setState({ editingKey: '' });
-          this.props.editWordGroup(newData);
+          const saveGroupName = async () => {
+            const response = await axios.post('http://backend.alexis.formula1.cloud.provectus-it.com:8080/home/wordgroups/', {
+              id,
+              name: row.name,
+              activeState,
+            });
+            return response.status;
+          };
+          saveGroupName().then((res) => {
+            if (res) {
+              this.props.editWordGroup(newData);
+            }
+          }).catch((error) => {
+              notification.open({
+                  type: 'error',
+                  message:existingGroupNameErr,
+              });
+          });
         } else {
           newData.push(row);
           this.setState({ editingKey: '' });
-          // this.props.editWordGroup(newData);
-        }
-        const saveNewGroupName = {
-          id,
-          name: row.name,
-          activeState,
-
-        };
-        const saveGroupName = async () => {
-          const response = await axios.post(`${mainUrl}/home/wordgroups`, { ...saveNewGroupName });
-          return response.data;
-        };
-        saveGroupName().then(() => {
           this.props.editWordGroup(newData);
-        }).catch((error) => {
-          console.log(error);
-        });
+        }
       });
     };
 
@@ -294,8 +297,15 @@ export class EditableTable extends React.Component {
     // deleting wordgroups
 
     handleDelete = (id) => {
-      axios.delete(`${mainUrl}/home/wordgroups/${id}`);
-      this.props.deleteWordGroup(id);
+      axios.delete(`${mainUrl}/home/wordgroups/${id}`).then((response) => {
+        this.props.deleteWordGroup(id);
+      })
+        .catch((error) => {
+          notification.open({
+            type: 'error',
+            message: errServerConnection,
+          });
+        });
     };
 
     // adding new row
@@ -324,20 +334,19 @@ export class EditableTable extends React.Component {
 
       const naming = () => {
         if (newGroupsArr.length === 0) {
-          return newWordGoupName;
+          return newWordGroupName;
         }
         return nameGroup;
       };
 
-      const newWGroup = {
-        name: naming(),
-        activeState: true,
-      };
       //---
 
       // adding new group to the server
       const addGroupReq = async () => {
-        const response = await axios.put(`${mainUrl}/home/wordgroups`, { ...newWGroup });
+        const response = await axios.put(`${mainUrl}/home/wordgroups`, {
+          name: naming(),
+          activeState: true,
+        });
         if (response.status <= 400) {
           return response.data;
         }
@@ -347,9 +356,13 @@ export class EditableTable extends React.Component {
         const newWordGroup = res.data;
         this.props.addWordGroup(newWordGroup);
       }).catch((error) => {
-        console.log(error);
+        notification.open({
+          type: 'error',
+          message: errServerConnection,
+        });
       });
     };
+
 
     // changing the status of word group
     toggleGroupStatus(id, name) {
