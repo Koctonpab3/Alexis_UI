@@ -90,7 +90,7 @@ class NormalLoginForm extends React.Component {
                     {form.getFieldDecorator('password', {
                         rules: [{ required: true, message: ErrorPasswordInput }],
                     })(
-                        <Input prefix={<Icon type="lock" />} type="password" placeholder={PlaceholderPassword} onKeyDown={this.handleChangePass, this.checkCapsLock} />,
+                        <Input prefix={<Icon type="lock" />} type="password" placeholder={PlaceholderPassword} onChange={this.handleChangePass} onKeyDown={this.checkCapsLock} />,
                     )}
                 </FormItem>
                 <FormItem>
