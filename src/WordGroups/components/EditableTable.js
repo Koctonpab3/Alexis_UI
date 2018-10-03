@@ -12,7 +12,7 @@ import {
 } from '../actions/wordGroups';
 // constants
 import {
-  errWordGroupName, newWordGroupName, errServerConnection, existingGroupNameErr, user,
+  errWordGroupName, newWordGroupName, errServerConnection, existingGroupNameErr,
 } from '../constans/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
 import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
@@ -254,7 +254,9 @@ export class EditableTable extends React.Component {
             ...row,
           });
           this.setState({ editingKey: '' });
-          const saveGroupName = async () => {
+
+          // making request
+          const saveGroupName = async (token) => {
             const response = await axios({
               method: 'post',
               url: `${mainUrl}/home/wordgroups/`,
@@ -265,12 +267,13 @@ export class EditableTable extends React.Component {
               },
               headers: {
                 'Content-Type': 'application/json',
-                Authorization: user.token,
+                Authorization: token,
               },
             });
             return response.status;
           };
-          saveGroupName().then((res) => {
+          const user = JSON.parse(localStorage.getItem('userInfo'));
+          saveGroupName(user.token).then((res) => {
             if (res) {
               this.props.editWordGroup(newData);
             }
@@ -307,6 +310,7 @@ export class EditableTable extends React.Component {
     // deleting wordgroups
 
     handleDelete = (id) => {
+      const user = JSON.parse(localStorage.getItem('userInfo'));
       axios(
         {
           method: 'delete',
@@ -364,7 +368,7 @@ export class EditableTable extends React.Component {
         //---
 
         // adding new group to the server
-      const addGroupReq = async () => {
+      const addGroupReq = async (token) => {
         const response = await axios({
           method: 'put',
           url: `${mainUrl}/home/wordgroups/`,
@@ -374,7 +378,7 @@ export class EditableTable extends React.Component {
           },
           headers: {
             'Content-Type': 'application/json',
-            Authorization: user.token,
+            Authorization: token,
           },
         });
         if (response.status <= 400) {
@@ -382,7 +386,8 @@ export class EditableTable extends React.Component {
         }
         throw new Error(response.status);
       };
-      addGroupReq().then((res) => {
+      const user = JSON.parse(localStorage.getItem('userInfo'));
+      addGroupReq(user.token).then((res) => {
         const newWordGroup = res;
         this.props.addWordGroup(newWordGroup);
       }).catch((error) => {
@@ -406,6 +411,8 @@ export class EditableTable extends React.Component {
         ...item,
       });
       this.setState({ stateKey: '' });
+
+      const user = JSON.parse(localStorage.getItem('userInfo'));
       axios(
         {
           method: 'post',
