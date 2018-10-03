@@ -5,8 +5,7 @@ import {
 const initialState = {
   editingKey: '',
   stateKey: '',
-  dataSource: [
-  ],
+  dataSource: [],
 };
 
 export default (state = initialState, action) => {

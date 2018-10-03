@@ -6,6 +6,12 @@ $break-sm-medium: 600px;
   .wordGroupPath{
     padding: 16px 0;
   }
+  .ant-table-thead>tr>th .ant-table-filter-icon{
+    vertical-align: -.125em;
+  }
+  .ant-table-thead>tr>th .anticon-filter{
+    vertical-align: -.125em; 
+  }
   .tableWrap{
     background-color: #ffffff;
     width: 100%;
@@ -67,7 +73,7 @@ $break-sm-medium: 600px;
       .actions-col-name{
         text-align: center;
         @media screen and (max-width: $break-sm-medium) {
-          width: 30%;
+          width: 34%;
         }
         .actionsCol{
           display: flex;

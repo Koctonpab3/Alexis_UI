@@ -131,7 +131,7 @@ class RegistrationForm extends React.Component {
                             validator: this.validateToNextPassword,
                         }],
                     })(
-                        <Input type="password" name="password" onKeyDown={this.handleChangePass, this.checkCapsLock} />,
+                        <Input type="password" name="password" onChange={this.handleChangePass} onKeyDown={ this.checkCapsLock} />,
                     )}
                 </FormItem>
                 <FormItem
