@@ -12,7 +12,7 @@ import {
 } from '../actions/wordGroups';
 // constants
 import {
-  errWordGroupName, newWordGroupName, errServerConnection, existingGroupNameErr,
+  errWordGroupName, newWordGroupName, errServerConnection, existingGroupNameErr, user,
 } from '../constans/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
 import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
@@ -94,11 +94,11 @@ export class EditableTable extends React.Component {
         render: (text, record) => (
           <div>
             {
-              record.activeState === true ? (
-                statusIcons.enabledIcon
-              ) : (
-                statusIcons.disabledIcon
-              )
+                            record.activeState === true ? (
+                              statusIcons.enabledIcon
+                            ) : (
+                              statusIcons.disabledIcon
+                            )
                         }
           </div>
         ),
@@ -255,7 +255,6 @@ export class EditableTable extends React.Component {
           });
           this.setState({ editingKey: '' });
           const saveGroupName = async () => {
-            const user = JSON.parse(localStorage.getItem('userInfo'));
             const response = await axios({
               method: 'post',
               url: `${mainUrl}/home/wordgroups/`,
@@ -308,7 +307,6 @@ export class EditableTable extends React.Component {
     // deleting wordgroups
 
     handleDelete = (id) => {
-      const user = JSON.parse(localStorage.getItem('userInfo'));
       axios(
         {
           method: 'delete',
@@ -363,11 +361,10 @@ export class EditableTable extends React.Component {
         return newWordGroupName;
       };
 
-      //---
+        //---
 
-      // adding new group to the server
+        // adding new group to the server
       const addGroupReq = async () => {
-        const user = JSON.parse(localStorage.getItem('userInfo'));
         const response = await axios({
           method: 'put',
           url: `${mainUrl}/home/wordgroups/`,
@@ -409,16 +406,15 @@ export class EditableTable extends React.Component {
         ...item,
       });
       this.setState({ stateKey: '' });
-      const user = JSON.parse(localStorage.getItem('userInfo'));
       axios(
         {
           method: 'post',
           url: `${mainUrl}/home/wordgroups/`,
           headers:
-                  {
-                    'Content-Type': 'application/json',
-                    Authorization: user.token,
-                  },
+                    {
+                      'Content-Type': 'application/json',
+                      Authorization: user.token,
+                    },
           data: {
             id,
             name,
@@ -454,8 +450,7 @@ export class EditableTable extends React.Component {
     // load data from server
 
     loadWordGroups = () => {
-      const user = JSON.parse(localStorage.getItem('userInfo'));
-      wordGroupsApi(user.token).then((data) => {
+      wordGroupsApi().then((data) => {
         const dataNew = data;
         const pagination = { ...this.state.pagination };
         this.setState({
