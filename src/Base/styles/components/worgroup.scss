@@ -6,6 +6,9 @@ $break-sm-medium: 600px;
   .wordGroupPath{
     padding: 16px 0;
   }
+  .ant-table-thead>tr>th .ant-table-filter-icon{
+      vertical-align: -.125em;
+  }
   .tableWrap{
     background-color: #ffffff;
     width: 100%;
