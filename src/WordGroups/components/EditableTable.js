@@ -94,11 +94,11 @@ export class EditableTable extends React.Component {
         render: (text, record) => (
           <div>
             {
-              record.activeState === true ? (
-                statusIcons.enabledIcon
-              ) : (
-                statusIcons.disabledIcon
-              )
+                            record.activeState === true ? (
+                              statusIcons.enabledIcon
+                            ) : (
+                              statusIcons.disabledIcon
+                            )
                         }
           </div>
         ),
@@ -125,7 +125,7 @@ export class EditableTable extends React.Component {
               placeholder="Search Word Group"
               value={selectedKeys[0]}
               onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-              onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+              onPressEnter={this.handleSearch(selectedKeys, confirm)}
             />
             <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
             <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
@@ -257,7 +257,7 @@ export class EditableTable extends React.Component {
           const saveGroupName = async () => {
             const response = await axios({
               method: 'post',
-              url: `${mainUrl}/home/wordgroups`,
+              url: `${mainUrl}/home/wordgroups/`,
               data: {
                 id,
                 name: row.name,
@@ -310,7 +310,7 @@ export class EditableTable extends React.Component {
       axios(
         {
           method: 'delete',
-          url: `${mainUrl}/home/wordgroups/${id}`,
+          url: `${mainUrl}/home/wordgroups/${id}/`,
           headers:
                     {
                       'Content-Type': 'application/json',
@@ -355,19 +355,19 @@ export class EditableTable extends React.Component {
       const nameGroup = `New group ${newCount}`;
 
       const naming = () => {
-        if (newGroupsArr.length === 0) {
-          return newWordGroupName;
+        if (newGroupsArr.length !== 0) {
+          return nameGroup;
         }
-        return nameGroup;
+        return newWordGroupName;
       };
 
-      //---
+        //---
 
-      // adding new group to the server
+        // adding new group to the server
       const addGroupReq = async () => {
         const response = await axios({
           method: 'put',
-          url: `${mainUrl}/home/wordgroups`,
+          url: `${mainUrl}/home/wordgroups/`,
           data: {
             name: naming(),
             activeState: true,
@@ -383,7 +383,7 @@ export class EditableTable extends React.Component {
         throw new Error(response.status);
       };
       addGroupReq().then((res) => {
-        const newWordGroup = res.data;
+        const newWordGroup = res;
         this.props.addWordGroup(newWordGroup);
       }).catch((error) => {
         notification.open({
@@ -409,12 +409,12 @@ export class EditableTable extends React.Component {
       axios(
         {
           method: 'post',
-          url: `${mainUrl}/home/wordgroups`,
+          url: `${mainUrl}/home/wordgroups/`,
           headers:
-                  {
-                    'Content-Type': 'application/json',
-                    Authorization: user.token,
-                  },
+                    {
+                      'Content-Type': 'application/json',
+                      Authorization: user.token,
+                    },
           data: {
             id,
             name,

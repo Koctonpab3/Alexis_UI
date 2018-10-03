@@ -6,7 +6,7 @@ import { user } from './constants';
 const wordGroupsApi = async () => {
   const response = await axios({
     method: 'get',
-    url: `${mainUrl}/home/wordgroups`,
+    url: `${mainUrl}/home/wordgroups/`,
     data: {},
     headers: {
       'Content-Type': 'application/json',
