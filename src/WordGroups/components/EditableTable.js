@@ -125,7 +125,7 @@ export class EditableTable extends React.Component {
               placeholder="Search Word Group"
               value={selectedKeys[0]}
               onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-              onPressEnter={() => this.handleSearch(selectedKeys, confirm)}
+              onPressEnter={this.handleSearch(selectedKeys, confirm)}
             />
             <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
             <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
