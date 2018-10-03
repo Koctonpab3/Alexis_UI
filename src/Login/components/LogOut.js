@@ -10,6 +10,7 @@ class Logout extends React.Component {
     history.push('/');
     const { logout } = this.props;
     logout();
+    localStorage.removeItem('userInfo');
     const { clearState } = this.props;
     clearState();
   };
