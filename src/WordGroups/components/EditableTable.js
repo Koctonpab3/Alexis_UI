@@ -12,7 +12,7 @@ import {
 } from '../actions/wordGroups';
 // constants
 import {
-  errWordGroupName, newWordGroupName, errServerConnection, existingGroupNameErr, user,
+  errWordGroupName, newWordGroupName, errServerConnection, existingGroupNameErr,
 } from '../constans/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
 import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
@@ -255,6 +255,7 @@ export class EditableTable extends React.Component {
           });
           this.setState({ editingKey: '' });
           const saveGroupName = async () => {
+            const user = JSON.parse(localStorage.getItem('userInfo'));
             const response = await axios({
               method: 'post',
               url: `${mainUrl}/home/wordgroups/`,
@@ -307,6 +308,7 @@ export class EditableTable extends React.Component {
     // deleting wordgroups
 
     handleDelete = (id) => {
+      const user = JSON.parse(localStorage.getItem('userInfo'));
       axios(
         {
           method: 'delete',
@@ -365,6 +367,7 @@ export class EditableTable extends React.Component {
 
       // adding new group to the server
       const addGroupReq = async () => {
+        const user = JSON.parse(localStorage.getItem('userInfo'));
         const response = await axios({
           method: 'put',
           url: `${mainUrl}/home/wordgroups/`,
@@ -386,7 +389,6 @@ export class EditableTable extends React.Component {
         const newWordGroup = res;
         this.props.addWordGroup(newWordGroup);
       }).catch((error) => {
-          
         notification.open({
           type: 'error',
           message: errServerConnection,
@@ -407,6 +409,7 @@ export class EditableTable extends React.Component {
         ...item,
       });
       this.setState({ stateKey: '' });
+      const user = JSON.parse(localStorage.getItem('userInfo'));
       axios(
         {
           method: 'post',
@@ -451,7 +454,8 @@ export class EditableTable extends React.Component {
     // load data from server
 
     loadWordGroups = () => {
-      wordGroupsApi().then((data) => {
+      const user = JSON.parse(localStorage.getItem('userInfo'));
+      wordGroupsApi(user.token).then((data) => {
         const dataNew = data;
         const pagination = { ...this.state.pagination };
         this.setState({
