@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { history } from '../../Base/routers/AppRouter';
-import { logout } from '../actions/auth';
+import { logout, clearState } from '../actions/auth';
 import { LogoutText } from '../constants/constanst';
 
 
@@ -10,7 +10,8 @@ class Logout extends React.Component {
     history.push('/');
     const { logout } = this.props;
     logout();
-    localStorage.removeItem('userInfo');
+    const { clearState } = this.props;
+    clearState();
   };
 
   render() {
@@ -29,11 +30,15 @@ class Logout extends React.Component {
 
 const mapStateToProps = state => ({
   userInfo: state.userInfo,
+  dataSource: state.wordGroups.dataSource,
 });
 
 const mapDispatchToProps = dispatch => ({
   logout: () => {
     dispatch(logout());
+  },
+  clearState: () => {
+    dispatch(clearState());
   },
 });
 

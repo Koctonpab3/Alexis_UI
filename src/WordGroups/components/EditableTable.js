@@ -231,6 +231,7 @@ export class EditableTable extends React.Component {
       count: 0,
       pagination: {},
       loading: true,
+      // dataSource: {},
     };
 
     // editing word groups
@@ -458,6 +459,7 @@ export class EditableTable extends React.Component {
 
     loadWordGroups = () => {
       const user = JSON.parse(localStorage.getItem('userInfo'));
+      console.log(user);
       wordGroupsApi(user.token).then((data) => {
         const dataNew = data;
         const pagination = { ...this.state.pagination };
