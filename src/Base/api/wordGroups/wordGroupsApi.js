@@ -1,17 +1,16 @@
 import axios from 'axios';
 import { mainUrl } from '../auth/constants';
-// import { user } from './constants';
+import { user } from './constants';
 
 // load data from server
-const wordGroupsApi = async () => {
-  const user = JSON.parse(localStorage.getItem('userInfo'));
+const wordGroupsApi = async (token) => {
   const response = await axios({
     method: 'get',
     url: `${mainUrl}/home/wordgroups/`,
     data: {},
     headers: {
       'Content-Type': 'application/json',
-      Authorization: user.token,
+      Authorization: token,
     },
   });
 
