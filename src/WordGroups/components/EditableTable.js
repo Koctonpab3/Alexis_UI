@@ -450,7 +450,8 @@ export class EditableTable extends React.Component {
     // load data from server
 
     loadWordGroups = () => {
-      wordGroupsApi().then((data) => {
+      const user = JSON.parse(localStorage.getItem('userInfo'));
+      wordGroupsApi(user.token).then((data) => {
         const dataNew = data;
         const pagination = { ...this.state.pagination };
         this.setState({
