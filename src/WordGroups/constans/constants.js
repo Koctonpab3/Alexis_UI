@@ -13,7 +13,7 @@ export const EDIT_WORDGROUP = 'EDIT_WORDGROUP';
 
 export const errWordGroupName = 'Please enter a valid word group name';
 export const errServerConnection = 'The server connection failed';
-export const existingGroupNameErr = 'This group name already exists!';
+export const existingGroupNameErr = 'A word group with this name already exists!';
 export const newWordGroupName = 'New group 1';
 
 // user const from local storage

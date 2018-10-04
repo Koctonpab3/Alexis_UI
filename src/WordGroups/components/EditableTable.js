@@ -231,6 +231,7 @@ export class EditableTable extends React.Component {
       count: 0,
       pagination: {},
       loading: true,
+      // dataSource: {},
     };
 
     // editing word groups
