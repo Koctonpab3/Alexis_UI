@@ -88,7 +88,9 @@ class NormalLoginForm extends React.Component {
           </h4>
           <FormItem>
             {form.getFieldDecorator('userName', {
-              rules: [{ required: true, message: ErrorEmailInput }],
+              rules: [{ required: true, message: ErrorEmailInput }, {
+                validator: this.checkCyrilLetters,
+              }],
             })(
               <Input prefix={<Icon type="user" />} placeholder={PlaceholderEmail} onChange={this.handleChangeEmail} />,
             )}

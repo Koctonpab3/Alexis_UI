@@ -122,6 +122,8 @@ class RegistrationForm extends React.Component {
                 type: 'email', message: EmailNotValid,
               }, {
                 required: true, message: ErrorEmailInput,
+              }, {
+                validator: this.checkCyrilLetters,
               }],
             })(
               <Input name="email" onChange={this.handleChangeEmail} />,
