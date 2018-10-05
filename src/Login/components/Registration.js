@@ -9,8 +9,7 @@ import { login } from '../actions/auth';
 import { registrationApi } from '../../Base/api/auth/authApi';
 
 import {
-
-  RegistrationText, NicknameText, RegisterBtnText, BackToLoginText, SuccsedRegistrationPopUp, ErroUserEmailExist, ErrorInputName, WrongPasswordTwo, EmailNotValid, ErrorEmailInput, ErrorPasswordInput, ErrorConfirmPassword, ErrorPasswordlength, ErrorNiknamelength,
+  RegistrationText, NicknameText, RegisterBtnText, BackToLoginText, SuccsedRegistrationPopUp, ErroUserEmailExist, ErrorInputName, WrongPasswordTwo, EmailNotValid, ErrorEmailInput, ErrorPasswordInput, ErrorConfirmPassword, ErrorPasswordlength, ErrorNiknamelength, latinLettersOnly,
 } from '../constants/constanst';
 
 const FormItem = Form.Item;
@@ -83,6 +82,14 @@ class RegistrationForm extends React.Component {
       }
     }
 
+    checkCyrilLetters = (rule, value, callback) => {
+      const cyrillicPattern = /[\u0400-\u04FF]/;
+      if(cyrillicPattern.test(value)){
+        callback(latinLettersOnly);
+      }
+        callback();
+    }
+
     render() {
       const { form } = this.props;
       return (
@@ -131,6 +138,8 @@ class RegistrationForm extends React.Component {
                 message: ErrorPasswordlength,
               }, {
                 validator: this.validateToNextPassword,
+              }, {
+                validator: this.checkCyrilLetters,
               }],
             })(
               <Input type="password" name="password" onChange={this.handleChangePass} onKeyDown={this.checkCapsLock} />,
