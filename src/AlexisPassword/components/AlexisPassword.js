@@ -9,19 +9,20 @@ class AlexisPassword extends React.Component {
       visible: false,
     }
 
-    getAlexisPass = () => {
+    getAlexisPass = async () => {
       const user = JSON.parse(localStorage.getItem('userInfo'));
-      alexisPasswordApi(user.token).then((res) => {
+      try {
+        const res = await alexisPasswordApi(user.token);
         this.setState({
           password: res,
           visible: true,
         });
-      }).catch(() => {
+      } catch (err) {
         notification.open({
           type: 'error',
           message: errServerConnection,
         });
-      });
+      }
     }
 
     handleOk = (e) => {
