@@ -6,7 +6,7 @@ import './styles/styles.scss';
 
 //  app
 const App = () => (
-    <AppRouter />
+  <AppRouter />
 );
 
 export default App;
