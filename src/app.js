@@ -34,7 +34,7 @@ const loginSet = [
   { user: false, page: currentPageUrl, response: '/' },
 ];
 
-const result = loginSet.find(item => item.user == !!user && item.page === currentPageUrl)
+const result = loginSet.find(item => item.user == !!user && item.page === currentPageUrl);
 
 if (!result.response) {
   history.push(result.response);
