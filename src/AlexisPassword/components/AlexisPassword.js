@@ -45,7 +45,7 @@ class AlexisPassword extends React.Component {
             {getAlexisPass}
           </p>
           <Modal
-            title="Basic Modal"
+            title="Alexis Code"
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
