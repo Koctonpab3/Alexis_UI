@@ -18,10 +18,6 @@ import {
 import { mainUrl } from '../../Base/api/auth/constants';
 import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
 
-import WordsPage from '../../Words/components/WordsPage';
-
-import { history } from '../../Base/routers/AppRouter';
-
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 const EditableRow = ({ form, index, ...props }) => (
@@ -52,29 +48,27 @@ class EditableCell extends React.Component {
         <EditableContext.Consumer>
           {(form) => {
             const { getFieldDecorator } = form;
-            // const wordGroupId = record.id;
-            //   console.log(this.props);
             return (
-              <td {...restProps} onClick={() => history.push( `/wordgroups/${this.props.record.id}` )}>
-                  {editing ? (
-                    <FormItem style={{ margin: 0 }}>
-                      {getFieldDecorator(dataIndex, {
-                        rules: [{
-                          required: true,
-                          message: errWordGroupName,
-                          whitespace: true,
-                          pattern: '[-_a-zA-Z0-9.]',
-                          min: 1,
-                          max: 30,
-                        }],
-                        initialValue: record[dataIndex],
-                      })(<Input
-                        onPressEnter={() => this.props.save(form, record.id, record.activeState)}
-                        onKeyDown={this.handleOnKeyDown}
-                      />)}
-                    </FormItem>
+              <td {...restProps}>
+                {editing ? (
+                  <FormItem style={{ margin: 0 }}>
+                    {getFieldDecorator(dataIndex, {
+                      rules: [{
+                        required: true,
+                        message: errWordGroupName,
+                        whitespace: true,
+                        pattern: '[-_a-zA-Z0-9.]',
+                        min: 1,
+                        max: 30,
+                      }],
+                      initialValue: record[dataIndex],
+                    })(<Input
+                      onPressEnter={() => this.props.save(form, record.id, record.activeState)}
+                      onKeyDown={this.handleOnKeyDown}
+                    />)}
+                  </FormItem>
 
-                  ) : restProps.children}
+                ) : restProps.children}
               </td>
 
             );
@@ -147,16 +141,26 @@ export class EditableTable extends React.Component {
             });
           }
         },
-        render: (text) => {
+        render: (text, record) => {
           const { searchText } = this.state;
           return searchText ? (
             <span>
+
               {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
                 fragment.toLowerCase() === searchText.toLowerCase()
                       ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
               ))}
             </span>
-          ) : text;
+          )
+            : (
+              <Link
+                to={`/wordgroups/${record.id}`}
+                className="wordGroup-name"
+              >
+                {text}
+              </Link>
+
+            );
         },
         sorter: (a, b) => a.name.localeCompare(b.name),
       },

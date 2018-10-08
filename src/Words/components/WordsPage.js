@@ -2,11 +2,11 @@ import React from 'react';
 
 // components
 import Words from './Words';
-// import Path from './path';
 
-const WordsPage = () => (
+const WordsPage = props => (
   <div className="wordsTable">
-    <Words />
+    <Words {...props} />
   </div>
 );
+
 export default WordsPage;

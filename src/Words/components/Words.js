@@ -8,8 +8,16 @@ import axios from 'axios';
 import { mainUrl } from '../../Base/api/auth/constants';
 
 export default class Words extends React.Component {
+    // viewProp =() => {
+    //   console.log(this);
+    // }
+
     loadWords = () => {
-      const wordGroupsId = 10;
+      // console.log(this);
+      // const wordGroupsId = 10;
+      const wordGroupsId = this.props.match.params.id;
+      console.log(this.props.match.params.id);
+      console.log(wordGroupsId);
       const wordsApi = async (token) => {
         const response = await axios({
           method: 'get',
@@ -62,8 +70,8 @@ export default class Words extends React.Component {
       };
       const user = JSON.parse(localStorage.getItem('userInfo'));
       addWordReq(user.token).then((res) => {
-        const newWordGroup = res;
-        this.props.addWordGroup(newWordGroup);
+        // const newWordGroup = res;
+        // this.props.addWordGroup(newWordGroup);
       }).catch((error) => {
         notification.open({
           type: 'error',
@@ -87,7 +95,7 @@ export default class Words extends React.Component {
           <Button
             className="addWordBtn"
             id="addWord-Btn"
-            onClick={() => this.addWord()}
+            onClick={() => this.viewProp()}
             type="primary"
           >
                 +Add new word
