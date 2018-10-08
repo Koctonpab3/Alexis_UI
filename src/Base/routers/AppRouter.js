@@ -8,6 +8,7 @@ import createHistory from 'history/createBrowserHistory';
 import Private from './PrivateRoute';
 // pages
 import Wordgroups from '../../WordGroups/components/index';
+import WordsPage from '../../Words/components/WordsPage';
 import Setup from '../../Setup/components/index';
 import Profile from '../../Profile/components/index';
 import Statistics from '../../Statistics/components/index';
@@ -24,12 +25,12 @@ const AppRouter = () => (
       <Switch>
         <Route path="/" component={LoginPage} exact />
         <Route path="/registration" component={RegistrationPage} />
-        <Private path="/wordgroups" component={Wordgroups} />
+        <Private path="/wordgroups" component={Wordgroups} exact />
+        <Private path="/wordgroups/:id" component={WordsPage} />
         <Private path="/setup" component={Setup} />
         <Private path="/statistics" component={Statistics} />
         <Private path="/profile" component={Profile} />
       </Switch>
-
     </div>
   </Router>
 );

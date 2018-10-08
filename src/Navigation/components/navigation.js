@@ -4,11 +4,12 @@ import { Link } from 'react-router-dom';
 import { Menu, Popover } from 'antd';
 import Logout from '../../Login/components/LogOut';
 
+const wordGroupId = 10;
+
 const Navigation = props => (
   <div className="top-navbar-wrapper">
     <div className="top-container">
-      <div id="logo">
-      </div>
+      <div id="logo" />
       <Menu className="top-navbar" mode="horizontal" theme="dark">
         <Menu.Item className="nav-item">
           <Link to="/wordgroups">
@@ -28,6 +29,11 @@ const Navigation = props => (
         <Menu.Item className="nav-item">
           <Link to="/profile">
             {'Profile'}
+          </Link>
+        </Menu.Item>
+        <Menu.Item className="nav-item">
+          <Link to={`/wordgroups/${wordGroupId}`}>
+            {'Words'}
           </Link>
         </Menu.Item>
       </Menu>

@@ -9,28 +9,28 @@ import { login } from './Login/actions/auth';
 const store = configureStore();
 
 const jsx = (
-    <Provider store={store}>
-      <App />
-    </Provider>
+  <Provider store={store}>
+    <App />
+  </Provider>
 );
 
 let hasRenderred = false;
 const renderApp = () => {
-    if (!hasRenderred) {
-        ReactDOM.render(jsx, document.getElementById('app'));
-        hasRenderred = true;
-    }
+  if (!hasRenderred) {
+    ReactDOM.render(jsx, document.getElementById('app'));
+    hasRenderred = true;
+  }
 };
 
 const user = JSON.parse(localStorage.getItem('userInfo'));
 
 if (user) {
-    store.dispatch(login({ ...user }));
-    if (history.location.pathname === '/') {
-        history.push('/wordgroups');
-    }
-    renderApp();
+  store.dispatch(login({ ...user }));
+  if (history.location.pathname === '/') {
+    history.push('/wordgroups');
+  }
+  renderApp();
 } else {
-    history.push('/');
-    renderApp();
+  history.push('/');
+  renderApp();
 }
