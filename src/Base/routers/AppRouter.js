@@ -9,6 +9,7 @@ import Private from './PrivateRoute';
 // pages
 import Wordgroups from '../../WordGroups/components/index';
 import WordsPage from '../../Words/components/WordsPage';
+import WordTestPage from '../../Words/components/wordTestPage';
 import Setup from '../../Setup/components/index';
 import Profile from '../../Profile/components/index';
 import Statistics from '../../Statistics/components/index';
@@ -30,6 +31,7 @@ const AppRouter = () => (
         <Private path="/setup" component={Setup} />
         <Private path="/statistics" component={Statistics} />
         <Private path="/profile" component={Profile} />
+        <Private path="/wordtest" component={WordTestPage} />
       </Switch>
     </div>
   </Router>

@@ -16,8 +16,8 @@ export default class Words extends React.Component {
       // console.log(this);
       // const wordGroupsId = 10;
       const wordGroupsId = this.props.match.params.id;
-      console.log(this.props.match.params.id);
-      console.log(wordGroupsId);
+      // console.log(this.props.match.params.id);
+      // console.log(wordGroupsId);
       const wordsApi = async (token) => {
         const response = await axios({
           method: 'get',
@@ -50,13 +50,16 @@ export default class Words extends React.Component {
     };
 
     addWord = () => {
+      const wordGroupsId = this.props.match.params.id;
+      // console.log(wordGroupsId);
       const addWordReq = async (token) => {
         const response = await axios({
           method: 'put',
-          url: `${mainUrl}/home/wordgroups/`,
+          url: `${mainUrl}/home/wordgroups/${wordGroupsId}/words`,
           data: {
-            name: 'New',
-            id: 10,
+            enWord: 'Cow',
+            ruWord: 'Корова',
+            fileName: 'filename',
           },
           headers: {
             'Content-Type': 'application/json',
@@ -72,11 +75,13 @@ export default class Words extends React.Component {
       addWordReq(user.token).then((res) => {
         // const newWordGroup = res;
         // this.props.addWordGroup(newWordGroup);
+        console.log(res);
       }).catch((error) => {
-        notification.open({
-          type: 'error',
-          message: errServerConnection,
-        });
+        // notification.open({
+        //   type: 'error',
+        //   message: errServerConnection,
+        // });
+        console.log(error);
       });
     };
 
@@ -95,7 +100,7 @@ export default class Words extends React.Component {
           <Button
             className="addWordBtn"
             id="addWord-Btn"
-            onClick={() => this.viewProp()}
+            onClick={() => this.addWord()}
             type="primary"
           >
                 +Add new word
