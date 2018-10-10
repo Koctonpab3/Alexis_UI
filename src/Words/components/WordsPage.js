@@ -1,11 +1,11 @@
 import React from 'react';
 
 // components
-import Words from './Words';
+import WrappedWordsTable from './Words';
 
 const WordsPage = props => (
   <div className="wordsTable">
-    <Words {...props} />
+    <WrappedWordsTable {...props} />
   </div>
 );
 

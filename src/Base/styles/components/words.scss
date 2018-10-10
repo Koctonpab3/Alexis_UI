@@ -1,0 +1,44 @@
+.wordsTable{
+  background-color: #ffffff;
+  width: 80%;
+  padding: 16px 0;
+  //margin-top: 53px;
+  margin: 53px auto;
+  .words-table{
+    font-size: 14px;
+    word-break: unset;
+    background-color: #ffffff;
+    width: 70%;
+    margin: 0 auto;
+    .addWordsBtn{
+      margin-bottom: 20px;
+    }
+    .engWord-col{
+
+    }
+    .rus-name-col{
+      width: 30%;
+    }
+    .remove-word-col-name{
+
+    }
+    .remove-word-icon{
+      color: #f35e5e;
+      font-size: 21px;
+      cursor: pointer;
+      &:hover{
+        color: rgb(195, 56, 55);
+      }
+    }
+    .ant-table-bordered .ant-table-thead > tr > th{
+      border-right: none;
+    }
+    .ant-table-bordered .ant-table-body > table{
+      border: none;
+    }
+    .ant-table-bordered .ant-table-tbody > tr > td{
+      border-right: none;
+      //padding: 0 16px 0 0;
+    }
+  }
+}

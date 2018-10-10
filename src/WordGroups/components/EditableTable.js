@@ -536,7 +536,6 @@ export class EditableTable extends React.Component {
             columns={columns}
             rowKey={record => record.id}
             rowClassName={() => 'editable-row'}
-            bordered
             dataSource={dataSource}
             pagination={this.state.pagination}
             loading={this.state.loading}

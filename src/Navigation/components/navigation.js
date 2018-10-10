@@ -29,11 +29,6 @@ const Navigation = props => (
             {'Profile'}
           </Link>
         </Menu.Item>
-        <Menu.Item className="nav-item">
-          <Link to="/wordtest">
-              {'WordTest'}
-          </Link>
-        </Menu.Item>
       </Menu>
       <div id="userIcon">
         <Popover
