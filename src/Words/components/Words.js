@@ -6,7 +6,7 @@ import {
 import { connect } from 'react-redux';
 import axios from 'axios';
 import {
-  loadWordsData, addWord, deleteWord,
+  loadWordsData, addWord, deleteWord, clearWordsState,
 } from '../actions/wordsActions';
 import {
   errServerConnection,
@@ -78,8 +78,11 @@ class WordsTable extends React.Component {
     componentDidMount() {
       // To disabled submit button at the beginning.
       this.props.form.validateFields();
+      const { clearWordsState } = this.props;
+      clearWordsState();
       this.loadWords();
     }
+
 
     handleAddWord = (e) => {
       e.preventDefault();
@@ -88,7 +91,7 @@ class WordsTable extends React.Component {
 
       this.props.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+          // console.log('Received values of form: ', values);
         }
         const newWord = { ...values };
         // console.log(values);
@@ -113,9 +116,11 @@ class WordsTable extends React.Component {
         };
         const user = JSON.parse(localStorage.getItem('userInfo'));
         addWordReq(user.token).then((res) => {
-          // const newWordGroup = res;
+          const newAddedWord = res;
+          this.props.addWord(newAddedWord);
           // this.props.addWordGroup(newWordGroup);
           console.log(res);
+          this.handleReset();
         }).catch((error) => {
           notification.open({
             type: 'error',
@@ -127,9 +132,13 @@ class WordsTable extends React.Component {
         // this.setState({
         //   dataSource: [...dataSource, newWord],
         // });
-        this.props.addWord(newWord);
+        // this.props.addWord(newWord);
       });
     };
+
+    handleReset = () => {
+      this.props.form.resetFields();
+    }
 
     removeWord = (id) => {
       // console.log(id);
@@ -190,7 +199,7 @@ class WordsTable extends React.Component {
           pagination,
         });
         this.props.loadWordsData(dataNew);
-        console.log(data);
+        // console.log(data);
       }).catch((error) => {
         notification.open({
           type: 'error',
@@ -355,6 +364,9 @@ const mapDispatchToProps = dispatch => ({
   },
   deleteWord: (id) => {
     dispatch(deleteWord(id));
+  },
+  clearWordsState: () => {
+    dispatch(clearWordsState());
   },
 });
 

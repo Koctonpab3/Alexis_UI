@@ -1,25 +1,9 @@
 import {
-  LOAD_WORDS_DATA, ADD_WORD, DELETE_WORD,
+  LOAD_WORDS_DATA, ADD_WORD, DELETE_WORD, CLEAR_ALL_WORDS
 } from '../constants/constants';
 
 const initialState = {
-  dataSource: [
-    // {
-    //   engWord: 'Tree',
-    //   rusWord: 'Дерево',
-    //   id: 51,
-    // },
-    // {
-    //   engWord: 'Sweater',
-    //   rusWord: 'Свитер',
-    //   id: 29,
-    // },
-    // {
-    //   engWord: 'Park',
-    //   rusWord: 'Парк',
-    //   id: 10,
-    // },
-  ],
+  dataSource: [],
 };
 
 export default (state = initialState, action) => {
@@ -37,6 +21,11 @@ export default (state = initialState, action) => {
     case DELETE_WORD: {
       return Object.assign({}, state, {
         dataSource: [...state.dataSource.filter(item => item.id !== action.id)],
+      });
+    }
+    case CLEAR_ALL_WORDS: {
+      return Object.assign({}, state, {
+        dataSource: [],
       });
     }
     default:
