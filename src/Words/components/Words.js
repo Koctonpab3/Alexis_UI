@@ -28,31 +28,94 @@ class WordsTable extends React.Component {
         title: 'English Words',
         dataIndex: 'enWord',
         className: 'engWord-col',
-        render: text => (
-          <div>
-            <span>
-              {' '}
-              {text}
-              {' '}
-            </span>
+        filterDropdown: ({
+          setSelectedKeys, selectedKeys, confirm, clearFilters,
+        }) => (
+          <div className="custom-filter-dropdown">
+            <Input
+              ref={ele => this.searchInput = ele}
+              placeholder="Search English"
+              value={selectedKeys[0]}
+              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+              onPressEnter={this.handleSearch(selectedKeys, confirm)}
+            />
+            <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
+            <Button onClick={this.handleResetSearch(clearFilters)}>Reset</Button>
           </div>
         ),
+        filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
+        onFilter: (value, record) => record.enWord.toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: (visible) => {
+          if (visible) {
+            setTimeout(() => {
+              this.searchInput.focus();
+            });
+          }
+        },
+        render: (text, record) => {
+          const { searchText } = this.state;
+          return searchText ? (
+            <span>
+              {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
+                fragment.toLowerCase() === searchText.toLowerCase()
+               ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
+              ))}
+            </span>
+          )
+            : (
+              <div>
+                <span>{text}</span>
+              </div>
+
+            );
+        },
         sorter: (a, b) => a.enWord.localeCompare(b.enWord),
       },
       {
         title: 'Russian Word',
         dataIndex: 'ruWord',
         className: 'rus-name-col',
-        render: text => (
-          <div>
-            <span>
-              {' '}
-              {text}
-              {' '}
-            </span>
+        filterDropdown: ({
+          setSelectedKeys, selectedKeys, confirm, clearFilters,
+        }) => (
+          <div className="custom-filter-dropdown">
+            <Input
+              ref={ele => this.searchInput = ele}
+              placeholder="Search English"
+              value={selectedKeys[0]}
+              onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+              onPressEnter={this.handleSearch(selectedKeys, confirm)}
+            />
+            <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
+            <Button onClick={this.handleResetSearch(clearFilters)}>Reset</Button>
           </div>
-
         ),
+        filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
+        onFilter: (value, record) => record.ruWord.toLowerCase().includes(value.toLowerCase()),
+        onFilterDropdownVisibleChange: (visible) => {
+          if (visible) {
+            setTimeout(() => {
+              this.searchInput.focus();
+            });
+          }
+        },
+        render: (text, record) => {
+          const { searchText } = this.state;
+          return searchText ? (
+            <span>
+              {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
+                fragment.toLowerCase() === searchText.toLowerCase()
+                      ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
+              ))}
+            </span>
+          )
+            : (
+              <div>
+                <span>{text}</span>
+              </div>
+
+            );
+        },
         sorter: (a, b) => a.ruWord.localeCompare(b.ruWord),
       },
       {
@@ -133,7 +196,7 @@ class WordsTable extends React.Component {
     // reset fields after submitting new word
     handleReset = () => {
       this.props.form.resetFields();
-    }
+    };
 
     // delete word from word group
     removeWord = (id) => {
@@ -160,6 +223,18 @@ class WordsTable extends React.Component {
             message: errServerConnection,
           });
         });
+    };
+
+    // searching words
+
+    handleSearch = (selectedKeys, confirm) => () => {
+      confirm();
+      this.setState({ searchText: selectedKeys[0] });
+    };
+
+    handleResetSearch = clearFilters => () => {
+      clearFilters();
+      this.setState({ searchText: '' });
     };
 
     // loading words for this wordgroup from server
@@ -235,10 +310,6 @@ class WordsTable extends React.Component {
             record,
             dataIndex: col.dataIndex,
             title: col.title,
-            save: this.save,
-            escFunction: this.escFunction,
-            editing: this.isEditing(record),
-            cancel: this.cancel,
           }),
         };
       });
@@ -249,55 +320,57 @@ class WordsTable extends React.Component {
         <div className="words-table">
           <p className="word-gr-name">{wordGroupName}</p>
           <Form layout="inline" onSubmit={this.handleAddWord}>
-            <FormItem
-              validateStatus={enWordError ? 'error' : ''}
-              help={enWordError || ''}
-            >
-              {getFieldDecorator('enWord', {
-                rules: [{
-                  required: true,
-                  whitespace: true,
-                  pattern: '^[A-Za-z -]+$',
-                  message: EngWordValidErr,
-                }],
-              })(
-                <Input
-                  className="wordInput"
-                  prefix={<Icon type="search" theme="outlined" />}
-                  placeholder="English Word"
-                />,
-              )}
-            </FormItem>
-            <FormItem
-              validateStatus={ruWordError ? 'error' : ''}
-              help={ruWordError || ''}
-            >
-              {getFieldDecorator('ruWord', {
-                rules: [{
-                  required: true,
-                  whitespace: true,
-                  pattern: '^[А-Яа-яЁё]+$',
-                  message: RusWordValidErr,
-                }],
-              })(
-                <Input
-                  className="wordInput"
-                  prefix={<Icon type="search" theme="outlined" />}
-                  placeholder="Russian Word"
-                />,
-              )}
-            </FormItem>
-            <FormItem>
-              <Button
-                type="primary"
-                htmlType="submit"
-                disabled={hasErrors(getFieldsError())}
-                className="addWordsBtn"
+            <div className="form-inputs-container">
+              <FormItem
+                validateStatus={enWordError ? 'error' : ''}
+                help={enWordError || ''}
               >
-                <Icon type="plus" theme="outlined" />
-                        Add Word
-              </Button>
-            </FormItem>
+                {getFieldDecorator('enWord', {
+                  rules: [{
+                    required: true,
+                    whitespace: true,
+                    pattern: '^[A-Za-z -]+$',
+                    message: EngWordValidErr,
+                  }],
+                })(
+                  <Input
+                    className="wordInput"
+                    prefix={<Icon type="search" theme="outlined" />}
+                    placeholder="English Word"
+                  />,
+                )}
+              </FormItem>
+              <FormItem
+                validateStatus={ruWordError ? 'error' : ''}
+                help={ruWordError || ''}
+              >
+                {getFieldDecorator('ruWord', {
+                  rules: [{
+                    required: true,
+                    whitespace: true,
+                    pattern: '^[А-Яа-яЁё]+$',
+                    message: RusWordValidErr,
+                  }],
+                })(
+                  <Input
+                    className="wordInput"
+                    prefix={<Icon type="search" theme="outlined" />}
+                    placeholder="Russian Word"
+                  />,
+                )}
+              </FormItem>
+              <FormItem>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  disabled={hasErrors(getFieldsError())}
+                  className="addWordsBtn"
+                >
+                  <Icon type="plus" theme="outlined" />
+                  Add Word
+                </Button>
+              </FormItem>
+            </div>
             <Table
               className="wordsInGroups-table"
               columns={columns}
