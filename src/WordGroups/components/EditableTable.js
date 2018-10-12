@@ -154,7 +154,7 @@ export class EditableTable extends React.Component {
           )
             : (
               <Link
-                to={`/wordgroups/${record.id}`}
+                to={`/wordgroups/${record.id}/${record.name}`}
                 className="wordGroup-name"
               >
                 {text}

@@ -11,6 +11,7 @@ import {
 import {
   errServerConnection,
 } from '../../WordGroups/constans/constants';
+import { EngWordValidErr, RusWordValidErr } from '../constants/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
 
 const FormItem = Form.Item;
@@ -70,13 +71,11 @@ class WordsTable extends React.Component {
   }
 
     state = {
-      // dataSource: [],
       loading: true,
       pagination: {},
     };
 
     componentDidMount() {
-      // To disabled submit button at the beginning.
       this.props.form.validateFields();
       const { clearWordsState } = this.props;
       clearWordsState();
@@ -84,18 +83,12 @@ class WordsTable extends React.Component {
     }
 
 
+    // adding new word to group
     handleAddWord = (e) => {
       e.preventDefault();
-      // const { dataSource } = this.state;
       const wordGroupsId = this.props.match.params.id;
-
       this.props.form.validateFields((err, values) => {
-        if (!err) {
-          // console.log('Received values of form: ', values);
-        }
         const newWord = { ...values };
-        // console.log(values);
-
         const addWordReq = async (token) => {
           const response = await axios({
             method: 'put',
@@ -116,10 +109,14 @@ class WordsTable extends React.Component {
         };
         const user = JSON.parse(localStorage.getItem('userInfo'));
         addWordReq(user.token).then((res) => {
-          const newAddedWord = res;
+          const resWord = res;
+          const newAddedWord = {
+            id: resWord.id,
+            enWord: resWord.enWord,
+            ruWord: resWord.ruWord,
+            groupId: wordGroupsId,
+          };
           this.props.addWord(newAddedWord);
-          // this.props.addWordGroup(newWordGroup);
-          console.log(res);
           this.handleReset();
         }).catch((error) => {
           notification.open({
@@ -128,20 +125,16 @@ class WordsTable extends React.Component {
           });
           console.log(error);
         });
-
-        // this.setState({
-        //   dataSource: [...dataSource, newWord],
-        // });
-        // this.props.addWord(newWord);
       });
     };
 
+    // reset fields after submitting new word
     handleReset = () => {
       this.props.form.resetFields();
     }
 
+    // delete word from word group
     removeWord = (id) => {
-      // console.log(id);
       const wordGroupsId = this.props.match.params.id;
       const user = JSON.parse(localStorage.getItem('userInfo'));
       axios(
@@ -164,16 +157,12 @@ class WordsTable extends React.Component {
             type: 'error',
             message: errServerConnection,
           });
-          console.log(error);
         });
     };
 
+    // loading words for this wordgroup from server
     loadWords = () => {
-      // console.log(this);
-      // const wordGroupsId = 10;
       const wordGroupsId = this.props.match.params.id;
-      // console.log(this.props.match.params.id);
-      // console.log(wordGroupsId);
       const wordsApi = async (token) => {
         const response = await axios({
           method: 'get',
@@ -199,7 +188,6 @@ class WordsTable extends React.Component {
           pagination,
         });
         this.props.loadWordsData(dataNew);
-        // console.log(data);
       }).catch((error) => {
         notification.open({
           type: 'error',
@@ -211,42 +199,6 @@ class WordsTable extends React.Component {
         console.log(error);
       });
     };
-
-    // addWord = () => {
-    //   const wordGroupsId = this.props.match.params.id;
-    //   // console.log(wordGroupsId);
-    //   const addWordReq = async (token) => {
-    //     const response = await axios({
-    //       method: 'put',
-    //       url: `${mainUrl}/home/wordgroups/${wordGroupsId}/words`,
-    //       data: {
-    //         enWord: 'Cow',
-    //         ruWord: 'Корова',
-    //         fileName: 'filename',
-    //       },
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //         Authorization: token,
-    //       },
-    //     });
-    //     if (response.status <= 400) {
-    //       return response.data;
-    //     }
-    //     throw new Error(response.status);
-    //   };
-    //   const user = JSON.parse(localStorage.getItem('userInfo'));
-    //   addWordReq(user.token).then((res) => {
-    //     // const newWordGroup = res;
-    //     // this.props.addWordGroup(newWordGroup);
-    //     console.log(res);
-    //   }).catch((error) => {
-    //     // notification.open({
-    //     //   type: 'error',
-    //     //   message: errServerConnection,
-    //     // });
-    //     console.log(error);
-    //   });
-    // };
 
     handleTableChange = (pagination, filters, sorter) => {
       const pager = { ...this.state.pagination };
@@ -269,9 +221,8 @@ class WordsTable extends React.Component {
         getFieldDecorator, getFieldsError, getFieldError, isFieldTouched,
       } = this.props.form;
 
-      // const { dataSource } = this.state;
+      const wordGroupName = this.props.match.params.name;
       const { dataSource } = this.props;
-
       const columns = this.columns.map((col) => {
         if (!col.editable) {
           return col;
@@ -294,6 +245,7 @@ class WordsTable extends React.Component {
       const ruWordError = isFieldTouched('ruWord') && getFieldError('ruWord');
       return (
         <div className="words-table">
+          <p className="word-gr-name">{wordGroupName}</p>
           <Form layout="inline" onSubmit={this.handleAddWord}>
             <FormItem
               validateStatus={enWordError ? 'error' : ''}
@@ -304,10 +256,14 @@ class WordsTable extends React.Component {
                   required: true,
                   whitespace: true,
                   pattern: '^[A-Za-z -]+$',
-                  message: 'Please input valid english word!',
+                  message: EngWordValidErr,
                 }],
               })(
-                <Input placeholder="English Word" />,
+                <Input
+                  className="wordInput"
+                  prefix={<Icon type="search" theme="outlined" />}
+                  placeholder="English Word"
+                />,
               )}
             </FormItem>
             <FormItem
@@ -319,10 +275,14 @@ class WordsTable extends React.Component {
                   required: true,
                   whitespace: true,
                   pattern: '^[А-Яа-яЁё]+$',
-                  message: 'Please input valid russian word!',
+                  message: RusWordValidErr,
                 }],
               })(
-                <Input placeholder="Russian Word" />,
+                <Input
+                  className="wordInput"
+                  prefix={<Icon type="search" theme="outlined" />}
+                  placeholder="Russian Word"
+                />,
               )}
             </FormItem>
             <FormItem>
@@ -343,7 +303,7 @@ class WordsTable extends React.Component {
               rowKey={record => record.id}
               dataSource={dataSource}
               bordered
-              pagination={this.state.pagination}
+              pagination={{ pageSize: 10 }}
               loading={this.state.loading}
               onChange={this.handleTableChange}
             />

@@ -26,7 +26,7 @@ const AppRouter = () => (
         <Route path="/" component={LoginPage} exact />
         <Route path="/registration" component={RegistrationPage} />
         <Private path="/wordgroups" component={Wordgroups} exact />
-        <Private path="/wordgroups/:id" component={WordsPage} />
+        <Private path="/wordgroups/:id/:name" component={WordsPage} />
         <Private path="/setup" component={Setup} />
         <Private path="/statistics" component={Statistics} />
         <Private path="/profile" component={Profile} />

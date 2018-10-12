@@ -19,5 +19,5 @@ export const deleteWord = id => ({
 });
 
 export const clearWordsState = () => ({
-    type: CLEAR_ALL_WORDS,
+  type: CLEAR_ALL_WORDS,
 });
