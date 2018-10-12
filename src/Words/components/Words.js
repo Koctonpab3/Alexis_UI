@@ -37,6 +37,7 @@ class WordsTable extends React.Component {
             </span>
           </div>
         ),
+        sorter: (a, b) => a.enWord.localeCompare(b.enWord),
       },
       {
         title: 'Russian Word',
@@ -52,6 +53,7 @@ class WordsTable extends React.Component {
           </div>
 
         ),
+        sorter: (a, b) => a.ruWord.localeCompare(b.ruWord),
       },
       {
         title: '',
@@ -206,7 +208,7 @@ class WordsTable extends React.Component {
       this.setState({
         pagination: pager,
       });
-      this.loadWordGroups({
+      this.loadWords({
         results: pagination.pageSize,
         page: pagination.current,
         sortField: sorter.field,
