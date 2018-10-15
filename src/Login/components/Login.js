@@ -62,7 +62,7 @@ class NormalLoginForm extends React.Component {
 
           loginApi(basicAuth).then((userInfo) => {
             localStorage.setItem('userInfo', JSON.stringify({ ...userInfo, token: basicAuth }));
-            login({ ...userInfo });
+            login({ ...userInfo, email: user.email });
             history.push('/wordgroups');
           }).catch((error) => {
             message.error(ErroLoginPopUp);
