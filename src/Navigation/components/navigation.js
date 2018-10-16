@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Menu, Popover } from 'antd';
 import Logout from '../../Login/components/LogOut';
+import AlexisPassword from '../../AlexisPassword/components/AlexisPassword';
 
 const Navigation = props => (
   <div className="top-navbar-wrapper">
@@ -28,6 +29,9 @@ const Navigation = props => (
           <Link to="/profile">
             {'Profile'}
           </Link>
+        </Menu.Item>
+        <Menu.Item className="nav-item">
+          <AlexisPassword />
         </Menu.Item>
       </Menu>
       <div id="userIcon">
