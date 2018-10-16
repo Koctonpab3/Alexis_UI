@@ -11,6 +11,7 @@ import {
 import {
   errServerConnection,
 } from '../../WordGroups/constans/constants';
+import { searchWords } from '../utils/search';
 import { EngWordValidErr, RusWordValidErr } from '../constants/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
 
@@ -54,14 +55,9 @@ class WordsTable extends React.Component {
         },
         render: (text, record) => {
           const { searchText } = this.state;
-          return searchText ? (
-            <span>
-              {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
-                fragment.toLowerCase() === searchText.toLowerCase()
-               ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
-              ))}
-            </span>
-          )
+          // const { searchWords } = this.props;
+          return searchText
+            ? searchWords(text, searchText)
             : (
               <div>
                 <span>{text}</span>
@@ -101,14 +97,7 @@ class WordsTable extends React.Component {
         },
         render: (text, record) => {
           const { searchText } = this.state;
-          return searchText ? (
-            <span>
-              {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
-                fragment.toLowerCase() === searchText.toLowerCase()
-                      ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
-              ))}
-            </span>
-          )
+          return searchText ? searchWords(text, searchText)
             : (
               <div>
                 <span>{text}</span>
@@ -318,6 +307,14 @@ class WordsTable extends React.Component {
       const ruWordError = isFieldTouched('ruWord') && getFieldError('ruWord');
       return (
         <div className="words-table">
+          <Button
+            type="primary"
+            htmlType="submit"
+            onClick={this.props.history.goBack}
+            className="goBack"
+          >
+            <Icon className="goBack-arr" type="arrow-left" theme="outlined" />
+          </Button>
           <p className="word-gr-name">{wordGroupName}</p>
           <Form layout="inline" onSubmit={this.handleAddWord}>
             <div className="form-inputs-container">
