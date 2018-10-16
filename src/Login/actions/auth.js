@@ -4,7 +4,7 @@ export const login = ({ name, email, awsExist }) => ({
   type: LOGIN,
   name,
   email,
-  awsExist
+  awsExist,
 });
 
 export const logout = () => ({

@@ -4,17 +4,27 @@ const defaultUserState = {
   name: '',
   image: '',
   email: '',
-  awsExist: ''
+  awsExist: '',
 };
+
 export default (state = {}, action) => {
-  const { name, image, email, awsExist } = action;
+  const {
+    name, image, email, awsExist,
+  } = action;
   switch (action.type) {
     case LOGIN: {
+      const temp = Object.assign(defaultUserState, state, {
+        name,
+        image,
+        email,
+        awsExist,
+      });
+      debugger;
       return Object.assign(defaultUserState, state, {
         name,
         image,
         email,
-        awsExist
+        awsExist,
       });
     }
     case LOGOUT: {

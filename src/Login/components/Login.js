@@ -5,7 +5,7 @@ import {
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  ErroLoginPopUp, ErrorEmailInput, ErrorPasswordInput, PlaceholderEmail, PlaceholderPassword, latinLettersOnly
+  ErroLoginPopUp, ErrorEmailInput, ErrorPasswordInput, PlaceholderEmail, PlaceholderPassword, latinLettersOnly,
 } from '../constants/constanst';
 import { login } from '../actions/auth';
 import { history } from '../../Base/routers/AppRouter';
@@ -73,10 +73,10 @@ class NormalLoginForm extends React.Component {
 
     checkCyrilLetters = (rule, value, callback) => {
       const cyrillicPattern = /[\u0400-\u04FF]/;
-      if(cyrillicPattern.test(value)){
+      if (cyrillicPattern.test(value)) {
         callback(latinLettersOnly);
       }
-        callback();
+      callback();
     }
 
     render() {

@@ -1,10 +1,9 @@
 import React from 'react';
-import { Modal, Button, notification, } from 'antd';
+import { Modal, Button, notification } from 'antd';
 import alexisPasswordApi from '../../Base/api/alexisPasswordApi/alexisPasswordApi';
 import { getAlexisPass, okText, errServerConnection } from '../constants/constants';
 
 class AlexisPassword extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -15,7 +14,7 @@ class AlexisPassword extends React.Component {
   }
 
     getAlexisPass = async () => {
-      console.log(this.props.isOnline)
+      console.log(this.props.isOnline);
       const user = JSON.parse(localStorage.getItem('userInfo'));
       try {
         const res = await alexisPasswordApi(user.token);
@@ -48,8 +47,8 @@ class AlexisPassword extends React.Component {
       const { isOnline } = this.props;
       return (
         <div className="alexis-pass">
-        
-          <Button type="primary" disabled={isOnline ? true : false} onClick={this.getAlexisPass}>
+
+          <Button type="primary" disabled={!!isOnline} onClick={this.getAlexisPass}>
             {getAlexisPass}
           </Button>
           <Modal

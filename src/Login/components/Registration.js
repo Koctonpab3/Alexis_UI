@@ -84,10 +84,10 @@ class RegistrationForm extends React.Component {
 
     checkCyrilLetters = (rule, value, callback) => {
       const cyrillicPattern = /[\u0400-\u04FF]/;
-      if(cyrillicPattern.test(value)){
+      if (cyrillicPattern.test(value)) {
         callback(latinLettersOnly);
       }
-        callback();
+      callback();
     }
 
     render() {

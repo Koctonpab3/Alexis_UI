@@ -128,9 +128,11 @@ export class EditableTable extends React.Component {
               onPressEnter={this.handleSearch(selectedKeys, confirm)}
             />
             <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+
 Search
             </Button>
             <Button onClick={this.handleReset(clearFilters)}>
+
 Reset
             </Button>
           </div>
@@ -171,6 +173,7 @@ Reset
                         <Popconfirm title="Sure to deactivate?" onConfirm={() => this.toggleGroupStatus(record.id, record.name)}>
                           <a href="javascript:;">
 
+
                           Deactivate
                           </a>
                         </Popconfirm>
@@ -179,6 +182,7 @@ Reset
                     ) : (
                       <span>
                         <a onClick={() => this.toggleGroupStatus(record.id, record.name)}>
+
 
                           Activate
                         </a>
@@ -191,6 +195,7 @@ Reset
                 <Popconfirm id="delete-confirm" title="Sure to delete?" onConfirm={() => this.handleDelete(record.id)}>
                   <a id="delete-btn" href="javascript:;">
                     {' '}
+
 Delete
                     {' '}
                   </a>
@@ -209,6 +214,7 @@ Delete
                           style={{ marginRight: 8 }}
                         >
 
+
                           Save
                         </a>
                         <Divider className="vertical-divider" type="vertical" />
@@ -221,6 +227,7 @@ Delete
                   >
                     <span>
                       <a>
+
 Cancel
                       </a>
                     </span>
@@ -230,6 +237,7 @@ Cancel
                 <span>
                   {' '}
                   <a className="edit-btn" onClick={() => this.edit(record.id)}>
+
 Edit
                   </a>
                 </span>
@@ -532,6 +540,7 @@ Edit
             onClick={() => this.handleAdd()}
             type="primary"
           >
+
 
                 + Add new word group
           </Button>
