@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Modal, Button, notification } from 'antd';
 import alexisPasswordApi from '../../Base/api/alexisPasswordApi/alexisPasswordApi';
 import { getAlexisPass, okText, errServerConnection } from '../constants/constants';
@@ -12,9 +13,11 @@ class AlexisPassword extends React.Component {
       visible: false,
     };
   }
+  componentWillUnmount() {
+    clearInterval(this.awsStatus)
+  }
 
     getAlexisPass = async () => {
-      console.log(this.props.isOnline);
       const user = JSON.parse(localStorage.getItem('userInfo'));
       try {
         const res = await alexisPasswordApi(user.token);
@@ -28,6 +31,13 @@ class AlexisPassword extends React.Component {
           message: errServerConnection,
         });
       }
+      this.awsStatus = setInterval(() => {
+
+        const { isOnline } = this.props;
+        if (isOnline){
+          this.setState({ visible: false })
+        }
+      }, 5000);
     }
 
     handleOk = (e) => {
@@ -71,4 +81,8 @@ class AlexisPassword extends React.Component {
     }
 }
 
-export default AlexisPassword;
+const mapStateToProps = state => ({
+  userInfo: state.userInfo,
+});
+
+export default connect(mapStateToProps)(AlexisPassword);
