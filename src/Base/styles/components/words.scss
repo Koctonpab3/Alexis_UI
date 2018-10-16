@@ -1,0 +1,49 @@
+.wordsTable{
+  background-color: #ffffff;
+  width: 80%;
+  padding: 16px 0;
+  margin: 53px auto;
+  .words-table{
+    font-size: 14px;
+    word-break: unset;
+    background-color: #ffffff;
+    width: 70%;
+    margin: 0 auto;
+    .word-gr-name{
+      font-size: 1.2em;
+      padding: 10px 0;
+    }
+    .addWordsBtn{
+      margin-bottom: 20px;
+    }
+    .engWord-col{
+
+    }
+    .rus-name-col{
+      width: 30%;
+    }
+    .remove-word-col-name{
+
+    }
+    .wordInput{
+      padding-right: 29px;
+    }
+    .remove-word-icon{
+      color: #f35e5e;
+      font-size: 21px;
+      cursor: pointer;
+      &:hover{
+        color: rgb(195, 56, 55);
+      }
+    }
+    .ant-table-bordered .ant-table-thead > tr > th{
+      border-right: none;
+    }
+    .ant-table-bordered .ant-table-body > table{
+      border: none;
+    }
+    .ant-table-bordered .ant-table-tbody > tr > td{
+      border-right: none;
+    }
+  }
+}

@@ -5,6 +5,7 @@ import {
 } from 'antd';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 // actions
 
 import {
@@ -16,7 +17,6 @@ import {
 } from '../constans/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
 import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
-
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -44,7 +44,6 @@ class EditableCell extends React.Component {
         index,
         ...restProps
       } = this.props;
-
       return (
         <EditableContext.Consumer>
           {(form) => {
@@ -68,8 +67,10 @@ class EditableCell extends React.Component {
                       onKeyDown={this.handleOnKeyDown}
                     />)}
                   </FormItem>
+
                 ) : restProps.children}
               </td>
+
             );
           }}
         </EditableContext.Consumer>
@@ -144,16 +145,26 @@ Reset
             });
           }
         },
-        render: (text) => {
+        render: (text, record) => {
           const { searchText } = this.state;
           return searchText ? (
             <span>
+
               {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
                 fragment.toLowerCase() === searchText.toLowerCase()
                       ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
               ))}
             </span>
-          ) : text;
+          )
+            : (
+              <Link
+                to={`/wordgroups/${record.id}/${record.name}`}
+                className="wordGroup-name"
+              >
+                {text}
+              </Link>
+
+            );
         },
         sorter: (a, b) => a.name.localeCompare(b.name),
       },
@@ -541,9 +552,9 @@ Edit
             columns={columns}
             rowKey={record => record.id}
             rowClassName={() => 'editable-row'}
-            bordered
             dataSource={dataSource}
-            pagination={this.state.pagination}
+            // pagination={this.state.pagination}
+            pagination={{ pageSize: 10 }}
             loading={this.state.loading}
             onChange={this.handleTableChange}
           />
