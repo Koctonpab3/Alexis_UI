@@ -1,24 +1,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Form, Input, Button, message, notification } from 'antd';
+import {
+  Form, Input, Button, message, notification,
+} from 'antd';
 import { history } from '../../Base/routers/AppRouter';
 import { login } from '../actions/auth';
 import { registrationApi } from '../../Base/api/auth/authApi';
 
 import {
-
-    RegistrationText, NicknameText, RegisterBtnText, BackToLoginText, SuccsedRegistrationPopUp, ErroUserEmailExist, ErrorInputName, WrongPasswordTwo, EmailNotValid, ErrorEmailInput, ErrorPasswordInput, ErrorConfirmPassword, ErrorPasswordlength, ErrorNiknamelength,
+  RegistrationText, NicknameText, RegisterBtnText, BackToLoginText, SuccsedRegistrationPopUp, ErroUserEmailExist, ErrorInputName, WrongPasswordTwo, EmailNotValid, ErrorEmailInput, ErrorPasswordInput, ErrorConfirmPassword, ErrorPasswordlength, ErrorNiknamelength, latinLettersOnly,
 } from '../constants/constanst';
 
 const FormItem = Form.Item;
 
 class RegistrationForm extends React.Component {
     state = {
-        name: '',
-        email: '',
-        password: '',
-        isCapsLockOn: false,
+      name: '',
+      email: '',
+      password: '',
+      isCapsLockOn: false,
     }
 
     handleChangeEmail = (event) => {
@@ -26,19 +27,19 @@ class RegistrationForm extends React.Component {
     }
 
     checkCapsLock = (event) => {
-        if(event.getModifierState('CapsLock')) {
-            if (!this.state.isCapsLockOn) {
-                this.setState({ isCapsLockOn: true });
-                notification.open({
-                    message: 'CapsLock is on',
-                    duration: 0,
-                    description: 'Please notice that CapsLock is on, and letters will be uppercase'
-                })
-            } 
-        } else {
-            this.setState({ isCapsLockOn: false });
-            notification.destroy()
+      if (event.getModifierState('CapsLock')) {
+        if (!this.state.isCapsLockOn) {
+          this.setState({ isCapsLockOn: true });
+          notification.open({
+            message: 'CapsLock is on',
+            duration: 0,
+            description: 'Please notice that CapsLock is on, and letters will be uppercase',
+          });
         }
+      } else {
+        this.setState({ isCapsLockOn: false });
+        notification.destroy();
+      }
     }
 
     handleChangePass = (event) => {
@@ -81,6 +82,14 @@ class RegistrationForm extends React.Component {
       }
     }
 
+    checkCyrilLetters = (rule, value, callback) => {
+      const cyrillicPattern = /[\u0400-\u04FF]/;
+      if (cyrillicPattern.test(value)) {
+        callback(latinLettersOnly);
+      }
+      callback();
+    }
+
     render() {
       const { form } = this.props;
       return (
@@ -95,73 +104,77 @@ class RegistrationForm extends React.Component {
                 {NicknameText}
               </span>
                     )}
-                >
-                    {form.getFieldDecorator('nickname', {
-                        rules: [{ required: true, message: ErrorInputName, whitespace: true },{
-                            max: 25,
-                            message: ErrorNiknamelength
-                        }],
-                    })(
-                        <Input onChange={this.handleChangeName} />,
-                    )}
-                </FormItem>
-                <FormItem
-                    label="E-mail"
-                >
-                    {form.getFieldDecorator('email', {
-                        rules: [{
-                            type: 'email', message: EmailNotValid,
-                        }, {
-                            required: true, message: ErrorEmailInput,
-                        }],
-                    })(
-                        <Input name="email" onChange={this.handleChangeEmail} />,
-                    )}
-                </FormItem>
-                <FormItem
-                    label="Password"
-                >
-                    {form.getFieldDecorator('password', {
-                        rules: [{
-                            required: true, message: ErrorPasswordInput,
-                        },{
-                            min: 6,
-                            message: ErrorPasswordlength
-                        }, {
-                            validator: this.validateToNextPassword,
-                        }],
-                    })(
-                        <Input type="password" name="password" onChange={this.handleChangePass} onKeyDown={ this.checkCapsLock} />,
-                    )}
-                </FormItem>
-                <FormItem
-                    label="Confirm Password"
-                >
-                    {form.getFieldDecorator('confirm', {
-                        rules: [{
-                            required: true, message: ErrorConfirmPassword,
-                        },{
-                            min: 6,
-                            message: ErrorPasswordlength
-                        }, {
-                            validator: this.compareToFirstPassword,
-                        }],
-                    })(
-                        <Input type="password" onKeyDown={this.checkCapsLock} />,
-                    )}
-                </FormItem>
-                <FormItem>
-                    <div className="space-between">
-                        <Link to="/">
-                            { BackToLoginText }
-                        </Link>
-                        <Button type="primary" htmlType="submit">
-                            {RegisterBtnText}
-                        </Button>
-                    </div>
-                </FormItem>
-            </Form>
-        );
+          >
+            {form.getFieldDecorator('nickname', {
+              rules: [{ required: true, message: ErrorInputName, whitespace: true }, {
+                max: 25,
+                message: ErrorNiknamelength,
+              }],
+            })(
+              <Input onChange={this.handleChangeName} />,
+            )}
+          </FormItem>
+          <FormItem
+            label="E-mail"
+          >
+            {form.getFieldDecorator('email', {
+              rules: [{
+                type: 'email', message: EmailNotValid,
+              }, {
+                required: true, message: ErrorEmailInput,
+              }, {
+                validator: this.checkCyrilLetters,
+              }],
+            })(
+              <Input name="email" onChange={this.handleChangeEmail} />,
+            )}
+          </FormItem>
+          <FormItem
+            label="Password"
+          >
+            {form.getFieldDecorator('password', {
+              rules: [{
+                required: true, message: ErrorPasswordInput,
+              }, {
+                min: 6,
+                message: ErrorPasswordlength,
+              }, {
+                validator: this.validateToNextPassword,
+              }, {
+                validator: this.checkCyrilLetters,
+              }],
+            })(
+              <Input type="password" name="password" onChange={this.handleChangePass} onKeyDown={this.checkCapsLock} />,
+            )}
+          </FormItem>
+          <FormItem
+            label="Confirm Password"
+          >
+            {form.getFieldDecorator('confirm', {
+              rules: [{
+                required: true, message: ErrorConfirmPassword,
+              }, {
+                min: 6,
+                message: ErrorPasswordlength,
+              }, {
+                validator: this.compareToFirstPassword,
+              }],
+            })(
+              <Input type="password" onKeyDown={this.checkCapsLock} />,
+            )}
+          </FormItem>
+          <FormItem>
+            <div className="space-between">
+              <Link to="/">
+                { BackToLoginText }
+              </Link>
+              <Button type="primary" htmlType="submit">
+                {RegisterBtnText}
+              </Button>
+            </div>
+          </FormItem>
+        </Form>
+      );
     }
 }
 const mapStateToProps = state => ({

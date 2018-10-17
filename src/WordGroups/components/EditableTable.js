@@ -128,8 +128,14 @@ export class EditableTable extends React.Component {
               onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
               onPressEnter={this.handleSearch(selectedKeys, confirm)}
             />
-            <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
-            <Button onClick={this.handleReset(clearFilters)}>Reset</Button>
+            <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+
+Search
+            </Button>
+            <Button onClick={this.handleReset(clearFilters)}>
+
+Reset
+            </Button>
           </div>
         ),
         filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
@@ -177,6 +183,8 @@ export class EditableTable extends React.Component {
                       <span>
                         <Popconfirm title="Sure to deactivate?" onConfirm={() => this.toggleGroupStatus(record.id, record.name)}>
                           <a href="javascript:;">
+
+
                           Deactivate
                           </a>
                         </Popconfirm>
@@ -185,6 +193,8 @@ export class EditableTable extends React.Component {
                     ) : (
                       <span>
                         <a onClick={() => this.toggleGroupStatus(record.id, record.name)}>
+
+
                           Activate
                         </a>
                         <Divider className="vertical-divider" type="vertical" />
@@ -194,7 +204,12 @@ export class EditableTable extends React.Component {
               </span>
               <span>
                 <Popconfirm id="delete-confirm" title="Sure to delete?" onConfirm={() => this.handleDelete(record.id)}>
-                  <a id="delete-btn" href="javascript:;"> Delete </a>
+                  <a id="delete-btn" href="javascript:;">
+                    {' '}
+
+Delete
+                    {' '}
+                  </a>
                 </Popconfirm>
                 <Divider className="vertical-divider" type="vertical" />
               </span>
@@ -209,6 +224,8 @@ export class EditableTable extends React.Component {
                           onClick={() => this.save(form, record.id, record.activeState)}
                           style={{ marginRight: 8 }}
                         >
+
+
                           Save
                         </a>
                         <Divider className="vertical-divider" type="vertical" />
@@ -220,14 +237,20 @@ export class EditableTable extends React.Component {
                     onConfirm={() => this.cancel(record.id)}
                   >
                     <span>
-                      <a>Cancel</a>
+                      <a>
+
+Cancel
+                      </a>
                     </span>
                   </Popconfirm>
                 </span>
               ) : (
                 <span>
                   {' '}
-                  <a className="edit-btn" onClick={() => this.edit(record.id)}>Edit</a>
+                  <a className="edit-btn" onClick={() => this.edit(record.id)}>
+
+Edit
+                  </a>
                 </span>
               )}
             </div>
@@ -528,6 +551,8 @@ export class EditableTable extends React.Component {
             onClick={() => this.handleAdd()}
             type="primary"
           >
+
+
                 + Add new word group
           </Button>
           <Table

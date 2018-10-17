@@ -5,7 +5,7 @@ import {
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
-  ErroLoginPopUp, ErrorEmailInput, ErrorPasswordInput, PlaceholderEmail, PlaceholderPassword,
+  ErroLoginPopUp, ErrorEmailInput, ErrorPasswordInput, PlaceholderEmail, PlaceholderPassword, latinLettersOnly,
 } from '../constants/constanst';
 import { login } from '../actions/auth';
 import { history } from '../../Base/routers/AppRouter';
@@ -62,13 +62,21 @@ class NormalLoginForm extends React.Component {
 
           loginApi(basicAuth).then((userInfo) => {
             localStorage.setItem('userInfo', JSON.stringify({ ...userInfo, token: basicAuth }));
-            login({ ...userInfo });
+            login({ ...userInfo, email: user.email });
             history.push('/wordgroups');
           }).catch((error) => {
             message.error(ErroLoginPopUp);
           });
         }
       });
+    }
+
+    checkCyrilLetters = (rule, value, callback) => {
+      const cyrillicPattern = /[\u0400-\u04FF]/;
+      if (cyrillicPattern.test(value)) {
+        callback(latinLettersOnly);
+      }
+      callback();
     }
 
     render() {
@@ -80,14 +88,18 @@ class NormalLoginForm extends React.Component {
           </h4>
           <FormItem>
             {form.getFieldDecorator('userName', {
-              rules: [{ required: true, message: ErrorEmailInput }],
+              rules: [{ required: true, message: ErrorEmailInput }, {
+                validator: this.checkCyrilLetters,
+              }],
             })(
               <Input prefix={<Icon type="user" />} placeholder={PlaceholderEmail} onChange={this.handleChangeEmail} />,
             )}
           </FormItem>
           <FormItem>
             {form.getFieldDecorator('password', {
-              rules: [{ required: true, message: ErrorPasswordInput }],
+              rules: [{ required: true, message: ErrorPasswordInput }, {
+                validator: this.checkCyrilLetters,
+              }],
             })(
               <Input prefix={<Icon type="lock" />} type="password" placeholder={PlaceholderPassword} onChange={this.handleChangePass} onKeyDown={this.checkCapsLock} />,
             )}

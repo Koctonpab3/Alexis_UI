@@ -10,7 +10,7 @@ import Private from './PrivateRoute';
 import Wordgroups from '../../WordGroups/components/index';
 import WordsPage from '../../Words/components/WordsPage';
 import Setup from '../../Setup/components/index';
-import Profile from '../../Profile/components/index';
+import Profile from '../../Profile/components/Profile';
 import Statistics from '../../Statistics/components/index';
 import LoginPage from '../../Login/components/LoginPage';
 import RegistrationPage from '../../Login/components/RegistrationPage';

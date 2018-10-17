@@ -1,9 +1,10 @@
 import { LOGIN, LOGOUT, CLEAR_ALL } from '../constants/constanst';
 
-export const login = ({ name, image }) => ({
+export const login = ({ name, email, awsExist }) => ({
   type: LOGIN,
   name,
-  image,
+  email,
+  awsExist,
 });
 
 export const logout = () => ({

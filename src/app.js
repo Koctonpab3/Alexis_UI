@@ -23,14 +23,24 @@ const renderApp = () => {
 };
 
 const user = JSON.parse(localStorage.getItem('userInfo'));
+const currentPageUrl = history.location.pathname;
 
-if (user) {
-  store.dispatch(login({ ...user }));
-  if (history.location.pathname === '/') {
-    history.push('/wordgroups');
-  }
+const loginSet = [
+  { user: true, page: '/', response: '/wordgroups' },
+  { user: true, page: '/registration', response: '/wordgroups' },
+  { user: true, page: currentPageUrl, response: currentPageUrl },
+  { user: false, page: '/', response: '/' },
+  { user: false, page: '/registration', response: '/registration' },
+  { user: false, page: currentPageUrl, response: '/' },
+];
+
+const result = loginSet.find(item => item.user == !!user && item.page === currentPageUrl);
+
+if (!result.response) {
+  history.push(result.response);
   renderApp();
 } else {
-  history.push('/');
+  store.dispatch(login({ ...user }));
+  history.push(result.response);
   renderApp();
 }
