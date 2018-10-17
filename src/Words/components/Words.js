@@ -26,7 +26,7 @@ class WordsTable extends React.Component {
     super(props);
     this.columns = [
       {
-        title: 'English Words',
+        title: <span className="words-col-names">English Words</span>,
         dataIndex: 'enWord',
         className: 'engWord-col',
         filterDropdown: ({
@@ -68,7 +68,7 @@ class WordsTable extends React.Component {
         sorter: (a, b) => a.enWord.localeCompare(b.enWord),
       },
       {
-        title: 'Russian Word',
+        title: <span className="words-col-names">Russian Words</span>,
         dataIndex: 'ruWord',
         className: 'rus-name-col',
         filterDropdown: ({
