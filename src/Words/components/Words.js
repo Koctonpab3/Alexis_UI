@@ -328,6 +328,8 @@ class WordsTable extends React.Component {
                     whitespace: true,
                     pattern: '^[A-Za-z -]+$',
                     message: EngWordValidErr,
+                    min: 1,
+                    max: 27,
                   }],
                 })(
                   <Input
@@ -347,6 +349,8 @@ class WordsTable extends React.Component {
                     whitespace: true,
                     pattern: '^[А-Яа-яЁё]+$',
                     message: RusWordValidErr,
+                    min: 1,
+                    max: 14,
                   }],
                 })(
                   <Input
