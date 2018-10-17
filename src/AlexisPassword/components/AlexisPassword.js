@@ -1,13 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Modal, Button, notification } from 'antd';
 import alexisPasswordApi from '../../Base/api/alexisPasswordApi/alexisPasswordApi';
 import { getAlexisPass, okText, errServerConnection } from '../constants/constants';
 
 class AlexisPassword extends React.Component {
-    state = {
+  constructor(props) {
+    super(props);
+
+    this.state = {
       password: '',
       visible: false,
-    }
+    };
+  }
+  componentWillUnmount() {
+    clearInterval(this.awsStatus)
+  }
 
     getAlexisPass = async () => {
       const user = JSON.parse(localStorage.getItem('userInfo'));
@@ -23,6 +31,13 @@ class AlexisPassword extends React.Component {
           message: errServerConnection,
         });
       }
+      this.awsStatus = setInterval(() => {
+
+        const { isOnline } = this.props;
+        if (isOnline){
+          this.setState({ visible: false })
+        }
+      }, 5000);
     }
 
     handleOk = (e) => {
@@ -39,11 +54,13 @@ class AlexisPassword extends React.Component {
     }
 
     render() {
+      const { isOnline } = this.props;
       return (
         <div className="alexis-pass">
-          <p onClick={this.getAlexisPass}>
+
+          <Button type="primary" disabled={!!isOnline} onClick={this.getAlexisPass}>
             {getAlexisPass}
-          </p>
+          </Button>
           <Modal
             title="Alexis Code"
             visible={this.state.visible}
@@ -64,4 +81,8 @@ class AlexisPassword extends React.Component {
     }
 }
 
-export default AlexisPassword;
+const mapStateToProps = state => ({
+  userInfo: state.userInfo,
+});
+
+export default connect(mapStateToProps)(AlexisPassword);
