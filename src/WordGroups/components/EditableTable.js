@@ -130,9 +130,11 @@ export class EditableTable extends React.Component {
             />
             <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
 
+
 Search
             </Button>
             <Button onClick={this.handleReset(clearFilters)}>
+
 
 Reset
             </Button>
@@ -207,6 +209,7 @@ Reset
                   <a id="delete-btn" href="javascript:;">
                     {' '}
 
+
 Delete
                     {' '}
                   </a>
@@ -239,6 +242,7 @@ Delete
                     <span>
                       <a>
 
+
 Cancel
                       </a>
                     </span>
@@ -248,6 +252,7 @@ Cancel
                 <span>
                   {' '}
                   <a className="edit-btn" onClick={() => this.edit(record.id)}>
+
 
 Edit
                   </a>

@@ -2,13 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import AlexisPassword from '../../AlexisPassword/components/AlexisPassword';
 import { loginApi } from '../../Base/api/auth/authApi';
-import { login } from '../../Login/actions/auth'
-import { name, email, status, online, offline} from '../constants/constants'
+import { login } from '../../Login/actions/auth';
+import {
+  name, email, status, online, offline,
+} from '../constants/constants';
 
 class Profile extends React.Component {
-
   componentDidMount() {
-    this.getLoginIndo = setInterval(this.checkstatus, 5000)
+    this.getLoginIndo = setInterval(this.checkstatus, 5000);
   }
 
   componentWillUnmount() {

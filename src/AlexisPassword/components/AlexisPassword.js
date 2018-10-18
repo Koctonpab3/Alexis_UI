@@ -13,8 +13,9 @@ class AlexisPassword extends React.Component {
       visible: false,
     };
   }
+
   componentWillUnmount() {
-    clearInterval(this.awsStatus)
+    clearInterval(this.awsStatus);
   }
 
     getAlexisPass = async () => {
@@ -32,10 +33,9 @@ class AlexisPassword extends React.Component {
         });
       }
       this.awsStatus = setInterval(() => {
-
         const { isOnline } = this.props;
-        if (isOnline){
-          this.setState({ visible: false })
+        if (isOnline) {
+          this.setState({ visible: false });
         }
       }, 5000);
     }
