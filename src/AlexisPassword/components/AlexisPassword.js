@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Modal, Button, notification } from 'antd';
 import alexisPasswordApi from '../../Base/api/alexisPasswordApi/alexisPasswordApi';
 import { getAlexisPass, okText, errServerConnection } from '../constants/constants';
+import { getAlexisLogin } from '../actions/alexisPassword'
 
 class AlexisPassword extends React.Component {
   constructor(props) {
@@ -19,12 +20,13 @@ class AlexisPassword extends React.Component {
 
     getAlexisPass = async () => {
       const user = JSON.parse(localStorage.getItem('userInfo'));
+      const { alexisPass, getAlexisLogin } = this.props;
       try {
         const res = await alexisPasswordApi(user.token);
         this.setState({
-          password: res,
           visible: true,
         });
+        getAlexisLogin({ alexisPassword: res })
       } catch (err) {
         notification.open({
           type: 'error',
@@ -54,7 +56,7 @@ class AlexisPassword extends React.Component {
     }
 
     render() {
-      const { isOnline } = this.props;
+      const { isOnline, alexisPass } = this.props;
       return (
         <div className="alexis-pass">
 
@@ -73,7 +75,7 @@ class AlexisPassword extends React.Component {
             ]}
           >
             <h4 className="alexis-pass__code">
-              {this.state.password}
+              {alexisPass.alexisPassword}
             </h4>
           </Modal>
         </div>
@@ -83,6 +85,13 @@ class AlexisPassword extends React.Component {
 
 const mapStateToProps = state => ({
   userInfo: state.userInfo,
+  alexisPass: state.alexisPass,
 });
 
-export default connect(mapStateToProps)(AlexisPassword);
+const mapDispatchToProps = dispatch => ({
+  getAlexisLogin: (name) => {
+    dispatch(getAlexisLogin(name));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AlexisPassword);
