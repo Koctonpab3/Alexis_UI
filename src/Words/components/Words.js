@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  Form, Icon, Input, Button, Table, Popconfirm, notification,
+  Form, Icon, Input, Button, Table, Popconfirm, notification, AutoComplete,
 } from 'antd';
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -14,6 +14,7 @@ import {
 import { searchWords } from '../utils/search';
 import { EngWordValidErr, RusWordValidErr } from '../constants/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
+import Complete from './wordsComplete';
 
 const FormItem = Form.Item;
 
@@ -127,6 +128,7 @@ class WordsTable extends React.Component {
     state = {
       loading: true,
       pagination: {},
+      relWords: [],
     };
 
     componentDidMount() {
@@ -136,6 +138,43 @@ class WordsTable extends React.Component {
       this.loadWords();
     }
 
+    AutoCompOnSelect = () => {
+      this.setState({
+        relWords: [],
+      });
+    }
+
+    // english autocomplete
+    handleEngAutoComplete = (value) => {
+      const resWords = this.props.dataSource;
+      const engWordsArr = [];
+      const toArr = () => {
+        for (const value of resWords.values()) {
+          engWordsArr.push(value.enWord);
+        }
+      };
+      toArr();
+
+      this.setState({
+        relWords: !value ? [] : engWordsArr,
+      });
+    };
+
+    // russian autocomplete
+    handleRusAutoComplete = (value) => {
+      const resWords = this.props.dataSource;
+      const rusWordsArr = [];
+      const toArr = () => {
+        for (const value of resWords.values()) {
+          rusWordsArr.push(value.ruWord);
+        }
+      };
+      toArr();
+
+      this.setState({
+        relWords: !value ? [] : rusWordsArr,
+      });
+    };
 
     // adding new word to group
     handleAddWord = (e) => {
@@ -228,6 +267,7 @@ class WordsTable extends React.Component {
 
     // loading words for this wordgroup from server
     loadWords = () => {
+      console.log(this.props);
       const wordGroupsId = this.props.match.params.id;
       const wordsApi = async (token) => {
         const response = await axios({
@@ -286,7 +326,7 @@ class WordsTable extends React.Component {
       const {
         getFieldDecorator, getFieldsError, getFieldError, isFieldTouched,
       } = this.props.form;
-
+      const { relWords } = this.state;
       const wordGroupName = this.props.match.params.name;
       const { dataSource } = this.props;
       const columns = this.columns.map((col) => {
@@ -332,11 +372,17 @@ class WordsTable extends React.Component {
                     max: 27,
                   }],
                 })(
-                  <Input
-                    className="wordInput"
-                    prefix={<Icon type="search" theme="outlined" />}
-                    placeholder="English Word"
-                  />,
+                  <AutoComplete
+                    dataSource={relWords}
+                    onSearch={this.handleEngAutoComplete}
+                    onSelect={this.AutoCompOnSelect}
+                  >
+                    <Input
+                      className="wordInput"
+                      prefix={<Icon type="search" theme="outlined" />}
+                      placeholder="English Word"
+                    />
+                  </AutoComplete>,
                 )}
               </FormItem>
               <FormItem
@@ -353,11 +399,17 @@ class WordsTable extends React.Component {
                     max: 14,
                   }],
                 })(
-                  <Input
-                    className="wordInput"
-                    prefix={<Icon type="search" theme="outlined" />}
-                    placeholder="Russian Word"
-                  />,
+                  <AutoComplete
+                    dataSource={relWords}
+                    onSearch={this.handleRusAutoComplete}
+                  >
+                    <Input
+                      className="wordInput"
+                      prefix={<Icon type="search" theme="outlined" />}
+                      placeholder="Russian Word"
+                    />
+                  </AutoComplete>
+                  ,
                 )}
               </FormItem>
               <FormItem>
