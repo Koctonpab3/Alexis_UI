@@ -3,11 +3,12 @@ import { LOGIN, LOGOUT } from '../../../Login/constants/constanst';
 
 // test login
 test('should sava user info', () => {
-  const action = login({ name: 'Alex', image: 'https://via.placeholder.com/350x150' });
+  const action = login({ name: 'Alex', awsExist: false, email: 'test@rt.com', });
   expect(action).toEqual({
     type: LOGIN,
     name: 'Alex',
-    image: 'https://via.placeholder.com/350x150',
+    awsExist: false, 
+    email: 'test@rt.com',
   });
 });
 
