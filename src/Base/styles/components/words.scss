@@ -2,13 +2,14 @@ $break-medium-3: 1215px;
 $break-medium-4: 813px;
 $break-medium-5: 651px;
 $break-small-3: 360px;
-$th-td-left-padding: 20%;
+$th-td-left-padding: 19%;
 
 .wordsTable{
   background-color: #ffffff;
   width: 80%;
   padding: 16px 0;
   margin: 53px auto;
+  border-radius: 4px;
   @media screen and (max-width: $break-medium-5) {
     width: 100%;
     font-size: 0.9em;
@@ -55,6 +56,9 @@ $th-td-left-padding: 20%;
       @media screen and (max-width: $break-medium-5) {
         font-size: 1.3em;
       }
+    }
+    .ant-table-thead > tr > th{
+      padding: 16px 0;
     }
     .ant-table-bordered .ant-table-thead > tr > th{
       border-right: none;

@@ -14,7 +14,6 @@ import {
 import { searchWords } from '../utils/search';
 import { EngWordValidErr, RusWordValidErr } from '../constants/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
-import Complete from './wordsComplete';
 
 const FormItem = Form.Item;
 
@@ -66,6 +65,7 @@ class WordsTable extends React.Component {
 
             );
         },
+        // defaultSortOrder: 'ascend',
         sorter: (a, b) => a.enWord.localeCompare(b.enWord),
       },
       {
@@ -146,6 +146,7 @@ class WordsTable extends React.Component {
 
     // english autocomplete
     handleEngAutoComplete = (value) => {
+      console.log(value);
       const resWords = this.props.dataSource;
       const engWordsArr = [];
       const toArr = () => {
