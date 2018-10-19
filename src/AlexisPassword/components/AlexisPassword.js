@@ -41,7 +41,6 @@ class AlexisPassword extends React.Component {
         }
       }, 5000);
       this.btn.focus();
-      console.log(this.btn)
     }
 
     handleOk = (e) => {
