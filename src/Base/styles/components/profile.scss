@@ -21,11 +21,11 @@
     &__status{
         font-weight: bold;
         font-size: 18px;
-        .online{
+        &-online{
             color: green;
             font-weight: normal           
         }
-        .offline{
+        &-offline{
             color: red;
             font-weight: normal;
         }
