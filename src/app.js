@@ -1,17 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Offline, Online } from 'react-detect-offline';
 import { Provider } from 'react-redux';
 import App from './Base/app';
 import { history } from './Base/routers/AppRouter';
 import configureStore from './Base/store/configureStore';
 import { login } from './Login/actions/auth';
+import OfflineMBlock from './OfflineBlock/components/OfflineBlock';
 
 const store = configureStore();
 
 const jsx = (
-  <Provider store={store}>
-    <App />
-  </Provider>
+  <div>
+    <Online>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Online>
+    <Offline>
+      <OfflineMBlock />
+    </Offline>
+  </div>
 );
 
 let hasRenderred = false;

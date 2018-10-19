@@ -40,8 +40,12 @@ class WordsTable extends React.Component {
               onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
               onPressEnter={this.handleSearch(selectedKeys, confirm)}
             />
-            <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
-            <Button onClick={this.handleResetSearch(clearFilters)}>Reset</Button>
+            <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+Search
+            </Button>
+            <Button onClick={this.handleResetSearch(clearFilters)}>
+Reset
+            </Button>
           </div>
         ),
         filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
@@ -60,7 +64,9 @@ class WordsTable extends React.Component {
             ? searchWords(text, searchText)
             : (
               <div>
-                <span>{text}</span>
+                <span>
+                  {text}
+                </span>
               </div>
 
             );
@@ -83,8 +89,12 @@ class WordsTable extends React.Component {
               onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
               onPressEnter={this.handleSearch(selectedKeys, confirm)}
             />
-            <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>Search</Button>
-            <Button onClick={this.handleResetSearch(clearFilters)}>Reset</Button>
+            <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+Search
+            </Button>
+            <Button onClick={this.handleResetSearch(clearFilters)}>
+Reset
+            </Button>
           </div>
         ),
         filterIcon: filtered => <Icon type="search" style={{ color: filtered ? '#108ee9' : '#aaa' }} />,
@@ -101,7 +111,9 @@ class WordsTable extends React.Component {
           return searchText ? searchWords(text, searchText)
             : (
               <div>
-                <span>{text}</span>
+                <span>
+                  {text}
+                </span>
               </div>
 
             );
@@ -356,7 +368,9 @@ class WordsTable extends React.Component {
           >
             <Icon className="goBack-arr" type="arrow-left" theme="outlined" />
           </Button>
-          <p className="word-gr-name">{wordGroupName}</p>
+          <p className="word-gr-name">
+            {wordGroupName}
+          </p>
           <Form layout="inline" onSubmit={this.handleAddWord}>
             <div className="form-inputs-container">
               <FormItem
@@ -421,6 +435,7 @@ class WordsTable extends React.Component {
                   className="addWordsBtn"
                 >
                   <Icon type="plus" theme="outlined" />
+
                   Add Word
                 </Button>
               </FormItem>

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Modal, Button, notification } from 'antd';
 import alexisPasswordApi from '../../Base/api/alexisPasswordApi/alexisPasswordApi';
 import { getAlexisPass, okText, errServerConnection } from '../constants/constants';
+import { getAlexisLogin } from '../actions/alexisPassword'
 
 class AlexisPassword extends React.Component {
   constructor(props) {
@@ -13,18 +14,20 @@ class AlexisPassword extends React.Component {
       visible: false,
     };
   }
+
   componentWillUnmount() {
-    clearInterval(this.awsStatus)
+    clearInterval(this.awsStatus);
   }
 
     getAlexisPass = async () => {
       const user = JSON.parse(localStorage.getItem('userInfo'));
+      const { alexisPass, getAlexisLogin } = this.props;
       try {
         const res = await alexisPasswordApi(user.token);
         this.setState({
-          password: res,
           visible: true,
         });
+        getAlexisLogin({ alexisPassword: res })
       } catch (err) {
         notification.open({
           type: 'error',
@@ -32,12 +35,12 @@ class AlexisPassword extends React.Component {
         });
       }
       this.awsStatus = setInterval(() => {
-
         const { isOnline } = this.props;
-        if (isOnline){
-          this.setState({ visible: false })
+        if (isOnline) {
+          this.setState({ visible: false });
         }
       }, 5000);
+      this.btn.focus();
     }
 
     handleOk = (e) => {
@@ -54,7 +57,7 @@ class AlexisPassword extends React.Component {
     }
 
     render() {
-      const { isOnline } = this.props;
+      const { isOnline, alexisPass } = this.props;
       return (
         <div className="alexis-pass">
 
@@ -62,18 +65,16 @@ class AlexisPassword extends React.Component {
             {getAlexisPass}
           </Button>
           <Modal
-            title="Alexis Code"
+            title={getAlexisPass}
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
-            footer={[
-              <Button key="submit" type="primary" onClick={this.handleOk}>
-                {okText}
-              </Button>,
-            ]}
+            footer={[<button key="submit" ref={ref => {this.btn = ref}} className="ant-btn ant-btn-primary" onClick={this.handleOk}>
+            {okText}
+          </button>]}
           >
             <h4 className="alexis-pass__code">
-              {this.state.password}
+              {alexisPass.alexisPassword}
             </h4>
           </Modal>
         </div>
@@ -83,6 +84,13 @@ class AlexisPassword extends React.Component {
 
 const mapStateToProps = state => ({
   userInfo: state.userInfo,
+  alexisPass: state.alexisPass,
 });
 
-export default connect(mapStateToProps)(AlexisPassword);
+const mapDispatchToProps = dispatch => ({
+  getAlexisLogin: (name) => {
+    dispatch(getAlexisLogin(name));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AlexisPassword);

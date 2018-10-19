@@ -1,5 +1,5 @@
 import {
-  LOAD_WORDS_DATA, ADD_WORD, DELETE_WORD, CLEAR_ALL_WORDS
+  LOAD_WORDS_DATA, ADD_WORD, DELETE_WORD, CLEAR_ALL_WORDS,
 } from '../constants/constants';
 
 const initialState = {

@@ -2,13 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import AlexisPassword from '../../AlexisPassword/components/AlexisPassword';
 import { loginApi } from '../../Base/api/auth/authApi';
-import { login } from '../../Login/actions/auth'
-import { name, email, status, online, offline} from '../constants/constants'
+import { login } from '../../Login/actions/auth';
+import {
+  name, email, status, online, offline,
+} from '../constants/constants';
 
 class Profile extends React.Component {
-
   componentDidMount() {
-    this.getLoginIndo = setInterval(this.checkstatus, 5000)
+    this.getLoginIndo = setInterval(this.checkstatus, 5000);
   }
 
   componentWillUnmount() {
@@ -35,9 +36,6 @@ class Profile extends React.Component {
 
     return (
       <div className="profile">
-        <div className="profile__img">
-          <img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" alt="" />
-        </div>
         <div className="profile__info">
           <p className="profile__user-name">
             <span>
@@ -54,11 +52,11 @@ class Profile extends React.Component {
           <p className="profile__status">
             {status}
             {userInfo.awsExist ? (
-              <span className="online">
+              <span className="profile__status-online">
                 {online}
               </span>
             ) : (
-              <span className="offline">
+              <span className="profile__status-offline">
                 {offline}
               </span>
             )}
