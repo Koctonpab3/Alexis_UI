@@ -52,11 +52,11 @@ class Profile extends React.Component {
           <p className="profile__status">
             {status}
             {userInfo.awsExist ? (
-              <span className="online">
+              <span className="profile__status-online">
                 {online}
               </span>
             ) : (
-              <span className="offline">
+              <span className="profile__status-offline">
                 {offline}
               </span>
             )}
