@@ -35,9 +35,6 @@ class Profile extends React.Component {
 
     return (
       <div className="profile">
-        <div className="profile__img">
-          <img src="https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png" alt="" />
-        </div>
         <div className="profile__info">
           <p className="profile__user-name">
             <span>
