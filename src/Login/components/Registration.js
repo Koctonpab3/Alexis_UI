@@ -81,6 +81,13 @@ class RegistrationForm extends React.Component {
         callback();
       }
     }
+    checkLatinLettersOnly = (rule, value, callback) => {
+      const checkLatinLetters = /[^a-z ]/;
+      if (checkLatinLetters.test(value)) {
+        callback(latinLettersOnly);
+      }
+      callback();
+    }
 
     checkCyrilLetters = (rule, value, callback) => {
       const cyrillicPattern = /[\u0400-\u04FF]/;
@@ -109,6 +116,8 @@ class RegistrationForm extends React.Component {
               rules: [{ required: true, message: ErrorInputName, whitespace: true }, {
                 max: 25,
                 message: ErrorNiknamelength,
+              }, {
+                validator: this.checkLatinLettersOnly,
               }],
             })(
               <Input onChange={this.handleChangeName} />,
