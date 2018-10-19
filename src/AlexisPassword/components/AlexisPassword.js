@@ -40,6 +40,8 @@ class AlexisPassword extends React.Component {
           this.setState({ visible: false });
         }
       }, 5000);
+      this.btn.focus();
+      console.log(this.btn)
     }
 
     handleOk = (e) => {
@@ -68,11 +70,9 @@ class AlexisPassword extends React.Component {
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
-            footer={[
-              <Button key="submit" type="primary" onClick={this.handleOk}>
-                {okText}
-              </Button>,
-            ]}
+            footer={[<button key="submit" ref={ref => {this.btn = ref}} className="ant-btn ant-btn-primary" onClick={this.handleOk}>
+            {okText}
+          </button>]}
           >
             <h4 className="alexis-pass__code">
               {alexisPass.alexisPassword}
