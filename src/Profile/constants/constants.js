@@ -1,4 +1,4 @@
-export const name = 'Name: ';
+export const name = 'Nickname: ';
 export const email = 'Email: ';
 export const status = 'Status: ';
 export const online = 'online ';
