@@ -82,7 +82,7 @@ class RegistrationForm extends React.Component {
       }
     }
     checkLatinLettersOnly = (rule, value, callback) => {
-      const checkLatinLetters = /[^a-z ]/;
+      const checkLatinLetters = /[^a-zA-Z0-9\s]/;
       if (checkLatinLetters.test(value)) {
         callback(latinLettersOnly);
       }
