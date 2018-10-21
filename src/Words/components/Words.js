@@ -4,6 +4,7 @@ import {
   Form, Icon, Input, Button, Table, Popconfirm, notification, AutoComplete,
 } from 'antd';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {
   loadWordsData, addWord, deleteWord, clearWordsState,
@@ -280,7 +281,6 @@ Reset
 
     // loading words for this wordgroup from server
     loadWords = () => {
-      console.log(this.props);
       const wordGroupsId = this.props.match.params.id;
       const wordsApi = async (token) => {
         const response = await axios({
@@ -360,14 +360,15 @@ Reset
       const ruWordError = isFieldTouched('ruWord') && getFieldError('ruWord');
       return (
         <div className="words-table">
-          <Button
-            type="primary"
-            htmlType="submit"
-            onClick={this.props.history.goBack}
-            className="goBack"
-          >
-            <Icon className="goBack-arr" type="arrow-left" theme="outlined" />
-          </Button>
+          <Link to="/wordgroups">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="goBackBtn"
+            >
+              <Icon className="goBack-arr" type="arrow-left" theme="outlined" />
+            </Button>
+          </Link>
           <p className="word-gr-name">
             {wordGroupName}
           </p>
