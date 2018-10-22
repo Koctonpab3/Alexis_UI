@@ -1,10 +1,15 @@
+import React from 'react';
+import Adapter from 'enzyme-adapter-react-16';
 import {
   loadWordsData, addWord, deleteWord,
 } from '../../Words/actions/wordsActions';
-
 import {
   LOAD_WORDS_DATA, ADD_WORD, DELETE_WORD,
 } from '../../Words/constants/constants';
+import { WordsTable } from '../../Words/components/Words';
+
+
+configure({ adapter: new Adapter() });
 
 // test loadWordsData
 test('should keep words data from server in store', () => {
@@ -51,3 +56,5 @@ test('shoul delete word from store', () => {
     id: 58,
   });
 });
+
+

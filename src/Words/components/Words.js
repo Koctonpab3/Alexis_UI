@@ -22,7 +22,7 @@ function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 
-class WordsTable extends React.Component {
+export class WordsTable extends React.Component {
   constructor(props) {
     super(props);
     this.columns = [
@@ -451,6 +451,7 @@ Reset
                   <AutoComplete
                     dataSource={relWords}
                     onSearch={this.handleRusAutoComplete}
+                    onSelect ={this.AutoCompOnSelect}
                   >
                     <Input
                       className="wordInput"
