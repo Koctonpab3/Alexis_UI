@@ -16,9 +16,10 @@ $break-small-2: 340px;
     #logo{
       width: 130px;
       height: 36px;
-      margin: 10px 0;
-      background-color: #5c5c5c;
-      border-radius: 4px;
+      margin: 10px 10px 10px 0;
+      img{
+        width: 100%;
+      }
       @media screen and (max-width: $break-small) {
         width: 43px;
         height: 18px;
