@@ -7,7 +7,9 @@ import Logout from '../../Login/components/LogOut';
 const Navigation = props => (
   <div className="top-navbar-wrapper">
     <div className="top-container">
-      <div id="logo" />
+      <div id="logo">
+        <img src="images/logo.png" alt="Alexis"/>
+      </div>
       <Menu className="top-navbar" mode="horizontal" theme="dark">
         <Menu.Item className="nav-item">
           <Link to="/wordgroups">
