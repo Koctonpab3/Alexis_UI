@@ -155,38 +155,66 @@ Reset
       this.setState({
         relWords: [],
       });
-    }
+    };
 
     // english autocomplete
     handleEngAutoComplete = (value) => {
-      console.log(value);
-      const resWords = this.props.dataSource;
-      const engWordsArr = [];
-      const toArr = () => {
-        for (const value of resWords.values()) {
-          engWordsArr.push(value.enWord);
+      const lang = 'en';
+      const autoCompReq = async (token) => {
+        const response = await axios({
+          method: 'get',
+          url: `${mainUrl}/api/words/suggestion/${lang}/${value}`,
+          data: {
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        });
+        if (response.status <= 400) {
+          return response.data;
         }
+        throw new Error(response.status);
       };
-      toArr();
-
-      this.setState({
-        relWords: !value ? [] : engWordsArr,
+      const user = JSON.parse(localStorage.getItem('userInfo'));
+      autoCompReq(user.token).then((res) => {
+        const resEnWords = res;
+        this.setState({
+          relWords: !value ? [] : resEnWords,
+        });
+      }).catch((error) => {
+        console.log(error);
       });
     };
 
     // russian autocomplete
     handleRusAutoComplete = (value) => {
-      const resWords = this.props.dataSource;
-      const rusWordsArr = [];
-      const toArr = () => {
-        for (const value of resWords.values()) {
-          rusWordsArr.push(value.ruWord);
+      const lang = 'ru';
+      const autoCompReq = async (token) => {
+        const response = await axios({
+          method: 'get',
+          url: `${mainUrl}/api/words/suggestion/${lang}/${value}`,
+          data: {
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        });
+        if (response.status <= 400) {
+          return response.data;
         }
+        throw new Error(response.status);
       };
-      toArr();
-
-      this.setState({
-        relWords: !value ? [] : rusWordsArr,
+      const user = JSON.parse(localStorage.getItem('userInfo'));
+      autoCompReq(user.token).then((res) => {
+        const resRuWords = res;
+        this.setState({
+          relWords: !value ? [] : resRuWords,
+        });
+        console.log(res);
+      }).catch((error) => {
+        console.log(error);
       });
     };
 
