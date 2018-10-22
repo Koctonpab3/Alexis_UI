@@ -13,7 +13,7 @@ import {
   errServerConnection,
 } from '../../WordGroups/constans/constants';
 import { searchWords } from '../utils/search';
-import { EngWordValidErr, RusWordValidErr } from '../constants/constants';
+import { EngWordValidErr, RusWordValidErr, existingWordErr } from '../constants/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
 
 const FormItem = Form.Item;
@@ -212,7 +212,6 @@ Reset
         this.setState({
           relWords: !value ? [] : resRuWords,
         });
-        console.log(res);
       }).catch((error) => {
         console.log(error);
       });
@@ -254,11 +253,18 @@ Reset
           this.props.addWord(newAddedWord);
           this.handleReset();
         }).catch((error) => {
-          notification.open({
-            type: 'error',
-            message: errServerConnection,
-          });
-          console.log(error);
+          if (error.response.status === 400) {
+            notification.open({
+              type: 'error',
+              message: existingWordErr,
+            });
+          }
+          if (error.response.status !== 400) {
+            notification.open({
+              type: 'error',
+              message: errServerConnection,
+            });
+          }
         });
       });
     };
@@ -343,7 +349,6 @@ Reset
         this.setState({
           loading: false,
         });
-        console.log(error);
       });
     };
 

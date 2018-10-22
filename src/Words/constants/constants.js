@@ -10,3 +10,4 @@ export const CLEAR_ALL_WORDS = 'CLEAR_ALL_WORDS';
 // error or warning messages
 export const EngWordValidErr = 'Please input valid english word!';
 export const RusWordValidErr = 'Please input valid russian word!';
+export const existingWordErr = 'This words pair is already exists in this word group';
