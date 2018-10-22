@@ -56,5 +56,3 @@ test('shoul delete word from store', () => {
     id: 58,
   });
 });
-
-
