@@ -1,9 +1,10 @@
 import React from 'react';
 
 import {
-  Form, Icon, Input, Button, Table, Popconfirm, notification,
+  Form, Icon, Input, Button, Table, Popconfirm, notification, AutoComplete,
 } from 'antd';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {
   loadWordsData, addWord, deleteWord, clearWordsState,
@@ -12,7 +13,7 @@ import {
   errServerConnection,
 } from '../../WordGroups/constans/constants';
 import { searchWords } from '../utils/search';
-import { EngWordValidErr, RusWordValidErr } from '../constants/constants';
+import { EngWordValidErr, RusWordValidErr, existingWordErr } from '../constants/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
 
 const FormItem = Form.Item;
@@ -21,12 +22,12 @@ function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
 }
 
-class WordsTable extends React.Component {
+export class WordsTable extends React.Component {
   constructor(props) {
     super(props);
     this.columns = [
       {
-        title: 'English Words',
+        title: <span className="words-col-names">English Words</span>,
         dataIndex: 'enWord',
         className: 'engWord-col',
         filterDropdown: ({
@@ -71,10 +72,11 @@ Reset
 
             );
         },
+        // defaultSortOrder: 'ascend',
         sorter: (a, b) => a.enWord.localeCompare(b.enWord),
       },
       {
-        title: 'Russian Word',
+        title: <span className="words-col-names">Russian Words</span>,
         dataIndex: 'ruWord',
         className: 'rus-name-col',
         filterDropdown: ({
@@ -139,6 +141,7 @@ Reset
     state = {
       loading: true,
       pagination: {},
+      relWords: [],
     };
 
     componentDidMount() {
@@ -148,6 +151,72 @@ Reset
       this.loadWords();
     }
 
+    AutoCompOnSelect = () => {
+      this.setState({
+        relWords: [],
+      });
+    };
+
+    // english autocomplete
+    handleEngAutoComplete = (value) => {
+      const lang = 'en';
+      const autoCompReq = async (token) => {
+        const response = await axios({
+          method: 'get',
+          url: `${mainUrl}/api/words/suggestion/${lang}/${value}`,
+          data: {
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        });
+        if (response.status <= 400) {
+          return response.data;
+        }
+        throw new Error(response.status);
+      };
+      const user = JSON.parse(localStorage.getItem('userInfo'));
+      autoCompReq(user.token).then((res) => {
+        const resEnWords = res;
+        this.setState({
+          relWords: !value ? [] : resEnWords,
+        });
+      }).catch((error) => {
+        console.log(error);
+      });
+    };
+
+    // russian autocomplete
+    handleRusAutoComplete = (value) => {
+      console.log(this.props);
+      const lang = 'ru';
+      const autoCompReq = async (token) => {
+        const response = await axios({
+          method: 'get',
+          url: `${mainUrl}/api/words/suggestion/${lang}/${value}`,
+          data: {
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        });
+        if (response.status <= 400) {
+          return response.data;
+        }
+        throw new Error(response.status);
+      };
+      const user = JSON.parse(localStorage.getItem('userInfo'));
+      autoCompReq(user.token).then((res) => {
+        const resRuWords = res;
+        this.setState({
+          relWords: !value ? [] : resRuWords,
+        });
+      }).catch((error) => {
+        console.log(error);
+      });
+    };
 
     // adding new word to group
     handleAddWord = (e) => {
@@ -185,11 +254,18 @@ Reset
           this.props.addWord(newAddedWord);
           this.handleReset();
         }).catch((error) => {
-          notification.open({
-            type: 'error',
-            message: errServerConnection,
-          });
-          console.log(error);
+          if (error.response.status === 400) {
+            notification.open({
+              type: 'error',
+              message: existingWordErr,
+            });
+          }
+          if (error.response.status !== 400) {
+            notification.open({
+              type: 'error',
+              message: errServerConnection,
+            });
+          }
         });
       });
     };
@@ -274,7 +350,6 @@ Reset
         this.setState({
           loading: false,
         });
-        console.log(error);
       });
     };
 
@@ -298,7 +373,7 @@ Reset
       const {
         getFieldDecorator, getFieldsError, getFieldError, isFieldTouched,
       } = this.props.form;
-
+      const { relWords } = this.state;
       const wordGroupName = this.props.match.params.name;
       const { dataSource } = this.props;
       const columns = this.columns.map((col) => {
@@ -319,14 +394,15 @@ Reset
       const ruWordError = isFieldTouched('ruWord') && getFieldError('ruWord');
       return (
         <div className="words-table">
-          <Button
-            type="primary"
-            htmlType="submit"
-            onClick={this.props.history.goBack}
-            className="goBack"
-          >
-            <Icon className="goBack-arr" type="arrow-left" theme="outlined" />
-          </Button>
+          <Link to="/wordgroups">
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="goBackBtn"
+            >
+              <Icon className="goBack-arr" type="arrow-left" theme="outlined" />
+            </Button>
+          </Link>
           <p className="word-gr-name">
             {wordGroupName}
           </p>
@@ -342,13 +418,21 @@ Reset
                     whitespace: true,
                     pattern: '^[A-Za-z -]+$',
                     message: EngWordValidErr,
+                    min: 1,
+                    max: 27,
                   }],
                 })(
-                  <Input
-                    className="wordInput"
-                    prefix={<Icon type="search" theme="outlined" />}
-                    placeholder="English Word"
-                  />,
+                  <AutoComplete
+                    dataSource={relWords}
+                    onSearch={this.handleEngAutoComplete}
+                    onSelect={this.AutoCompOnSelect}
+                  >
+                    <Input
+                      className="wordInput"
+                      prefix={<Icon type="search" theme="outlined" />}
+                      placeholder="English Word"
+                    />
+                  </AutoComplete>,
                 )}
               </FormItem>
               <FormItem
@@ -361,13 +445,22 @@ Reset
                     whitespace: true,
                     pattern: '^[А-Яа-яЁё]+$',
                     message: RusWordValidErr,
+                    min: 1,
+                    max: 14,
                   }],
                 })(
-                  <Input
-                    className="wordInput"
-                    prefix={<Icon type="search" theme="outlined" />}
-                    placeholder="Russian Word"
-                  />,
+                  <AutoComplete
+                    dataSource={relWords}
+                    onSearch={this.handleRusAutoComplete}
+                    onSelect ={this.AutoCompOnSelect}
+                  >
+                    <Input
+                      className="wordInput"
+                      prefix={<Icon type="search" theme="outlined" />}
+                      placeholder="Russian Word"
+                    />
+                  </AutoComplete>
+                  ,
                 )}
               </FormItem>
               <FormItem>
