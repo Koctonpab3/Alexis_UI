@@ -189,6 +189,7 @@ Reset
 
     // russian autocomplete
     handleRusAutoComplete = (value) => {
+      console.log(this.props);
       const lang = 'ru';
       const autoCompReq = async (token) => {
         const response = await axios({

@@ -9,8 +9,6 @@ import {
 import { WordsTable } from '../../Words/components/Words';
 
 
-configure({ adapter: new Adapter() });
-
 // test loadWordsData
 test('should keep words data from server in store', () => {
   const action = loadWordsData({
