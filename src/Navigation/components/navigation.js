@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Menu, Popover } from 'antd';
 import Logout from '../../Login/components/LogOut';
 
-const logo = '/images/logo.png';
+const logo = './images/logo.png';
 
 const Navigation = props => (
   <div className="top-navbar-wrapper">
