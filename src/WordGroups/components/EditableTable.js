@@ -251,7 +251,7 @@ Cancel
               ) : (
                 <span>
                   {' '}
-                  <a className="edit-btn" onClick={() => this.edit(record.id)}>
+                  <a className="edit-btn" href="javascript:;" onClick={() => this.edit(record.id)}>
 
 
 Edit
