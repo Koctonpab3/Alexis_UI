@@ -141,7 +141,9 @@ Reset
     state = {
       loading: true,
       pagination: {},
-      relWords: [],
+      // relWords: [],
+      rusRelWords: [],
+      enRelWords: [],
     };
 
     componentDidMount() {
@@ -151,14 +153,11 @@ Reset
       this.loadWords();
     }
 
-    clearWordsState = () => {
-      this.setState({
-        relWords: [],
-      });
-    };
-
     // english autocomplete
     handleEngAutoComplete = (value) => {
+      this.setState({
+        enRelWords: [],
+      });
       const lang = 'en';
       const autoCompReq = async (token) => {
         const response = await axios({
@@ -180,7 +179,7 @@ Reset
       autoCompReq(user.token).then((res) => {
         const resEnWords = res;
         this.setState({
-          relWords: !value ? [] : resEnWords,
+          enRelWords: !value ? [] : resEnWords,
         });
       }).catch((error) => {
         console.log(error);
@@ -189,6 +188,9 @@ Reset
 
     // russian autocomplete
     handleRusAutoComplete = (value) => {
+      this.setState({
+        rusRelWords: [],
+      });
       const lang = 'ru';
       const autoCompReq = async (token) => {
         const response = await axios({
@@ -210,7 +212,7 @@ Reset
       autoCompReq(user.token).then((res) => {
         const resRuWords = res;
         this.setState({
-          relWords: !value ? [] : resRuWords,
+          rusRelWords: !value ? [] : resRuWords,
         });
       }).catch((error) => {
         console.log(error);
@@ -372,7 +374,7 @@ Reset
       const {
         getFieldDecorator, getFieldsError, getFieldError, isFieldTouched,
       } = this.props.form;
-      const { relWords } = this.state;
+      const { enRelWords, rusRelWords } = this.state;
       const wordGroupName = this.props.match.params.name;
       const { dataSource } = this.props;
       const columns = this.columns.map((col) => {
@@ -418,14 +420,12 @@ Reset
                     pattern: '^[A-Za-z -]+$',
                     message: EngWordValidErr,
                     min: 1,
-                    max: 27,
+                    max: 36,
                   }],
                 })(
                   <AutoComplete
-                    dataSource={relWords}
+                    dataSource={enRelWords}
                     onSearch={this.handleEngAutoComplete}
-                    onSelect={this.clearWordsState}
-                    onBlur={this.clearWordsState}
                   >
                     <Input
                       className="wordInput"
@@ -446,13 +446,12 @@ Reset
                     pattern: '^[А-Яа-яЁё]+$',
                     message: RusWordValidErr,
                     min: 1,
-                    max: 14,
+                    max: 36,
                   }],
                 })(
                   <AutoComplete
-                    dataSource={relWords}
+                    dataSource={rusRelWords}
                     onSearch={this.handleRusAutoComplete}
-                    onSelect={this.clearWordsState}
                     onBlur={this.clearWordsState}
                   >
                     <Input
