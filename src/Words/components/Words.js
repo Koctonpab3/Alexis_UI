@@ -151,7 +151,7 @@ Reset
       this.loadWords();
     }
 
-    AutoCompOnSelect = () => {
+    clearWordsState = () => {
       this.setState({
         relWords: [],
       });
@@ -189,7 +189,6 @@ Reset
 
     // russian autocomplete
     handleRusAutoComplete = (value) => {
-      console.log(this.props);
       const lang = 'ru';
       const autoCompReq = async (token) => {
         const response = await axios({
@@ -425,7 +424,8 @@ Reset
                   <AutoComplete
                     dataSource={relWords}
                     onSearch={this.handleEngAutoComplete}
-                    onSelect={this.AutoCompOnSelect}
+                    onSelect={this.clearWordsState}
+                    onBlur={this.clearWordsState}
                   >
                     <Input
                       className="wordInput"
@@ -452,7 +452,8 @@ Reset
                   <AutoComplete
                     dataSource={relWords}
                     onSearch={this.handleRusAutoComplete}
-                    onSelect ={this.AutoCompOnSelect}
+                    onSelect={this.clearWordsState}
+                    onBlur={this.clearWordsState}
                   >
                     <Input
                       className="wordInput"
