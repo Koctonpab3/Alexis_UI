@@ -1,32 +1,50 @@
+$break-medium-3: 1215px;
+$break-medium-4: 813px;
+$break-medium-5: 651px;
+$break-small-3: 360px;
+$th-td-left-padding: 19%;
+
 .wordsTable{
   background-color: #ffffff;
   width: 80%;
   padding: 16px 0;
   margin: 53px auto;
+  border-radius: 4px;
+  @media screen and (max-width: $break-medium-5) {
+    width: 100%;
+    font-size: 0.9em;
+  }
   .words-table{
     font-size: 14px;
     word-break: unset;
     background-color: #ffffff;
-    width: 70%;
+    width: 96%;
     margin: 0 auto;
+    .anticon{
+      @media screen and (max-width: $break-medium-5) {
+        font-size: 0.9em;
+      }
+    }
+    @media screen and (max-width: $break-medium-5) {
+      font-size: 0.9em;
+    }
     .word-gr-name{
       font-size: 1.2em;
       padding: 10px 0;
     }
     .addWordsBtn{
       margin-bottom: 20px;
-    }
-    .engWord-col{
-
-    }
-    .rus-name-col{
-      width: 30%;
-    }
-    .remove-word-col-name{
-
+      @media screen and (max-width: $break-medium-5) {
+        font-size: 0.9em;
+      }
     }
     .wordInput{
-      padding-right: 29px;
+      padding-right: 10px;
+      input{
+        @media screen and (max-width: $break-medium-5) {
+        font-size: 0.9em;
+        }
+      }
     }
     .remove-word-icon{
       color: #f35e5e;
@@ -35,15 +53,43 @@
       &:hover{
         color: rgb(195, 56, 55);
       }
+      @media screen and (max-width: $break-medium-5) {
+        font-size: 1.3em;
+      }
+    }
+    .ant-table-thead > tr > th{
+      padding: 16px 0;
     }
     .ant-table-bordered .ant-table-thead > tr > th{
       border-right: none;
+      padding-left: $th-td-left-padding;
+      .words-col-names{
+        @media screen and (max-width: $break-small-3) {
+          padding-right: 15px;
+        }
+      }
+      @media screen and (max-width: $break-medium-3) {
+        padding-left: $th-td-left-padding/2;
+      }
+      @media screen and (max-width: $break-medium-4) {
+        padding-left: $th-td-left-padding/5;
+      }
     }
     .ant-table-bordered .ant-table-body > table{
       border: none;
+      @media screen and (max-width: $break-medium-5) {
+        font-size: 0.9em;
+      }
     }
     .ant-table-bordered .ant-table-tbody > tr > td{
       border-right: none;
+      padding-left:$th-td-left-padding;
+      @media screen and (max-width: $break-medium-3) {
+        padding-left: $th-td-left-padding/2;
+      }
+      @media screen and (max-width: $break-medium-4) {
+        padding-left: $th-td-left-padding/5;
+      }
     }
   }
 }

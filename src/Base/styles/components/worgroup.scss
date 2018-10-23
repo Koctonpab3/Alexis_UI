@@ -32,11 +32,12 @@ $break-small-2: 346px;
     background-color: #ffffff;
     width: 100%;
     padding: 16px 0;
+    border-radius: 4px;
     .wordTable{
       width: 92%;
       margin: 0 auto;
       #addGroup-Btn{
-        margin-bottom: 16px;
+        margin: 10px 0 30px 0;
         @media screen and (max-width: $break-medium) {
           font-size: 0.9em;
         }
