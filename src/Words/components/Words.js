@@ -452,7 +452,8 @@ Reset
                   <AutoComplete
                     dataSource={relWords}
                     onSearch={this.handleRusAutoComplete}
-                    onSelect ={this.clearWordsState}
+                    onSelect={this.clearWordsState}
+                    onBlur={this.clearWordsState}
                   >
                     <Input
                       className="wordInput"
