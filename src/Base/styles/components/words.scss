@@ -20,6 +20,18 @@ $th-td-left-padding: 19%;
     background-color: #ffffff;
     width: 96%;
     margin: 0 auto;
+    .engWord-col{
+      width: 40%;
+      text-align: center;
+    }
+    .rus-name-col{
+      width: 40%;
+      text-align: center;
+    }
+    .remove-word-col-name{
+      width: 10%;
+      text-align: left;
+    }
     .anticon{
       @media screen and (max-width: $break-medium-5) {
         font-size: 0.9em;
@@ -57,12 +69,14 @@ $th-td-left-padding: 19%;
         font-size: 1.3em;
       }
     }
-    .ant-table-thead > tr > th{
-      padding: 16px 0;
-    }
+    //.ant-table-thead > tr > th{
+    //  padding: 16px 0;
+    //  text-align: right;
+    //}
     .ant-table-bordered .ant-table-thead > tr > th{
       border-right: none;
-      padding-left: $th-td-left-padding;
+      //padding-left: $th-td-left-padding;
+      text-align: center;
       .words-col-names{
         @media screen and (max-width: $break-small-3) {
           padding-right: 15px;
@@ -83,7 +97,8 @@ $th-td-left-padding: 19%;
     }
     .ant-table-bordered .ant-table-tbody > tr > td{
       border-right: none;
-      padding-left:$th-td-left-padding;
+      //padding-left:$th-td-left-padding;
+      //text-align: center;
       @media screen and (max-width: $break-medium-3) {
         padding-left: $th-td-left-padding/2;
       }

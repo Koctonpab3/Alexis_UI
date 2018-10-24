@@ -66,7 +66,7 @@ Reset
             : (
               <div>
                 <span>
-                  {text}
+                  { text }
                 </span>
               </div>
 
@@ -113,7 +113,7 @@ Reset
             : (
               <div>
                 <span>
-                  {text}
+                  { text }
                 </span>
               </div>
 
@@ -141,16 +141,14 @@ Reset
     state = {
       loading: true,
       pagination: {},
-      // relWords: [],
       rusRelWords: [],
       enRelWords: [],
     };
 
-    componentDidMount() {
-      this.props.form.validateFields();
-      const { clearWordsState } = this.props;
-      clearWordsState();
-      this.loadWords();
+    clearWordsState() {
+      this.setState({
+        enRelWords: [],
+      });
     }
 
     // english autocomplete
@@ -184,6 +182,9 @@ Reset
       }).catch((error) => {
         console.log(error);
       });
+      this.setState({
+        enRelWords: [],
+      });
     };
 
     // russian autocomplete
@@ -216,6 +217,9 @@ Reset
         });
       }).catch((error) => {
         console.log(error);
+      });
+      this.setState({
+        rusRelWords: [],
       });
     };
 
@@ -254,6 +258,7 @@ Reset
           };
           this.props.addWord(newAddedWord);
           this.handleReset();
+          this.props.form.validateFields();
         }).catch((error) => {
           if (error.response.status === 400) {
             notification.open({
@@ -367,6 +372,13 @@ Reset
         sortOrder: sorter.order,
         ...filters,
       });
+    };
+
+    componentDidMount() {
+      this.props.form.validateFields();
+      const { clearWordsState } = this.props;
+      clearWordsState();
+      this.loadWords();
     }
 
 
@@ -374,7 +386,8 @@ Reset
       const {
         getFieldDecorator, getFieldsError, getFieldError, isFieldTouched,
       } = this.props.form;
-      const { enRelWords, rusRelWords } = this.state;
+      const { enRelWords } = this.state;
+      const { rusRelWords } = this.state;
       const wordGroupName = this.props.match.params.name;
       const { dataSource } = this.props;
       const columns = this.columns.map((col) => {
@@ -426,6 +439,8 @@ Reset
                   <AutoComplete
                     dataSource={enRelWords}
                     onSearch={this.handleEngAutoComplete}
+                    // onBlur={this.clearWordsState}
+                    onFocus={this.handleEngAutoComplete}
                   >
                     <Input
                       className="wordInput"
@@ -452,7 +467,7 @@ Reset
                   <AutoComplete
                     dataSource={rusRelWords}
                     onSearch={this.handleRusAutoComplete}
-                    onBlur={this.clearWordsState}
+                    // onBlur={this.clearWordsState}
                   >
                     <Input
                       className="wordInput"

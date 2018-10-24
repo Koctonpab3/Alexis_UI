@@ -153,12 +153,18 @@ Reset
           const { searchText } = this.state;
           return searchText ? (
             <span>
+              <Link
+                to={`/wordgroups/${record.id}/${record.name}`}
+                className="wordGroup-name"
+              >
 
-              {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
-                fragment.toLowerCase() === searchText.toLowerCase()
+                {text.split(new RegExp(`(?<=${searchText})|(?=${searchText})`, 'i')).map((fragment, i) => (
+                  fragment.toLowerCase() === searchText.toLowerCase()
                       ? <span key={i} className="highlight">{fragment}</span> : fragment // eslint-disable-line
-              ))}
+                ))}
+              </Link>
             </span>
+
           )
             : (
               <Link
