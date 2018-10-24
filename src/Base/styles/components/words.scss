@@ -1,8 +1,8 @@
 $break-medium-3: 1215px;
 $break-medium-4: 813px;
-$break-medium-5: 651px;
-$break-small-3: 360px;
-$th-td-left-padding: 18%;
+$break-medium-5: 700px;
+$break-small-3: 403px;
+
 
 .wordsTable{
   background-color: #ffffff;
@@ -20,6 +20,23 @@ $th-td-left-padding: 18%;
     background-color: #ffffff;
     width: 96%;
     margin: 0 auto;
+    .engWord-col{
+      width: 40%;
+      text-align: center;
+    }
+    .rus-name-col{
+      width: 40%;
+      text-align: center;
+    }
+    .remove-word-col-name{
+      width: 10%;
+      text-align: left;
+    }
+    .col-lang{
+      @media screen and (max-width: $break-small-3) {
+        padding-right: 42px;
+      }
+    }
     .anticon{
       @media screen and (max-width: $break-medium-5) {
         font-size: 0.9em;
@@ -57,23 +74,9 @@ $th-td-left-padding: 18%;
         font-size: 1.3em;
       }
     }
-    .ant-table-thead > tr > th{
-      padding: 16px 0;
-    }
     .ant-table-bordered .ant-table-thead > tr > th{
       border-right: none;
-      padding-left: $th-td-left-padding;
-      .words-col-names{
-        @media screen and (max-width: $break-small-3) {
-          padding-right: 15px;
-        }
-      }
-      @media screen and (max-width: $break-medium-3) {
-        padding-left: $th-td-left-padding/2;
-      }
-      @media screen and (max-width: $break-medium-4) {
-        padding-left: $th-td-left-padding/5;
-      }
+      text-align: center;
     }
     .ant-table-bordered .ant-table-body > table{
       border: none;
@@ -83,13 +86,6 @@ $th-td-left-padding: 18%;
     }
     .ant-table-bordered .ant-table-tbody > tr > td{
       border-right: none;
-      padding-left:$th-td-left-padding;
-      @media screen and (max-width: $break-medium-3) {
-        padding-left: $th-td-left-padding/2;
-      }
-      @media screen and (max-width: $break-medium-4) {
-        padding-left: $th-td-left-padding/5;
-      }
     }
   }
 }
