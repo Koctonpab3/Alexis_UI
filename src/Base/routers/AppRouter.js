@@ -9,7 +9,7 @@ import Private from './PrivateRoute';
 // pages
 import Wordgroups from '../../WordGroups/components/index';
 import WordsPage from '../../Words/components/WordsPage';
-import Setup from '../../Setup/components/index';
+import SetupPage from '../../Setup/components/SetupPage';
 import Profile from '../../Profile/components/Profile';
 import Statistics from '../../Statistics/components/index';
 import LoginPage from '../../Login/components/LoginPage';
@@ -27,7 +27,7 @@ const AppRouter = () => (
         <Route path="/registration" component={RegistrationPage} />
         <Private path="/wordgroups" component={Wordgroups} exact />
         <Private path="/wordgroups/:id/:name" component={WordsPage} />
-        <Private path="/setup" component={Setup} />
+        <Private path="/setup" component={SetupPage} />
         <Private path="/statistics" component={Statistics} />
         <Private path="/profile" component={Profile} />
       </Switch>

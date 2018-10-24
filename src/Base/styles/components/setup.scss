@@ -1,0 +1,44 @@
+.setup-wrap{
+  .setup-block{
+    background-color: #ffffff;
+    width: 100%;
+    padding: 16px 0;
+    margin: 20px auto;
+    border-radius: 4px;
+    .select-block{
+      margin: 0 auto;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .select-block-text{
+        font-size: 1.4em;
+        font-weight: 600;
+      }
+      .select-wrapper{
+        margin: 40px 0;
+        .select-block-item-wrap{
+          display: flex;
+          margin-top: 20px;
+          .select-label{
+            width: 100px;
+            text-align: left;
+            .label-text{
+              vertical-align: middle;
+            }
+          }
+          .select-input{
+            margin-left: 25px;
+          }
+          .select-item{
+            width: 220px;
+          }
+        }
+      }
+      #save-select-btn{
+        height: 35px;
+        width: 90px;
+      }
+    }
+  }
+}
