@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import { Menu, Popover } from 'antd';
 import Logout from '../../Login/components/LogOut';
 
+const logo = '/images/logo.png';
+
 const Navigation = props => (
   <div className="top-navbar-wrapper">
     <div className="top-container">
       <div id="logo">
-        <img src="/images/logo.png" alt="Alexis" />
+        <img src={logo} alt="Alexis" />
       </div>
       <Menu className="top-navbar" mode="horizontal" theme="dark">
         <Menu.Item className="nav-item">
