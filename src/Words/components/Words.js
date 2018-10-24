@@ -27,7 +27,10 @@ export class WordsTable extends React.Component {
     super(props);
     this.columns = [
       {
-        title: <span className="words-col-names">English Words</span>,
+        title: <span className="words-col-names">
+          <span className="col-lang">English </span>
+          <span>Words</span>
+               </span>,
         dataIndex: 'enWord',
         className: 'engWord-col',
         filterDropdown: ({
@@ -36,7 +39,7 @@ export class WordsTable extends React.Component {
           <div className="custom-filter-dropdown">
             <Input
               ref={ele => this.searchInput = ele}
-              placeholder="Search English"
+              placeholder="Search English word"
               value={selectedKeys[0]}
               onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
               onPressEnter={this.handleSearch(selectedKeys, confirm)}
@@ -60,7 +63,6 @@ Reset
         },
         render: (text, record) => {
           const { searchText } = this.state;
-          // const { searchWords } = this.props;
           return searchText
             ? searchWords(text, searchText)
             : (
@@ -72,11 +74,15 @@ Reset
 
             );
         },
-        // defaultSortOrder: 'ascend',
+        defaultSortOrder: 'ascend',
         sorter: (a, b) => a.enWord.localeCompare(b.enWord),
       },
       {
-        title: <span className="words-col-names">Russian Words</span>,
+        title:
+          <span className="words-col-names">
+            <span className="col-lang">Russian </span>
+            <span>Words</span>
+          </span>,
         dataIndex: 'ruWord',
         className: 'rus-name-col',
         filterDropdown: ({
@@ -85,7 +91,7 @@ Reset
           <div className="custom-filter-dropdown">
             <Input
               ref={ele => this.searchInput = ele}
-              placeholder="Search English"
+              placeholder="Search Russian word"
               value={selectedKeys[0]}
               onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
               onPressEnter={this.handleSearch(selectedKeys, confirm)}
@@ -148,6 +154,7 @@ Reset
     clearWordsState() {
       this.setState({
         enRelWords: [],
+        rusRelWords: [],
       });
     }
 
@@ -259,6 +266,7 @@ Reset
           this.props.addWord(newAddedWord);
           this.handleReset();
           this.props.form.validateFields();
+          this.clearWordsState();
         }).catch((error) => {
           if (error.response.status === 400) {
             notification.open({
@@ -439,7 +447,6 @@ Reset
                   <AutoComplete
                     dataSource={enRelWords}
                     onSearch={this.handleEngAutoComplete}
-                    // onBlur={this.clearWordsState}
                     onFocus={this.handleEngAutoComplete}
                   >
                     <Input
@@ -467,7 +474,6 @@ Reset
                   <AutoComplete
                     dataSource={rusRelWords}
                     onSearch={this.handleRusAutoComplete}
-                    // onBlur={this.clearWordsState}
                   >
                     <Input
                       className="wordInput"
