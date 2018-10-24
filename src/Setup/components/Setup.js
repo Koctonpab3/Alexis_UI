@@ -85,7 +85,8 @@ export default class Setup extends React.Component {
               </div>
               <Select
                 className="select-block-item select-item select-input wordgroup-select"
-                value={groupsList[0]}
+                // defaultValue={groupsList[0]}
+                placeholder="Choose the word group"
               >
                 {groupsList.map(wordGroup => <Option key={wordGroup}>{wordGroup}</Option>)}
               </Select>
