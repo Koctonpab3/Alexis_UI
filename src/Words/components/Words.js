@@ -79,10 +79,10 @@ Reset
       },
       {
         title:
-          <span className="words-col-names">
-            <span className="col-lang">Russian </span>
-            <span>Words</span>
-          </span>,
+  <span className="words-col-names">
+    <span className="col-lang">Russian </span>
+    <span>Words</span>
+  </span>,
         dataIndex: 'ruWord',
         className: 'rus-name-col',
         filterDropdown: ({
@@ -164,10 +164,11 @@ Reset
         enRelWords: [],
       });
       const lang = 'en';
+      const sendVal = value.toLowerCase();
       const autoCompReq = async (token) => {
         const response = await axios({
           method: 'get',
-          url: `${mainUrl}/api/words/suggestion/${lang}/${value}`,
+          url: `${mainUrl}/api/words/suggestion/${lang}/${sendVal}`,
           data: {
           },
           headers: {
@@ -200,10 +201,11 @@ Reset
         rusRelWords: [],
       });
       const lang = 'ru';
+      const sendVal = value.toLowerCase();
       const autoCompReq = async (token) => {
         const response = await axios({
           method: 'get',
-          url: `${mainUrl}/api/words/suggestion/${lang}/${value}`,
+          url: `${mainUrl}/api/words/suggestion/${lang}/${sendVal}`,
           data: {
           },
           headers: {
@@ -236,13 +238,15 @@ Reset
       const wordGroupsId = this.props.match.params.id;
       this.props.form.validateFields((err, values) => {
         const newWord = { ...values };
+        const englishWord = newWord.enWord.toLowerCase();
+        const russianWord = newWord.ruWord.toLowerCase();
         const addWordReq = async (token) => {
           const response = await axios({
             method: 'put',
             url: `${mainUrl}/home/wordgroups/${wordGroupsId}/words`,
             data: {
-              enWord: newWord.enWord,
-              ruWord: newWord.ruWord,
+              enWord: englishWord,
+              ruWord: russianWord,
             },
             headers: {
               'Content-Type': 'application/json',
