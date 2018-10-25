@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Select, Button, notification } from 'antd';
+import {
+  Select, Button, Form, notification,
+} from 'antd';
 import axios from 'axios';
 import { mainUrl } from '../../Base/api/auth/constants';
 import { loadActiveWordGroups } from '../actions/setupActions';
@@ -13,15 +15,36 @@ const Option = Select.Option;
 
 export class Setup extends React.Component {
     state = {
-
+      approach: '',
+      defaultWordGroup: '',
+      approachBtnState: true,
+      wordGroupBtnState: true,
     };
+
 
     componentDidMount() {
       this.loadActiveWordGroups();
     }
 
+    setVal = (value) => {
+      // console.log(this.approachBtn);
+      // console.log(this.approachBtn.props.disabled);
+      // this.approachBtn.props.disabled = false;
+      this.setState({
+        approach: value,
+        approachBtnState: false,
+      });
+    };
+
+    setWordGroup = (value) => {
+      this.setState({
+        defaultWordGroup: value,
+        wordGroupBtnState: false,
+      });
+    };
+
+
     loadActiveWordGroups = () => {
-      // const wordGroupsId = this.props.match.params.id;
       const activeWordGroupsApi = async (token) => {
         const response = await axios({
           method: 'get',
@@ -55,8 +78,21 @@ export class Setup extends React.Component {
       });
     };
 
+    saveApproach = () => {
+      console.log(this.state.approach);
+      this.setState({
+        approachBtnState: true,
+      });
+    };
+
+    saveWordGroup = () => {
+      console.log(this.state.defaultWordGroup);
+      this.setState({
+        wordGroupBtnState: true,
+      });
+    };
+
     render() {
-      const { words } = this.state;
       const { setup } = this.props;
       return (
         <div className="select-block">
@@ -70,11 +106,21 @@ export class Setup extends React.Component {
               </div>
               <Select
                 className="select-block-item select-item select-input fail-num-select"
-                defaultValue={failApproaches[2]}
+                // defaultValue={failApproaches[2]}
+                placeholder={failApproaches[2]}
+                onChange={this.setVal}
               >
                 {failApproaches.map(fnum => <Option key={fnum}>{fnum}</Option>)}
               </Select>
-              <Button id="save-approach" className="save-select-btn" type="primary">Save</Button>
+              <Button
+                id="save-approach"
+                className="save-select-btn"
+                type="primary"
+                onClick={this.saveApproach}
+                disabled={this.state.approachBtnState}
+              >
+                Save
+              </Button>
             </div>
             <div className="select-block-item-wrap">
               <div className="select-block-item select-label">
@@ -83,11 +129,21 @@ export class Setup extends React.Component {
               <Select
                 className="select-block-item select-item select-input wordgroup-select"
                 // defaultValue={setup.activeWordGroups[0]}
+                onChange={this.setWordGroup}
                 placeholder={setup.defaultWordGroup}
               >
-                {(setup.activeWordGroups).map(wordGroup => <Option key={wordGroup}>{wordGroup}</Option>)}
+                {(setup.activeWordGroups).map(wordGroup => <Option key={wordGroup}>{wordGroup}</Option>)
+                }
               </Select>
-              <Button id="save-default-group" className="save-select-btn" type="primary">Save</Button>
+              <Button
+                id="save-default-group"
+                className="save-select-btn"
+                type="primary"
+                onClick={this.saveWordGroup}
+                disabled={this.state.wordGroupBtnState}
+              >
+Save
+              </Button>
             </div>
           </div>
         </div>
