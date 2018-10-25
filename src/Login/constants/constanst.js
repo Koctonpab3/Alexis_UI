@@ -19,7 +19,7 @@ export const Or = 'or';
 export const ErrorInputName = 'Please enter your nickname.';
 export const ErroLoginPopUp = 'Wrong password or user email.';
 export const WrongPasswordTwo = 'Password confirmation does not match.';
-export const SuccsedRegistrationPopUp = 'Registration was success. Please login =)';
+export const SuccsedRegistrationPopUp = 'Registration was successful. Please login=)';
 export const ErroUserEmailExist = 'User with such email already exists.';
 export const ErrorEmailInput = 'Please enter your email.';
 export const EmailNotValid = 'Please enter a valid  e-mail address.';
