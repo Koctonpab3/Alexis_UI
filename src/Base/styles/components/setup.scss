@@ -21,7 +21,7 @@
           display: flex;
           margin-top: 20px;
           .select-label{
-            width: 100px;
+            width: 130px;
             text-align: left;
             .label-text{
               vertical-align: middle;
@@ -35,9 +35,8 @@
           }
         }
       }
-      #save-select-btn{
-        height: 35px;
-        width: 90px;
+      .save-select-btn{
+        margin-left: 15px;
       }
     }
   }

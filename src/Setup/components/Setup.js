@@ -1,67 +1,63 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Select, Button } from 'antd';
+import { Select, Button, notification } from 'antd';
 import axios from 'axios';
 import { mainUrl } from '../../Base/api/auth/constants';
-import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
+import { loadActiveWordGroups } from '../actions/setupActions';
+import { failApproaches } from '../constans/setup';
+import {
+  errServerConnection,
+} from '../../WordGroups/constans/constants';
 
 const Option = Select.Option;
-// const provinceData = ['Zhejiang', 'Jiangsu'];
-// const cityData = {
-//   Zhejiang: ['Hangzhou', 'Ningbo', 'Wenzhou'],
-//   Jiangsu: ['Nanjing', 'Suzhou', 'Zhenjiang'],
-// };
 
-// const wordGroups = ['Animals', 'Planet', 'School'];
-const failApproaches = ['1', '2', '3'];
-
-export default class Setup extends React.Component {
+export class Setup extends React.Component {
     state = {
-      groupsList: [],
+
     };
 
-  // state = {
-  //   cities: cityData[provinceData[0]],
-  //   secondCity: cityData[provinceData[0]][0],
-  // };
-  //
-  // handleProvinceChange = (value) => {
-  //   this.setState({
-  //     cities: cityData[value],
-  //     secondCity: cityData[value][0],
-  //   });
-  // };
-  //
-  // onSecondCityChange = (value) => {
-  //   this.setState({
-  //     secondCity: value,
-  //   });
-  // };
-    loadWordGroups = () => {
+    componentDidMount() {
+      this.loadActiveWordGroups();
+    }
+
+    loadActiveWordGroups = () => {
+      // const wordGroupsId = this.props.match.params.id;
+      const activeWordGroupsApi = async (token) => {
+        const response = await axios({
+          method: 'get',
+          // url: `${mainUrl}/home/wordgroups/activeState/${true}`,
+          url: `${mainUrl}/home/wordgroups/`,
+          data: {},
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        });
+
+        if (response.status <= 400) {
+          return response.data;
+        }
+        throw new Error(response.status);
+      };
       const user = JSON.parse(localStorage.getItem('userInfo'));
-      wordGroupsApi(user.token).then((data) => {
-        const resData = data;
-        const resWordGroups = [];
+      activeWordGroupsApi(user.token).then((data) => {
+        const resObj = data;
+        const resData = [];
         const toArr = () => {
-          for (const value of resData.values()) {
-            resWordGroups.push(value.name);
+          for (const value of resObj.values()) {
+            resData.push(value.name);
           }
         };
         toArr();
-        this.setState({
-          groupsList: resWordGroups,
-        });
+        this.props.loadActiveWordGroups(resData);
       }).catch((error) => {
         console.log(error);
       });
     };
 
-    componentDidMount() {
-      this.loadWordGroups();
-    }
-
     render() {
-      const { groupsList } = this.state;
+      const { words } = this.state;
+      const { setup } = this.props;
       return (
         <div className="select-block">
           <div className="select-block-text">
@@ -78,22 +74,35 @@ export default class Setup extends React.Component {
               >
                 {failApproaches.map(fnum => <Option key={fnum}>{fnum}</Option>)}
               </Select>
+              <Button id="save-approach" className="save-select-btn" type="primary">Save</Button>
             </div>
             <div className="select-block-item-wrap">
               <div className="select-block-item select-label">
-                <span className="label-text">Word Group: </span>
+                <span className="label-text">Default Word Group: </span>
               </div>
               <Select
                 className="select-block-item select-item select-input wordgroup-select"
-                // defaultValue={groupsList[0]}
-                placeholder="Choose the word group"
+                // defaultValue={setup.activeWordGroups[0]}
+                placeholder={setup.defaultWordGroup}
               >
-                {groupsList.map(wordGroup => <Option key={wordGroup}>{wordGroup}</Option>)}
+                {(setup.activeWordGroups).map(wordGroup => <Option key={wordGroup}>{wordGroup}</Option>)}
               </Select>
+              <Button id="save-default-group" className="save-select-btn" type="primary">Save</Button>
             </div>
           </div>
-          <Button id="save-select-btn" type="primary">Save</Button>
         </div>
       );
     }
 }
+
+const mapDispatchToProps = dispatch => ({
+  loadActiveWordGroups: (resData) => {
+    dispatch(loadActiveWordGroups(resData));
+  },
+});
+
+const mapStateToProps = state => ({
+  setup: state.setup,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Setup);
