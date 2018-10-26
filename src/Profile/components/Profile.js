@@ -4,7 +4,7 @@ import AlexisPassword from '../../AlexisPassword/components/AlexisPassword';
 import { loginApi } from '../../Base/api/auth/authApi';
 import { login } from '../../Login/actions/auth';
 import {
-  name, email, status, online, offline, pageTitle
+  name, email, status, online, offline, pageTitle,
 } from '../constants/constants';
 
 class Profile extends React.Component {
@@ -36,7 +36,9 @@ class Profile extends React.Component {
 
     return (
       <div className="profile page">
-        <h1 class="page__title">{pageTitle}</h1>
+        <h1 className="page__title">
+          {pageTitle}
+        </h1>
         <div className="profile__info">
           <p className="profile__user-name">
             <span>

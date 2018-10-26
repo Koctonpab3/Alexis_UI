@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Modal, Button, notification } from 'antd';
 import alexisPasswordApi from '../../Base/api/alexisPasswordApi/alexisPasswordApi';
 import { getAlexisPass, okText, errServerConnection } from '../constants/constants';
-import { getAlexisLogin } from '../actions/alexisPassword'
+import { getAlexisLogin } from '../actions/alexisPassword';
 
 class AlexisPassword extends React.Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class AlexisPassword extends React.Component {
         this.setState({
           visible: true,
         });
-        getAlexisLogin({ alexisPassword: res })
+        getAlexisLogin({ alexisPassword: res });
       } catch (err) {
         notification.open({
           type: 'error',
@@ -69,9 +69,9 @@ class AlexisPassword extends React.Component {
             visible={this.state.visible}
             onOk={this.handleOk}
             onCancel={this.handleCancel}
-            footer={[<button key="submit" ref={ref => {this.btn = ref}} className="ant-btn ant-btn-primary" onClick={this.handleOk}>
-            {okText}
-          </button>]}
+            footer={[<button key="submit" ref={(ref) => { this.btn = ref; }} className="ant-btn ant-btn-primary" onClick={this.handleOk}>
+              {okText}
+                     </button>]}
           >
             <h4 className="alexis-pass__code">
               {alexisPass.alexisPassword}
