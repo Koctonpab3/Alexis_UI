@@ -8,7 +8,10 @@ import { mainUrl } from '../../Base/api/auth/constants';
 import {
   loadActiveWordGroups, getSetupCongig, setApproach, setDefaultWGroup,
 } from '../actions/setupActions';
-import { failApproaches, wGroupMessage } from '../constans/setup';
+import {
+  failApproaches, wGroupMessage, selectClasses, selectOnSelectClass,
+} from '../constans/setup';
+import { findObjectByKey } from '../utils/setupUtils';
 import {
   errServerConnection,
 } from '../../WordGroups/constans/constants';
@@ -71,10 +74,11 @@ export class Setup extends React.Component {
       });
     };
 
-    setWordGroup = (value, key) => {
-      const wGroupId = key.key;
+    setWordGroup = (value, wordGroupInfo) => {
+      const wordGroupId = wordGroupInfo.props.wordGroupInfo;
+      // const wGroupId = idW.id;
       this.setState({
-        defaultWordGroup: wGroupId,
+        defaultWordGroup: wordGroupId,
         wordGroupBtnState: false,
       });
     };
@@ -139,30 +143,41 @@ export class Setup extends React.Component {
       this.props.setDefaultWGroup(wGroup);
     };
 
+    sendConfig() {
+      const failAppr = this.state.approach;
+      const defaultWGroup = this.state.defaultWordGroup;
+      const configApi = async (token) => {
+        const response = await axios({
+          method: 'post',
+          url: `${mainUrl}/api/alexa/configuration `,
+          data: {
+            failApproach: failAppr,
+            defaultGroupId: defaultWGroup,
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        });
+
+        if (response.status <= 400) {
+          return response.data;
+        }
+        throw new Error(response.status);
+      };
+      const user = JSON.parse(localStorage.getItem('userInfo'));
+      configApi(user.token).then((data) => {
+        // console.log(data);
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+
     render() {
-      const { activeWordGroups, defaultWordGroup,failApproach } = this.props;
-      // const { setup } = this.props;
-      // const { defaultWordGroup } = this.props;
-      // const { failApproach } = this.props;
-      // console.log(defaultWordGroup);
-
-      function findObjectByKey(array, key, value) {
-        if (value !== null) {
-          for (let i = 0; i < array.length; i++) {
-            if (array[i][key] === value) {
-              return array[i].wordGroupName;
-            }
-          }
-        }
-        if (value === null) {
-          return wGroupMessage;
-        }
-        return null;
-      }
-      // const word = 'wordGroupId';
+      const { activeWordGroups } = this.props;
+      const { defaultWordGroup } = this.props;
+      const { failApproach } = this.props;
       const defaultWordGroupName = findObjectByKey(activeWordGroups, 'wordGroupId', defaultWordGroup);
-      console.log(defaultWordGroupName);
-
       return (
         <div className="select-block">
           <div className="select-block-text">
@@ -174,8 +189,8 @@ export class Setup extends React.Component {
                 <span className="label-text">Fail Approach: </span>
               </div>
               <Select
-                className="select-block-item select-item select-input fail-num-select"
-                // defaultValue={this.state.approach}
+                className={this.state.approachBtnState === true ? selectOnSelectClass : selectClasses}
+                // className="select-block-item select-item select-input fail-num-select"
                 placeholder={failApproach}
                 onChange={this.setVal}
               >
@@ -196,11 +211,14 @@ export class Setup extends React.Component {
                 <span className="label-text">Default Word Group: </span>
               </div>
               <Select
-                className="select-block-item select-item select-input wordgroup-select"
+                className={this.state.wordGroupBtnState === true ? selectOnSelectClass : selectClasses}
                 onChange={this.setWordGroup}
+                showSearch
                 placeholder={(defaultWordGroupName !== null ? defaultWordGroupName : wGroupMessage)}
+                // style ={color:blue}
+                // style={{ color:d9d9d9 }}
               >
-                {activeWordGroups.map(d => <Option key={d.wordGroupId}>{d.wordGroupName}</Option>)}
+                {activeWordGroups.map(d => <Option wordGroupInfo={d.wordGroupId} key={d.wordGroupName}>{d.wordGroupName}</Option>)}
 
               </Select>
               <Button

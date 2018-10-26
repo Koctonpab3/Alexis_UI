@@ -7,3 +7,5 @@ export const SET_DEFAULT_WGROUP = 'SET_DEFAULT_WGROUP';
 // components constants
 export const failApproaches = ['1', '2', '3'];
 export const wGroupMessage = 'Choose the default group';
+export const selectClasses = 'select-block-item select-item select-input fail-num-select';
+export const selectOnSelectClass = 'select-block-item select-item select-input fail-num-select select-input-selected-color';
