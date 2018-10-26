@@ -9,7 +9,7 @@ import {
   loadActiveWordGroups, getSetupCongig, setApproach, setDefaultWGroup,
 } from '../actions/setupActions';
 import {
-  failApproaches, wGroupMessage, selectClasses, selectOnSelectClass,
+  failApproaches, wGroupMessage,mainSetupText, selectClasses, selectOnSelectClass,
 } from '../constans/setup';
 import { findObjectByKey } from '../utils/setupUtils';
 import {
@@ -181,7 +181,7 @@ export class Setup extends React.Component {
       return (
         <div className="select-block">
           <div className="select-block-text">
-            <span>You can choose the number of fail approaches for each group</span>
+            <span>{mainSetupText}</span>
           </div>
           <div className="select-wrapper">
             <div className="select-block-item-wrap">
