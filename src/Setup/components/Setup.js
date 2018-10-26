@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  Select, Button, Form, notification,
+  Select, Button, Icon, notification,
 } from 'antd';
 import axios from 'axios';
 import { mainUrl } from '../../Base/api/auth/constants';
@@ -9,7 +9,7 @@ import {
   loadActiveWordGroups, getSetupCongig, setApproach, setDefaultWGroup,
 } from '../actions/setupActions';
 import {
-  failApproaches, wGroupMessage,mainSetupText, selectClasses, selectOnSelectClass,
+  failApproaches, wGroupMessage, mainSetupText, selectClasses, selectOnSelectClass,
 } from '../constans/setup';
 import { findObjectByKey } from '../utils/setupUtils';
 import {
@@ -181,7 +181,13 @@ export class Setup extends React.Component {
       return (
         <div className="select-block">
           <div className="select-block-text">
-            <span>{mainSetupText}</span>
+            <div className="setup-page-name">
+              <Icon id="setup-text-icon" type="setting" theme="outlined" />
+              <span id="setup-page-name-text">SETUP</span>
+            </div>
+            <div>
+              <span id="additional-text">{mainSetupText}</span>
+            </div>
           </div>
           <div className="select-wrapper">
             <div className="select-block-item-wrap">
