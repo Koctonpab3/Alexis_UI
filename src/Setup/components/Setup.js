@@ -144,15 +144,15 @@ export class Setup extends React.Component {
     };
 
     sendConfig() {
-      const failAppr = this.state.approach;
-      const defaultWGroup = this.state.defaultWordGroup;
+      const { defaultWordGroup } = this.props;
+      const { failApproach } = this.props;
       const configApi = async (token) => {
         const response = await axios({
           method: 'post',
           url: `${mainUrl}/api/alexa/configuration `,
           data: {
-            failApproach: failAppr,
-            defaultGroupId: defaultWGroup,
+            failApproach,
+            defaultGroupId: defaultWordGroup,
           },
           headers: {
             'Content-Type': 'application/json',
