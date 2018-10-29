@@ -1,3 +1,5 @@
+$break-medium-6: 500px;
+
 .setup-wrap{
   .setup-block{
     background-color: #ffffff;
@@ -36,8 +38,14 @@
           .select-label{
             width: 130px;
             text-align: left;
+            @media screen and (max-width: $break-medium-6) {
+              width: 80px;
+            }
             .label-text{
               vertical-align: middle;
+              @media screen and (max-width: $break-medium-6) {
+                vertical-align: top;
+              }
             }
           }
           .select-input{
@@ -48,11 +56,19 @@
           }
           .select-item{
             width: 220px;
+            @media screen and (max-width: $break-medium-6) {
+              width: 150px;
+              margin-top: 12px;
+            }
           }
         }
       }
       .save-select-btn{
         margin-left: 15px;
+        @media screen and (max-width: $break-medium-6) {
+          margin-top: 12px;
+          padding: 6px;
+        }
       }
     }
   }

@@ -1,3 +1,4 @@
+$break-mob: 1200px;
 $break-medium-2: 764px;
 $break-sm-medium-2: 746px;
 $break-small: 480px;
@@ -34,6 +35,9 @@ $break-small-2: 340px;
 
     .top-navbar{
       display: flex;
+      @media screen and (max-width: $break-mob) {
+        display: block;
+      }
       .ant-menu-item-selected{
         background-color: #001529;
       }
