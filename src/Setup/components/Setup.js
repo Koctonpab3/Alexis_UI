@@ -12,8 +12,8 @@ import {
   failApproaches, wGroupMessage, mainSetupText, selectClasses, selectOnSelectClass,
 } from '../constans/setup';
 import { findObjectByKey } from '../utils/setupUtils';
-// import thunk from 'redux-thunk';
-// import { configApi } from '../../Base/api/setup/setupApi';
+
+import { configApi } from '../../Base/api/setup/setupApi';
 import {
   errServerConnection,
 } from '../../WordGroups/constans/constants';
@@ -23,11 +23,9 @@ const Option = Select.Option;
 export class Setup extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
   }
 
     state = {
-      fApproach: '',
       approach: '',
       defaultWordGroup: '',
       approachBtnState: true,
@@ -40,49 +38,31 @@ export class Setup extends React.Component {
       this.getConfig();
     }
 
-    getConfig() {
-      const configApi = async (token) => {
-        const response = await axios({
-          method: 'get',
-          url: `${mainUrl}/api/alexa/configuration`,
-          data: {},
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token,
-          },
-        });
-
-        if (response.status <= 400) {
-          return response.data;
-        }
-        throw new Error(response.status);
-      };
+    getConfig = async () => {
       const user = JSON.parse(localStorage.getItem('userInfo'));
-      configApi(user.token).then((data) => {
+      try {
+        const data = await configApi(user.token);
         const resConfig = data;
-        console.log(resConfig);
+        // console.log(resConfig);
         this.setState({
           defaultWordGroup: resConfig.defaultGroupId,
           approach: resConfig.failApproach,
         });
         this.props.getSetupConfig(resConfig);
-      }).catch((error) => {
-        console.log(error);
-      });
+      } catch (error) {
+        notification.open({
+          type: 'error',
+          message: errServerConnection,
+        });
+      }
     }
 
-
     setVal = (value) => {
-      // console.log(value);
       const val = Number(value);
-      // console.log(this.approachBtn);
-      // console.log(this.approachBtn.props.disabled);
-      // this.approachBtn.props.disabled = false;
       this.setState({
         approach: val,
         approachBtnState: false,
       });
-      // console.log(this.state.approach);
     };
 
     setWordGroup = (value, wordGroupInfo) => {
@@ -94,9 +74,7 @@ export class Setup extends React.Component {
       });
     };
 
-
-    loadActiveWordGroups = () => {
-      // const { activeWordGroups } = this.props;
+    loadActiveWordGroups = async () => {
       const activeWordGroupsApi = async (token) => {
         const response = await axios({
           method: 'get',
@@ -113,10 +91,11 @@ export class Setup extends React.Component {
         }
         throw new Error(response.status);
       };
+
       const user = JSON.parse(localStorage.getItem('userInfo'));
-      activeWordGroupsApi(user.token).then((data) => {
+      try {
+        const data = await activeWordGroupsApi(user.token);
         const resObj = data;
-        // console.log(resObj);
         const resData = [];
         const toArr = () => {
           for (const value of resObj.values()) {
@@ -131,17 +110,18 @@ export class Setup extends React.Component {
         this.setState({
           aW: resData,
         });
-      }).catch((error) => {
-        console.log(error);
-      });
+      } catch (error) {
+        notification.open({
+          type: 'error',
+          message: errServerConnection,
+        });
+      }
     };
 
-    sendConfig() {
+
+    sendConfig = async () => {
       const { defaultWordGroup, userFailApproaches } = this.props;
-      // const { userFailApproaches } = this.props;
-      // console.log(defaultWordGroup);
-      console.log(userFailApproaches);
-      const configApi = async (token) => {
+      const sendConfigApi = async (token) => {
         const response = await axios({
           method: 'post',
           url: `${mainUrl}/api/alexa/configuration `,
@@ -161,11 +141,15 @@ export class Setup extends React.Component {
         throw new Error(response.status);
       };
       const user = JSON.parse(localStorage.getItem('userInfo'));
-      configApi(user.token).then((data) => {
-        // console.log(data);
-      }).catch((error) => {
-        console.log(error);
-      });
+      try {
+        const data = await sendConfigApi(user.token);
+        return data;
+      } catch (error) {
+        notification.open({
+          type: 'error',
+          message: errServerConnection,
+        });
+      }
     }
 
     saveApproach = () => {
@@ -189,7 +173,10 @@ export class Setup extends React.Component {
             });
           },
         )
-        .catch(err => console.log(err));
+        .catch(err => notification.open({
+          type: 'error',
+          message: errServerConnection,
+        }));
     };
 
     saveWordGroup = () => {
@@ -213,7 +200,10 @@ export class Setup extends React.Component {
             });
           },
         )
-        .catch(err => console.log(err));
+        .catch(err => notification.open({
+            type: 'error',
+            message: errServerConnection,
+        }));
     };
 
 
@@ -239,7 +229,7 @@ export class Setup extends React.Component {
                 <span className="label-text">Fail Approach: </span>
               </div>
               <Select
-                className={this.state.approachBtnState === true ? selectOnSelectClass : selectClasses}
+                className={this.state.approachBtnState ? selectOnSelectClass : selectClasses}
                 // className="select-block-item select-item select-input fail-num-select"
                 placeholder={userFailApproaches}
                 onChange={this.setVal}
@@ -261,12 +251,10 @@ export class Setup extends React.Component {
                 <span className="label-text">Default Word Group: </span>
               </div>
               <Select
-                className={this.state.wordGroupBtnState === true ? selectOnSelectClass : selectClasses}
+                className={this.state.wordGroupBtnState? selectOnSelectClass : selectClasses}
                 onChange={this.setWordGroup}
                 showSearch
                 placeholder={(defaultWordGroupName !== null ? defaultWordGroupName : wGroupMessage)}
-                // style ={color:blue}
-                // style={{ color:d9d9d9 }}
               >
                 {activeWordGroups.map(d => <Option wordGroupInfo={d.wordGroupId} key={d.wordGroupName}>{d.wordGroupName}</Option>)}
 
