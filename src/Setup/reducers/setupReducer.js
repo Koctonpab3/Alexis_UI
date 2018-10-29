@@ -4,7 +4,7 @@ import {
 
 const initialState = {
   activeWordGroups: [],
-  failApproach: [],
+  userFailApproaches: [],
   defaultWordGroup: [],
 };
 
@@ -17,13 +17,14 @@ export default (state = initialState, action) => {
     }
     case GET_CONFIG: {
       return Object.assign({}, state, {
-        failApproach: action.resConfig.failApproach,
+        // userFailApproaches: action.resConfig.approach,
         defaultWordGroup: action.resConfig.defaultGroupId,
+        userFailApproaches: action.resConfig.failApproach,
       });
     }
     case SET_APPROACH: {
       return Object.assign({}, state, {
-        failApproach: action.approach,
+        userFailApproaches: action.approach,
       });
     }
     case SET_DEFAULT_WGROUP: {

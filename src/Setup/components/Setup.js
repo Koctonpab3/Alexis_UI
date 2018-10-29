@@ -6,12 +6,14 @@ import {
 import axios from 'axios';
 import { mainUrl } from '../../Base/api/auth/constants';
 import {
-  loadActiveWordGroups, getSetupCongig, setApproach, setDefaultWGroup,
+  loadActiveWordGroups, getSetupConfig, setApproach, setDefaultWGroup,
 } from '../actions/setupActions';
 import {
   failApproaches, wGroupMessage, mainSetupText, selectClasses, selectOnSelectClass,
 } from '../constans/setup';
 import { findObjectByKey } from '../utils/setupUtils';
+// import thunk from 'redux-thunk';
+// import { configApi } from '../../Base/api/setup/setupApi';
 import {
   errServerConnection,
 } from '../../WordGroups/constans/constants';
@@ -19,7 +21,13 @@ import {
 const Option = Select.Option;
 
 export class Setup extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log(this.props);
+  }
+
     state = {
+      fApproach: '',
       approach: '',
       defaultWordGroup: '',
       approachBtnState: true,
@@ -65,18 +73,21 @@ export class Setup extends React.Component {
 
 
     setVal = (value) => {
+      // console.log(value);
+      const val = Number(value);
       // console.log(this.approachBtn);
       // console.log(this.approachBtn.props.disabled);
       // this.approachBtn.props.disabled = false;
       this.setState({
-        approach: value,
+        approach: val,
         approachBtnState: false,
       });
+      // console.log(this.state.approach);
     };
 
     setWordGroup = (value, wordGroupInfo) => {
+      // console.log(wordGroupInfo);
       const wordGroupId = wordGroupInfo.props.wordGroupInfo;
-      // const wGroupId = idW.id;
       this.setState({
         defaultWordGroup: wordGroupId,
         wordGroupBtnState: false,
@@ -125,33 +136,17 @@ export class Setup extends React.Component {
       });
     };
 
-    saveApproach = () => {
-      const approach = this.state.approach;
-      this.setState({
-        approachBtnState: true,
-      });
-      this.props.setApproach(approach);
-      this.sendConfig();
-    };
-
-    saveWordGroup = () => {
-      const wGroup = this.state.defaultWordGroup;
-      this.setState({
-        wordGroupBtnState: true,
-      });
-      this.sendConfig();
-      this.props.setDefaultWGroup(wGroup);
-    };
-
     sendConfig() {
-      const { defaultWordGroup } = this.props;
-      const { failApproach } = this.props;
+      const { defaultWordGroup, userFailApproaches } = this.props;
+      // const { userFailApproaches } = this.props;
+      // console.log(defaultWordGroup);
+      console.log(userFailApproaches);
       const configApi = async (token) => {
         const response = await axios({
           method: 'post',
           url: `${mainUrl}/api/alexa/configuration `,
           data: {
-            failApproach,
+            failApproach: userFailApproaches,
             defaultGroupId: defaultWordGroup,
           },
           headers: {
@@ -173,10 +168,59 @@ export class Setup extends React.Component {
       });
     }
 
+    saveApproach = () => {
+      const approach = this.state.approach;
+      const resolveSaveApproach = () => new Promise((resolve, reject) => {
+        resolve();
+      });
+      resolveSaveApproach()
+        .then(() => {
+          this.props.setApproach(approach);
+        })
+        .then(
+          () => {
+            this.sendConfig();
+          },
+        )
+        .then(
+          () => {
+            this.setState({
+              approachBtnState: true,
+            });
+          },
+        )
+        .catch(err => console.log(err));
+    };
+
+    saveWordGroup = () => {
+      const wGroup = this.state.defaultWordGroup;
+      const resolveSaveWordGroup = () => new Promise((resolve, reject) => {
+        resolve();
+      });
+      resolveSaveWordGroup()
+        .then(() => {
+          this.props.setDefaultWGroup(wGroup);
+        })
+        .then(
+          () => {
+            this.sendConfig();
+          },
+        )
+        .then(
+          () => {
+            this.setState({
+              wordGroupBtnState: true,
+            });
+          },
+        )
+        .catch(err => console.log(err));
+    };
+
+
     render() {
       const { activeWordGroups } = this.props;
       const { defaultWordGroup } = this.props;
-      const { failApproach } = this.props;
+      const { userFailApproaches } = this.props;
       const defaultWordGroupName = findObjectByKey(activeWordGroups, 'wordGroupId', defaultWordGroup);
       return (
         <div className="select-block">
@@ -197,7 +241,7 @@ export class Setup extends React.Component {
               <Select
                 className={this.state.approachBtnState === true ? selectOnSelectClass : selectClasses}
                 // className="select-block-item select-item select-input fail-num-select"
-                placeholder={failApproach}
+                placeholder={userFailApproaches}
                 onChange={this.setVal}
               >
                 {failApproaches.map(fnum => <Option key={fnum}>{fnum}</Option>)}
@@ -248,7 +292,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(loadActiveWordGroups(resData));
   },
   getSetupConfig: (resConfig) => {
-    dispatch(getSetupCongig(resConfig));
+    dispatch(getSetupConfig(resConfig));
   },
   setApproach: (approach) => {
     dispatch(setApproach(approach));
@@ -262,7 +306,7 @@ const mapStateToProps = state => ({
   setup: state.setup,
   activeWordGroups: state.setup.activeWordGroups,
   defaultWordGroup: state.setup.defaultWordGroup,
-  failApproach: state.setup.failApproach,
+  userFailApproaches: state.setup.userFailApproaches,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Setup);
