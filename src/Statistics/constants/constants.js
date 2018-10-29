@@ -1,4 +1,4 @@
-export const pageTitle = 'statistic';
+export const pageTitle = 'Statistics';
 export const backgroundColorFalseDefault = '#2e1ac4';
 export const backgroundColorSuccess = '#1cd061';
 export const backgroundColorFalse = '#452EED';
