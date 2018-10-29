@@ -5,26 +5,17 @@ import {
 import { Pie } from 'react-chartjs-2';
 import { pageTitle } from '../constants/constants';
 
-const data = {
-	labels: [
-		'Success',
-		'False',
-	],
-	datasets: [{
-		data: [70, 30],
-		backgroundColor: [
-		'#FF6384',
-		'#36A2EB',
-		],
-		hoverBackgroundColor: [
-		'#FF6384',
-		'#36A2EB',
-		]
-	}]
-};
+
 
 
 class StatisticPage extends React.Component {
+
+  state = {
+    backgroundColor: '#20a854',
+  }
+
+
+
   handleChange = (value) => {
     console.log(`selected ${value}`);
   }
@@ -40,7 +31,32 @@ class StatisticPage extends React.Component {
     console.log('focus');
   }
 
+  changeColor = (dataset, event) => {
+    console.log(dataset[0]._index)
+    if (dataset[0]._index) {
+      this.setState({ backgroundColor: '#001529' });
+    }
+  }
+
   render() {
+    const data = {
+      labels: [
+        'Success',
+        'False',
+      ],
+      datasets: [{
+        data: [70, 30],
+        backgroundColor: [
+        '#FF6384',
+        this.state.backgroundColor,
+        ],
+        hoverBackgroundColor: [
+        '#FF6384',
+        '#36A2EB',
+        ]
+      }]
+    };
+
     const Option = Select.Option;
     const dataSource = [{
       key: '6',
@@ -122,9 +138,7 @@ Tom
               <p>
                 DIAGRAM HERE
               </p>
-              <Pie data={data} getElementAtEvent={(e, b, c) => {
-                console.log(e)
-              }} />
+              <Pie data={data} getElementAtEvent={this.changeColor} /> 
             </Col>
             <Col span={12}>
               <Table dataSource={dataSource} columns={columns} />
