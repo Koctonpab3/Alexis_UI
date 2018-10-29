@@ -1,112 +1,118 @@
 import React from 'react';
 import {
-  Row, Col, Select, Table,
+  Row, Col, Select, Table, notification,
 } from 'antd';
+import { connect } from 'react-redux';
 import { Pie } from 'react-chartjs-2';
-import { pageTitle } from '../constants/constants';
-
-
+import {
+  pageTitle, backgroundColorFalseDefault, backgroundColorSuccessDefault, backgroundColorFalse, backgroundColorSuccess,
+  succesTitleTable, inProcessTitleTable, errServerConnection, wordtitle, successTitle, titleFail,
+  labelSucces, labelInprocess,
+} from '../constants/constants';
+import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
+import { loadData } from '../../WordGroups/actions/wordGroups';
+import { filteerSuccess, filteerInProcess } from '../utils/utils';
+import dataSour from '../utils/data';
 
 
 class StatisticPage extends React.Component {
-
   state = {
-    backgroundColor: '#20a854',
+    backgroundColorFalse: backgroundColorFalseDefault,
+    backgroundColorSuccess,
+    defaultSelectValue: '',
+    filtaredDate: [],
+    titleTable: succesTitleTable,
+  };
+
+  componentDidMount = () => {
+    this.loadWordGroups();
+    const data = filteerSuccess(dataSour);
+    this.setState({
+      filtaredDate: data,
+    });
   }
 
-
+  loadWordGroups = async () => {
+    const { loadData } = this.props;
+    const user = JSON.parse(localStorage.getItem('userInfo'));
+    try {
+      const dataNew = await wordGroupsApi(user.token);
+      loadData(dataNew);
+      this.setState(() => ({
+        defaultSelectValue: dataNew[0].name,
+      }));
+    } catch (error) {
+      notification.open({
+        type: 'error',
+        message: errServerConnection,
+      });
+    }
+  };
 
   handleChange = (value) => {
-    console.log(`selected ${value}`);
-  }
-  handle = (e) => {
-    console.log(e.target)
+    this.setState({ defaultSelectValue: value });
   }
 
-   handleBlur = (value) => {
-     console.log('blur');
-   }
-
-  handleFocus = (value) => {
-    console.log('focus');
-  }
-
-  changeColor = (dataset, event) => {
-    console.log(dataset[0]._index)
-    if (dataset[0]._index) {
-      this.setState({ backgroundColor: '#001529' });
+  changeColor = (dataset) => {
+    console.log(dataset[0]._index);
+    if (!dataset[0]._index) {
+      const data = filteerSuccess(dataSour);
+      this.setState({
+        backgroundColorFalse: backgroundColorFalseDefault,
+        backgroundColorSuccess,
+        titleTable: succesTitleTable,
+        filtaredDate: data,
+      });
+    } else {
+      const data = filteerInProcess(dataSour);
+      this.setState({
+        backgroundColorFalse,
+        backgroundColorSuccess: backgroundColorSuccessDefault,
+        titleTable: inProcessTitleTable,
+        filtaredDate: data,
+      });
     }
   }
 
   render() {
+    const { dataSource } = this.props;
+    const {
+      titleTable, filtaredDate, defaultSelectValue, backgroundColorSuccess, backgroundColorFalse,
+    } = this.state;
+
     const data = {
       labels: [
-        'Success',
-        'False',
+        labelSucces,
+        labelInprocess,
       ],
       datasets: [{
         data: [70, 30],
         backgroundColor: [
-        '#FF6384',
-        this.state.backgroundColor,
+          backgroundColorSuccess,
+          backgroundColorFalse,
         ],
         hoverBackgroundColor: [
-        '#FF6384',
-        '#36A2EB',
-        ]
-      }]
+          backgroundColorSuccess,
+          backgroundColorFalse,
+        ],
+      }],
     };
 
     const Option = Select.Option;
-    const dataSource = [{
-      key: '6',
-      word: 'parrot',
-      success: 3,
-      fail: 4,
-    },
-    {
-      key: '5',
-      word: 'book',
-      success: 32,
-      fail: 4,
-    },
-    {
-      key: '4',
-      word: 'farm',
-      success: 2,
-      fail: 413,
-    },
-    {
-      key: '3',
-      word: 'Ghost',
-      success: 32,
-      fail: 44,
-    },
-    {
-      key: '2',
-      word: 'cat',
-      success: 32,
-      fail: 4,
-    },
-    {
-      key: '1',
-      word: 'dog',
-      success: 3,
-      fail: 7,
-    }];
     const columns = [{
-      title: 'word',
-      dataIndex: 'word',
-      key: 'name',
+      title: wordtitle,
+      dataIndex: wordtitle,
+      key: wordtitle,
     }, {
-      title: 'success',
-      dataIndex: 'success',
-      key: 'success',
+      title: successTitle,
+      dataIndex: successTitle,
+      key: successTitle,
     }, {
-      title: 'fail',
-      dataIndex: 'fail',
-      key: 'fail',
+      title: titleFail,
+      dataIndex: titleFail,
+      key: titleFail,
     }];
+
     return (
       <div className="page static-page">
         <h1 className="page__title">
@@ -117,31 +123,23 @@ class StatisticPage extends React.Component {
             <Col span={12}>
               <Select
                 showSearch
-                style={{ width: '300px' }}
-                placeholder="Select a Group"
-                optionFilterProp="children"
+                value={defaultSelectValue}
                 onChange={this.handleChange}
-                onFocus={this.handleFocus}
-                onBlur={this.handleBlur}
-                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                className="static-select"
               >
-                <Option value="jack">
-Jack
-                </Option>
-                <Option value="lucy">
-Lucy
-                </Option>
-                <Option value="tom">
-Tom
-                </Option>
+                {dataSource.map(group => (
+                  <Option value={group.name} key={group.id}>
+                    {group.name}
+                  </Option>
+                ))}
               </Select>
-              <p>
-                DIAGRAM HERE
-              </p>
-              <Pie data={data} getElementAtEvent={this.changeColor} /> 
+              <Pie data={data} getElementAtEvent={this.changeColor} />
             </Col>
             <Col span={12}>
-              <Table dataSource={dataSource} columns={columns} />
+              <h2 className="table-title">
+                {titleTable}
+              </h2>
+              <Table dataSource={filtaredDate} columns={columns} pagination={{ pageSize: 10 }} />
             </Col>
           </Row>
         </div>
@@ -150,4 +148,14 @@ Tom
   }
 }
 
-export default StatisticPage;
+const mapDispatchToProps = dispatch => ({
+  loadData: (dataNew) => {
+    dispatch(loadData(dataNew));
+  },
+});
+
+const mapStateToProps = state => ({
+  dataSource: state.wordGroups.dataSource,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(StatisticPage);

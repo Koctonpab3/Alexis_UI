@@ -29,10 +29,12 @@ export class WordsTable extends React.Component {
       {
         title: <span className="words-col-names">
           <span className="col-lang">
+
 English
             {' '}
           </span>
           <span>
+
 Words
           </span>
                </span>,
@@ -51,9 +53,11 @@ Words
             />
             <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
 
+
 Search
             </Button>
             <Button onClick={this.handleResetSearch(clearFilters)}>
+
 
 Reset
             </Button>
@@ -88,10 +92,12 @@ Reset
         title:
   <span className="words-col-names">
     <span className="col-lang">
+
 Russian
       {' '}
     </span>
     <span>
+
 Words
     </span>
   </span>,
@@ -110,9 +116,11 @@ Words
             />
             <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
 
+
 Search
             </Button>
             <Button onClick={this.handleResetSearch(clearFilters)}>
+
 
 Reset
             </Button>
