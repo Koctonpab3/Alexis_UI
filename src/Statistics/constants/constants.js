@@ -1,1 +1,1 @@
-export const pageTitle = 'statistic';
+export const pageTitle = 'Statistics';
