@@ -1,4 +1,5 @@
-$break-mob: 1200px;
+$break-mob: 900px;
+$break-mob-2: 580px;
 $break-medium-2: 764px;
 $break-sm-medium-2: 746px;
 $break-small: 480px;
@@ -11,6 +12,9 @@ $break-small-2: 340px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
+    @media screen and (max-width: $break-mob-2) {
+      flex-direction: column;
+    }
     @media screen and (max-width: $break-sm-medium-2) {
       width:95%;
     }
@@ -22,20 +26,13 @@ $break-small-2: 340px;
         width: 100%;
       }
       @media screen and (max-width: $break-small) {
-        width: 43px;
-        height: 18px;
         margin: 20px 0;
-      }
-      @media screen and (max-width: $break-small-2) {
-        width: 43px;
-        height: 18px;
-        margin: 10px 0 0 10px;
       }
     }
 
     .top-navbar{
       display: flex;
-      @media screen and (max-width: $break-mob) {
+      @media screen and (max-width: $break-mob-2) {
         display: block;
       }
       .ant-menu-item-selected{
@@ -43,8 +40,7 @@ $break-small-2: 340px;
       }
       .nav-item{
         padding: 9px 22px;
-        @media screen and (max-width: $break-sm-medium-2) {
-          font-size: 0.8em;
+        @media screen and (max-width: $break-mob) {
           padding: 7px 10px;
         }
         @media screen and (max-width: $break-small-2) {
@@ -60,9 +56,6 @@ $break-small-2: 340px;
       color: rgba(255, 255, 255, 0.65);
       span{
         cursor: pointer;
-      }
-      @media screen and (max-width: $break-sm-medium-2) {
-        font-size: 0.8em;
       }
       @media screen and (max-width: $break-small-2) {
         margin: 0 0 10px 10px;
