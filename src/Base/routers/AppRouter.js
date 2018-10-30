@@ -11,7 +11,7 @@ import Wordgroups from '../../WordGroups/components/index';
 import WordsPage from '../../Words/components/WordsPage';
 import SetupPage from '../../Setup/components/SetupPage';
 import Profile from '../../Profile/components/Profile';
-import Statistics from '../../Statistics/components/index';
+import StatisticPage from '../../Statistics/components/StaticPage';
 import LoginPage from '../../Login/components/LoginPage';
 import RegistrationPage from '../../Login/components/RegistrationPage';
 
@@ -28,7 +28,7 @@ const AppRouter = () => (
         <Private path="/wordgroups" component={Wordgroups} exact />
         <Private path="/wordgroups/:id/:name" component={WordsPage} />
         <Private path="/setup" component={SetupPage} />
-        <Private path="/statistics" component={Statistics} />
+        <Private path="/statistics" component={StatisticPage} />
         <Private path="/profile" component={Profile} />
       </Switch>
     </div>
