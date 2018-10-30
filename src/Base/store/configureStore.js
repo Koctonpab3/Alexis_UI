@@ -6,6 +6,7 @@ import userReducer from '../../Login/reducers/auth';
 import wordGroupsReducer from '../../WordGroups/reducers/wordGroupsReducer';
 import WordsReducer from '../../Words/reducers/WordsReducer';
 import alexisPassReducer from '../../AlexisPassword/reducers/alexisPassword';
+import setupReducer from '../../Setup/reducers/setupReducer';
 
 /* eslint-disable no-underscore-dangle */
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -17,6 +18,7 @@ export default () => {
       wordGroups: wordGroupsReducer,
       words: WordsReducer,
       alexisPass: alexisPassReducer,
+      setup: setupReducer,
     }),
     composeEnhancers(applyMiddleware(thunk)),
   );

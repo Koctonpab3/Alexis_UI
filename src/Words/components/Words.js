@@ -491,7 +491,7 @@ Reset
                   rules: [{
                     required: true,
                     whitespace: true,
-                    pattern: '^[А-Яа-яЁё]+$',
+                    pattern: '^[А-Яа-яЁё -]+$',
                     message: RusWordValidErr,
                     min: 1,
                     max: 36,
