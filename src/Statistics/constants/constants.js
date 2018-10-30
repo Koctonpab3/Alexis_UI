@@ -1,8 +1,8 @@
 export const pageTitle = 'Statistics';
-export const backgroundColorFalseDefault = '#2e1ac4';
+export const backgroundColorFalseDefault = '#CCCCCC';
 export const backgroundColorSuccess = '#1cd061';
 export const backgroundColorFalse = '#452EED';
-export const backgroundColorSuccessDefault = '#20a854';
+export const backgroundColorSuccessDefault = '#CCCCCC';
 export const succesTitleTable = 'Success words';
 export const inProcessTitleTable = 'WORDS IN PROCESS';
 export const errServerConnection = 'The server connection failed';
