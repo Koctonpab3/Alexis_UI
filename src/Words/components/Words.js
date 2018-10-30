@@ -28,8 +28,15 @@ export class WordsTable extends React.Component {
     this.columns = [
       {
         title: <span className="words-col-names">
-          <span className="col-lang">English </span>
-          <span>Words</span>
+          <span className="col-lang">
+
+English
+            {' '}
+          </span>
+          <span>
+
+Words
+          </span>
                </span>,
         dataIndex: 'enWord',
         className: 'engWord-col',
@@ -45,9 +52,13 @@ export class WordsTable extends React.Component {
               onPressEnter={this.handleSearch(selectedKeys, confirm)}
             />
             <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+
+
 Search
             </Button>
             <Button onClick={this.handleResetSearch(clearFilters)}>
+
+
 Reset
             </Button>
           </div>
@@ -80,8 +91,15 @@ Reset
       {
         title:
   <span className="words-col-names">
-    <span className="col-lang">Russian </span>
-    <span>Words</span>
+    <span className="col-lang">
+
+Russian
+      {' '}
+    </span>
+    <span>
+
+Words
+    </span>
   </span>,
         dataIndex: 'ruWord',
         className: 'rus-name-col',
@@ -97,9 +115,13 @@ Reset
               onPressEnter={this.handleSearch(selectedKeys, confirm)}
             />
             <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
+
+
 Search
             </Button>
             <Button onClick={this.handleResetSearch(clearFilters)}>
+
+
 Reset
             </Button>
           </div>
@@ -496,6 +518,7 @@ Reset
                   className="addWordsBtn"
                 >
                   <Icon type="plus" theme="outlined" />
+
 
                   Add Word
                 </Button>

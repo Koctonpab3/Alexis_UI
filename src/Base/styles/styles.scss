@@ -28,6 +28,16 @@ body{
   }
 }
 
+.table-title{
+  text-align: center;
+  font-size: 19px;
+  text-transform: uppercase;
+}
+.static-select{
+  margin-bottom: 20px;
+  width: 300px;
+}
+
 // components styles
 @import 'components/worgroup';
 @import 'components/words';

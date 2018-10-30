@@ -3,7 +3,7 @@ import React from 'react';
 // components
 import WordTable from './WordTable';
 import Path from './path';
-import { pageTitle } from '../constans/constants'
+import { pageTitle } from '../constans/constants';
 
 const Wordgroups = () => (
   <div className="wordTableContainer page">

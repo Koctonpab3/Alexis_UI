@@ -11,7 +11,7 @@ export default (state = defaultUserState, action) => {
   switch (action.type) {
     case GETPASSWORD: {
       return Object.assign({}, state, {
-        alexisPassword
+        alexisPassword,
       });
     }
     default:

@@ -1,7 +1,7 @@
-/*reducer*/
-export const GETPASSWORD = "GETPASSWORD";
+/* reducer */
+export const GETPASSWORD = 'GETPASSWORD';
 
-/*Strings*/
+/* Strings */
 export const getAlexisPass = 'Alexis Password';
 export const okText = 'Ок';
 export const errServerConnection = 'The server connection failed';
