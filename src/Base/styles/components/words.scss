@@ -2,7 +2,7 @@ $break-medium-3: 1215px;
 $break-medium-4: 813px;
 $break-medium-5: 700px;
 $break-small-3: 403px;
-
+$break-m: 992px;
 
 .wordsTable{
   background-color: #ffffff;
@@ -51,12 +51,18 @@ $break-small-3: 403px;
     }
     .addWordsBtn{
       margin-bottom: 20px;
+      //@media screen and (max-width: $break-m) {
+      //  margin-top: 25px;
+      //}
       @media screen and (max-width: $break-medium-5) {
         font-size: 0.9em;
       }
     }
     .wordInput{
       padding-right: 10px;
+      @media screen and (max-width: $break-m) {
+        //margin: 15px 0;
+      }
       input{
         @media screen and (max-width: $break-medium-5) {
         font-size: 0.9em;
@@ -91,4 +97,7 @@ $break-small-3: 403px;
       border-right: none;
     }
   }
+}
+#defaultField{
+  font-weight: bold;
 }

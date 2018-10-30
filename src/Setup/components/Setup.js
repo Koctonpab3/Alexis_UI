@@ -68,10 +68,21 @@ export class Setup extends React.Component {
     setWordGroup = (value, wordGroupInfo) => {
       // console.log(wordGroupInfo);
       const wordGroupId = wordGroupInfo.props.wordGroupInfo;
-      this.setState({
-        defaultWordGroup: wordGroupId,
-        wordGroupBtnState: false,
-      });
+      const wordGroupVal = wordGroupInfo.props.val;
+      // console.log(wordGroupVal)
+      // console.log(wordGroupInfo);
+      // console.log(value);
+      if (wordGroupVal === null) {
+        this.setState({
+          defaultWordGroup: wordGroupVal,
+          wordGroupBtnState: false,
+        });
+      } else {
+        this.setState({
+          defaultWordGroup: wordGroupId,
+          wordGroupBtnState: false,
+        });
+      }
     };
 
     loadActiveWordGroups = async () => {
@@ -201,8 +212,8 @@ export class Setup extends React.Component {
           },
         )
         .catch(err => notification.open({
-            type: 'error',
-            message: errServerConnection,
+          type: 'error',
+          message: errServerConnection,
         }));
     };
 
@@ -251,12 +262,13 @@ export class Setup extends React.Component {
                 <span className="label-text">Default Word Group: </span>
               </div>
               <Select
-                className={this.state.wordGroupBtnState? selectOnSelectClass : selectClasses}
+                className={this.state.wordGroupBtnState ? selectOnSelectClass : selectClasses}
                 onChange={this.setWordGroup}
                 showSearch
                 placeholder={(defaultWordGroupName !== null ? defaultWordGroupName : wGroupMessage)}
               >
-                {activeWordGroups.map(d => <Option wordGroupInfo={d.wordGroupId} key={d.wordGroupName}>{d.wordGroupName}</Option>)}
+                <Option val="null" key="default" id="defaultField">{wGroupMessage}</Option>
+                {activeWordGroups.map(d => <Option wordGroupInfo={d.wordGroupId} val="notDefault" key={d.wordGroupName}>{d.wordGroupName}</Option>)}
 
               </Select>
               <Button
