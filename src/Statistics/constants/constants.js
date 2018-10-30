@@ -11,3 +11,6 @@ export const successTitle = 'success';
 export const titleFail = 'fail';
 export const labelSucces = 'Success';
 export const labelInprocess = 'In process';
+
+// filter value
+export const maxValue = 3;
