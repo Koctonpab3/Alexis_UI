@@ -30,10 +30,12 @@ export class WordsTable extends React.Component {
         title: <span className="words-col-names">
           <span className="col-lang">
 
+
 English
             {' '}
           </span>
           <span>
+
 
 Words
           </span>
@@ -93,10 +95,12 @@ Reset
   <span className="words-col-names">
     <span className="col-lang">
 
+
 Russian
       {' '}
     </span>
     <span>
+
 
 Words
     </span>

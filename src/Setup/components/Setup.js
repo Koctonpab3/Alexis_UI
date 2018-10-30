@@ -201,8 +201,8 @@ export class Setup extends React.Component {
           },
         )
         .catch(err => notification.open({
-            type: 'error',
-            message: errServerConnection,
+          type: 'error',
+          message: errServerConnection,
         }));
     };
 
@@ -217,16 +217,23 @@ export class Setup extends React.Component {
           <div className="select-block-text">
             <div className="setup-page-name">
               <Icon id="setup-text-icon" type="setting" theme="outlined" />
-              <span id="setup-page-name-text">SETUP</span>
+              <span id="setup-page-name-text">
+SETUP
+              </span>
             </div>
             <div>
-              <span id="additional-text">{mainSetupText}</span>
+              <span id="additional-text">
+                {mainSetupText}
+              </span>
             </div>
           </div>
           <div className="select-wrapper">
             <div className="select-block-item-wrap">
               <div className="select-block-item select-label">
-                <span className="label-text">Fail Approach: </span>
+                <span className="label-text">
+Fail Approach:
+                  {' '}
+                </span>
               </div>
               <Select
                 className={this.state.approachBtnState ? selectOnSelectClass : selectClasses}
@@ -234,7 +241,11 @@ export class Setup extends React.Component {
                 placeholder={userFailApproaches}
                 onChange={this.setVal}
               >
-                {failApproaches.map(fnum => <Option key={fnum}>{fnum}</Option>)}
+                {failApproaches.map(fnum => (
+                  <Option key={fnum}>
+                    {fnum}
+                  </Option>
+                ))}
               </Select>
               <Button
                 id="save-approach"
@@ -243,20 +254,28 @@ export class Setup extends React.Component {
                 onClick={this.saveApproach}
                 disabled={this.state.approachBtnState}
               >
+
                 Save
               </Button>
             </div>
             <div className="select-block-item-wrap">
               <div className="select-block-item select-label">
-                <span className="label-text">Default Word Group: </span>
+                <span className="label-text">
+Default Word Group:
+                  {' '}
+                </span>
               </div>
               <Select
-                className={this.state.wordGroupBtnState? selectOnSelectClass : selectClasses}
+                className={this.state.wordGroupBtnState ? selectOnSelectClass : selectClasses}
                 onChange={this.setWordGroup}
                 showSearch
                 placeholder={(defaultWordGroupName !== null ? defaultWordGroupName : wGroupMessage)}
               >
-                {activeWordGroups.map(d => <Option wordGroupInfo={d.wordGroupId} key={d.wordGroupName}>{d.wordGroupName}</Option>)}
+                {activeWordGroups.map(d => (
+                  <Option wordGroupInfo={d.wordGroupId} key={d.wordGroupName}>
+                    {d.wordGroupName}
+                  </Option>
+                ))}
 
               </Select>
               <Button
@@ -266,6 +285,7 @@ export class Setup extends React.Component {
                 onClick={this.saveWordGroup}
                 disabled={this.state.wordGroupBtnState}
               >
+
 Save
               </Button>
             </div>

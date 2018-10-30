@@ -17,11 +17,17 @@ body{
     border-bottom: 1px solid #E8E8E8;
   }
 }
+.main-wrapper{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 .wrapper{
   .mainBlock{
     width: 77%;
     margin: 0 auto;
-    padding-bottom: 174px;
+    padding-bottom: 15px;
+    flex: 1;
     @media screen and (max-width: $break-sm-medium) {
       width: 96%;
     }
@@ -47,3 +53,5 @@ body{
 @import 'components/profile.scss';
 @import 'components/offline.scss';
 @import 'components/setup.scss';
+@import 'components/NotFoundPage.scss';
+@import 'components/footer.scss';
