@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Text404, obiTextNotFound, obiTextFound, linkTextWordgroups, linkTextSetup, linkTextStatistics, linkTextProfile } from './../constants/constants';
 
 export default () => (
-    <div className="NotFoundPage">
+    <div className="NotFoundPage page">
         <div className="NotFoundPage__main">
             <img src="/images/obi.png" alt="obi-van"/>
             <div className="NotFoundPage__info">

@@ -26,7 +26,6 @@ body{
   .main{
     padding-bottom: 15px;
     flex: 1;
-    display: flex;
     @media screen and (max-width: $break-sm-medium) {
       width: 96%;
     }
@@ -89,7 +88,7 @@ body{
 }
 
 .ant-table-row{
-  animation: new-row 1s;
+  animation: new-row 0.7s;
 }
 
 
