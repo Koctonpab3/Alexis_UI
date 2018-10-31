@@ -5,11 +5,6 @@ $break-small-3: 403px;
 
 
 .wordsTable{
-  background-color: #ffffff;
-  width: 80%;
-  padding: 16px 0;
-  margin: 53px auto;
-  border-radius: 4px;
   @media screen and (max-width: $break-medium-5) {
     width: 100%;
     font-size: 0.9em;
