@@ -8,7 +8,8 @@ body{
 .page{
   background-color: #fff;
   padding: 16px;
-  margin-top: 16px;
+  width: 77%;
+  margin: 20px auto 0;
   &__title{
     font-size: 24px;
     text-align: center;
@@ -17,15 +18,12 @@ body{
     border-bottom: 1px solid #E8E8E8;
   }
 }
-.main-wrapper{
+
+.wrapper{
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
-.wrapper{
-  .mainBlock{
-    width: 77%;
-    margin: 0 auto;
+  .main{
     padding-bottom: 15px;
     flex: 1;
     @media screen and (max-width: $break-sm-medium) {
@@ -43,6 +41,57 @@ body{
   margin-bottom: 20px;
   width: 300px;
 }
+.fade-appear,
+.fade-enter {
+    opacity: 0;
+}
+.fade-appear-active,
+.fade-enter.fade-enter-active {
+    opacity: 1;
+    transition: opacity 300ms linear 150ms;
+}
+
+.fade-exit {
+    opacity: 1;
+    display: none;
+}
+
+.fade-exit.fade-exit-active {
+    opacity: 0;
+    transition: opacity 150ms linear;
+}
+.fade-appear,
+.fade-enter {
+    opacity: 0;
+    z-index: 1;
+}
+.fade-appear-active,
+.fade-enter.fade-enter-active {
+    opacity: 1;
+    transition: opacity 300ms linear 150ms;
+}
+
+.fade-exit {
+    opacity: 1;
+}
+
+.fade-exit.fade-exit-active {
+    opacity: 0;
+    transition: opacity 150ms linear;
+}
+@keyframes new-row {
+  0%   { opacity: 0;
+        background: #FAFAFA;
+  }
+  100% { opacity: 1; 
+    background: #fff}
+}
+
+.ant-table-row{
+  animation: new-row 0.7s;
+}
+
+
 
 // components styles
 @import 'components/worgroup';
