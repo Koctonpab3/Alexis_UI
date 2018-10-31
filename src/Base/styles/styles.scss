@@ -24,9 +24,9 @@ body{
   flex-direction: column;
   min-height: 100vh;
   .main{
-
     padding-bottom: 15px;
     flex: 1;
+    display: flex;
     @media screen and (max-width: $break-sm-medium) {
       width: 96%;
     }
@@ -80,6 +80,18 @@ body{
     opacity: 0;
     transition: opacity 150ms linear;
 }
+@keyframes new-row {
+  0%   { opacity: 0;
+        background: #FAFAFA;
+  }
+  100% { opacity: 1; 
+    background: #fff}
+}
+
+.ant-table-row{
+  animation: new-row 1s;
+}
+
 
 
 // components styles
