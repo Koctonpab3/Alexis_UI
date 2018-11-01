@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  Select, Button, Icon, notification,
+  Select, Button, Icon, notification, Spin,
 } from 'antd';
 import axios from 'axios';
 import { mainUrl } from '../../Base/api/auth/constants';
@@ -30,6 +30,7 @@ export class Setup extends React.Component {
       defaultWordGroup: '',
       approachBtnState: true,
       wordGroupBtnState: true,
+      loading: true,
     };
 
 
@@ -43,10 +44,10 @@ export class Setup extends React.Component {
       try {
         const data = await configApi(user.token);
         const resConfig = data;
-        // console.log(resConfig);
         this.setState({
           defaultWordGroup: resConfig.defaultGroupId,
           approach: resConfig.failApproach,
+          loading: false,
         });
         this.props.getSetupConfig(resConfig);
       } catch (error) {
@@ -231,28 +232,29 @@ export class Setup extends React.Component {
             </div>
           </div>
           <div className="select-wrapper">
-            <div className="select-block-item-wrap">
-              <div className="select-block-item select-label">
-                <span className="label-text">Fail Approach: </span>
+            <Spin spinning={this.state.loading}>
+              <div className="select-block-item-wrap">
+                <div className="select-block-item select-label">
+                  <span className="label-text">Fail Approach: </span>
+                </div>
+                <Select
+                  className={this.state.approachBtnState ? selectOnSelectClass : selectClasses}
+                  placeholder={userFailApproaches}
+                  onChange={this.setVal}
+                >
+                  {failApproaches.map(fnum => <Option key={fnum}>{fnum}</Option>)}
+                </Select>
+                <Button
+                  id="save-approach"
+                  className="save-select-btn"
+                  type="primary"
+                  onClick={this.saveApproach}
+                  disabled={this.state.approachBtnState}
+                >
+                  Save
+                </Button>
               </div>
-              <Select
-                className={this.state.approachBtnState ? selectOnSelectClass : selectClasses}
-                // className="select-block-item select-item select-input fail-num-select"
-                placeholder={userFailApproaches}
-                onChange={this.setVal}
-              >
-                {failApproaches.map(fnum => <Option key={fnum}>{fnum}</Option>)}
-              </Select>
-              <Button
-                id="save-approach"
-                className="save-select-btn"
-                type="primary"
-                onClick={this.saveApproach}
-                disabled={this.state.approachBtnState}
-              >
-                Save
-              </Button>
-            </div>
+            </Spin>
             <div className="select-block-item-wrap">
               <div className="select-block-item select-label">
                 <span className="label-text">Default Word Group: </span>
