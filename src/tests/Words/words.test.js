@@ -64,6 +64,5 @@ test('shoul delete word from store', () => {
   });
 });
 
-// test auto complete
 
 

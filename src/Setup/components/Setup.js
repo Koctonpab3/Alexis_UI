@@ -66,12 +66,8 @@ export class Setup extends React.Component {
     };
 
     setWordGroup = (value, wordGroupInfo) => {
-      // console.log(wordGroupInfo);
       const wordGroupId = wordGroupInfo.props.wordGroupInfo;
       const wordGroupVal = wordGroupInfo.props.val;
-      // console.log(wordGroupVal)
-      // console.log(wordGroupInfo);
-      // console.log(value);
       if (wordGroupVal === null) {
         this.setState({
           defaultWordGroup: wordGroupVal,
