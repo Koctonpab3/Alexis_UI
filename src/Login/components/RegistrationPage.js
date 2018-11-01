@@ -3,7 +3,7 @@ import Registration from './Registration';
 
 
 const LoginPage = () => (
-  <div className="loginpage">
+  <div className="loginpage page">
     <div className="loginpage__box">
       <Registration />
     </div>
