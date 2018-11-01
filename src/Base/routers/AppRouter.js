@@ -24,7 +24,6 @@ export const history = createHistory();
 
 //  ROUTERS
 const AppRouter = (props) => {
-  const isAuthenticated = !!JSON.parse(localStorage.getItem('userInfo'));
   const { userInfo } = props;
   console.log(userInfo)
   return (
