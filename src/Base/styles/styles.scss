@@ -8,8 +8,35 @@ $break-sm-medium: 600px;
   }
 }
 
-.ant-table-row, .loginpage__box, .page, .NotFoundPage{
+@keyframes rowRemove {
+  from {
+    transform: translateX(0);
+    opacity: 1;}
+  to {opacity: 0;
+    transform: translateX(-50px);
+  }
+}
+
+
+@keyframes rowAdd {
+  from {
+    transform: translateX(-50px);
+    opacity: 0;}
+  to {opacity: 1;
+    transform: translateX(0px);
+  }
+}
+
+.loginpage__box, .page, .NotFoundPage{
   animation: fadeIn 0.5s;
+}
+
+.ant-table-row{
+  animation: rowAdd 0.5s;
+}
+
+.remove-row{
+  animation: rowRemove 0.5s;
 }
 
 body{
