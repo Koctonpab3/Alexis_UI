@@ -16,6 +16,9 @@ $break-m: 992px;
     background-color: #ffffff;
     width: 96%;
     margin: 0 auto;
+    .eng-wrap-input{
+      margin-right: 35px;
+    }
     .engWord-col{
       width: 40%;
       text-align: center;
@@ -96,4 +99,7 @@ $break-m: 992px;
 }
 #defaultField{
   font-weight: bold;
+}
+.display-class{
+  display: none;
 }
