@@ -13,7 +13,10 @@ class Navigation extends React.Component {
       <div className="top-navbar-wrapper">
         <div className="top-container">
           <div id="logo">
-            <img src={logo} alt="Alexis" />
+            <Link to="/wordgroups">
+              <img src={logo} alt="Alexis" />
+            </Link>
+            
           </div>
           <Menu className="top-navbar" mode="vertical" theme="dark">
             <Menu.Item className="nav-item">

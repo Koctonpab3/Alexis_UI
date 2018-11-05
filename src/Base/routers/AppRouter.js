@@ -14,6 +14,7 @@ import Profile from '../../Profile/components/Profile';
 import StatisticPage from '../../Statistics/components/StaticPage';
 import LoginPage from '../../Login/components/LoginPage';
 import RegistrationPage from '../../Login/components/RegistrationPage';
+import NotFoundPage from '../../NotFoundPage//components/NotFoundPage';
 
 
 export const history = createHistory();
@@ -30,6 +31,7 @@ const AppRouter = () => (
         <Private path="/setup" component={SetupPage} />
         <Private path="/statistics" component={StatisticPage} />
         <Private path="/profile" component={Profile} />
+        <Route component={NotFoundPage} />
       </Switch>
     </div>
   </Router>

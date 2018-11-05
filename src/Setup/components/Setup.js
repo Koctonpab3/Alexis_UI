@@ -225,10 +225,14 @@ export class Setup extends React.Component {
           <div className="select-block-text">
             <div className="setup-page-name">
               <Icon id="setup-text-icon" type="setting" theme="outlined" />
-              <span id="setup-page-name-text">SETUP</span>
+              <span id="setup-page-name-text">
+SETUP
+              </span>
             </div>
             <div>
-              <span id="additional-text">{mainSetupText}</span>
+              <span id="additional-text">
+                {mainSetupText}
+              </span>
             </div>
           </div>
           <div className="select-wrapper">
@@ -258,7 +262,10 @@ export class Setup extends React.Component {
             </div>
             <div className="select-block-item-wrap">
               <div className="select-block-item select-label">
-                <span className="label-text">Default Word Group: </span>
+                <span className="label-text">
+Default Word Group:
+                  {' '}
+                </span>
               </div>
               <Spin spinning={this.state.loading}>
                 <Select
