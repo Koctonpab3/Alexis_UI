@@ -14,11 +14,12 @@ import Profile from '../../Profile/components/Profile';
 import StatisticPage from '../../Statistics/components/StaticPage';
 import LoginPage from '../../Login/components/LoginPage';
 import RegistrationPage from '../../Login/components/RegistrationPage';
-import NotFoundPage from '../../NotFoundPage//components/NotFoundPage';
+import NotFoundPage from '../../NotFoundPage/components/NotFoundPage';
 
 export const history = createHistory({
-  hashType: 'noslash',
+  hashType: 'slash',
 });
+
 
 //  ROUTERS
 const AppRouter = () => (
