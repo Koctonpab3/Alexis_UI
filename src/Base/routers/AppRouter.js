@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Router, Switch, Route,
 } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory';
+import createHistory from 'history/createHashHistory';
 
 // components
 import Private from './PrivateRoute';
@@ -16,8 +16,9 @@ import LoginPage from '../../Login/components/LoginPage';
 import RegistrationPage from '../../Login/components/RegistrationPage';
 import NotFoundPage from '../../NotFoundPage//components/NotFoundPage';
 
-
-export const history = createHistory();
+export const history = createHistory({
+  hashType: 'noslash',
+});
 
 //  ROUTERS
 const AppRouter = () => (
