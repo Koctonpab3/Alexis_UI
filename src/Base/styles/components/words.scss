@@ -47,18 +47,12 @@ $break-m: 992px;
     }
     .addWordsBtn{
       margin-bottom: 20px;
-      //@media screen and (max-width: $break-m) {
-      //  margin-top: 25px;
-      //}
       @media screen and (max-width: $break-medium-5) {
         font-size: 0.9em;
       }
     }
     .wordInput{
       padding-right: 10px;
-      @media screen and (max-width: $break-m) {
-        //margin: 15px 0;
-      }
       input{
         @media screen and (max-width: $break-medium-5) {
         font-size: 0.9em;
@@ -91,6 +85,12 @@ $break-m: 992px;
     }
     .ant-table-bordered .ant-table-tbody > tr > td{
       border-right: none;
+    }
+    .ant-table-tbody>tr>td.ant-table-column-sort {
+      background: rgba(0,0,0,.01);
+    }
+    .ant-table-tbody>tr:hover{
+      background: #e6f7ff;
     }
   }
 }

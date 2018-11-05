@@ -236,11 +236,11 @@ SETUP
             </div>
           </div>
           <div className="select-wrapper">
-            <Spin spinning={this.state.loading}>
-              <div className="select-block-item-wrap">
-                <div className="select-block-item select-label">
-                  <span className="label-text">Fail Approach: </span>
-                </div>
+            <div className="select-block-item-wrap">
+              <div className="select-block-item select-label">
+                <span className="label-text">Fail Approach: </span>
+              </div>
+              <Spin spinning={this.state.loading}>
                 <Select
                   className={this.state.approachBtnState ? selectOnSelectClass : selectClasses}
                   placeholder={userFailApproaches}
@@ -248,17 +248,18 @@ SETUP
                 >
                   {failApproaches.map(fnum => <Option key={fnum}>{fnum}</Option>)}
                 </Select>
-                <Button
-                  id="save-approach"
-                  className="save-select-btn"
-                  type="primary"
-                  onClick={this.saveApproach}
-                  disabled={this.state.approachBtnState}
-                >
+              </Spin>
+
+              <Button
+                id="save-approach"
+                className="save-select-btn"
+                type="primary"
+                onClick={this.saveApproach}
+                disabled={this.state.approachBtnState}
+              >
                   Save
-                </Button>
-              </div>
-            </Spin>
+              </Button>
+            </div>
             <div className="select-block-item-wrap">
               <div className="select-block-item select-label">
                 <span className="label-text">
@@ -266,16 +267,18 @@ Default Word Group:
                   {' '}
                 </span>
               </div>
-              <Select
-                className={this.state.wordGroupBtnState ? selectOnSelectClass : selectClasses}
-                onChange={this.setWordGroup}
-                showSearch
-                placeholder={(defaultWordGroupName !== null ? defaultWordGroupName : wGroupMessage)}
-              >
-                <Option val="null" key="default" id="defaultField">{wGroupMessage}</Option>
-                {activeWordGroups.map(d => <Option wordGroupInfo={d.wordGroupId} val="notDefault" key={d.wordGroupName}>{d.wordGroupName}</Option>)}
+              <Spin spinning={this.state.loading}>
+                <Select
+                  className={this.state.wordGroupBtnState ? selectOnSelectClass : selectClasses}
+                  onChange={this.setWordGroup}
+                  showSearch
+                  placeholder={(defaultWordGroupName !== null ? defaultWordGroupName : wGroupMessage)}
+                >
+                  <Option val="null" key="default" id="defaultField">{wGroupMessage}</Option>
+                  {activeWordGroups.map(d => <Option wordGroupInfo={d.wordGroupId} val="notDefault" key={d.wordGroupName}>{d.wordGroupName}</Option>)}
 
-              </Select>
+                </Select>
+              </Spin>
               <Button
                 id="save-default-group"
                 className="save-select-btn"
@@ -283,8 +286,7 @@ Default Word Group:
                 onClick={this.saveWordGroup}
                 disabled={this.state.wordGroupBtnState}
               >
-
-Save
+                  Save
               </Button>
             </div>
           </div>
