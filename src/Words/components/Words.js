@@ -30,10 +30,12 @@ export class WordsTable extends React.Component {
         title: <span className="words-col-names">
           <span className="col-lang">
 
+
 English
             {' '}
           </span>
           <span>
+
 
 Words
           </span>
@@ -93,10 +95,12 @@ Reset
   <span className="words-col-names">
     <span className="col-lang">
 
+
 Russian
       {' '}
     </span>
     <span>
+
 
 Words
     </span>
@@ -318,28 +322,33 @@ Reset
     // delete word from word group
     removeWord = (id) => {
       const wordGroupsId = this.props.match.params.id;
-      const user = JSON.parse(localStorage.getItem('userInfo'));
-      axios(
-        {
-          method: 'delete',
-          url: `${mainUrl}/home/wordgroups/${wordGroupsId}/words/${id}`,
-          headers:
-                    {
-                      'Content-Type': 'application/json',
-                      Authorization: user.token,
-                    },
-          data: {
+      const row = document.querySelector(`[data-row-key="${id}"]`).classList.add("remove-row");
+
+      setTimeout(() => {
+        const user = JSON.parse(localStorage.getItem('userInfo'));
+        axios(
+          {
+            method: 'delete',
+            url: `${mainUrl}/home/wordgroups/${wordGroupsId}/words/${id}`,
+            headers:
+                      {
+                        'Content-Type': 'application/json',
+                        Authorization: user.token,
+                      },
+            data: {
+            },
           },
-        },
-      ).then((response) => {
-        this.props.deleteWord(id);
-      })
-        .catch((error) => {
-          notification.open({
-            type: 'error',
-            message: errServerConnection,
+        ).then((response) => {
+          this.props.deleteWord(id);
+        })
+          .catch((error) => {
+            notification.open({
+              type: 'error',
+              message: errServerConnection,
+            });
           });
-        });
+      }, 200)
+      
     };
 
     // searching words

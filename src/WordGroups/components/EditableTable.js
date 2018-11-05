@@ -356,28 +356,32 @@ Edit
     // deleting wordgroups
 
     handleDelete = (id) => {
-      const user = JSON.parse(localStorage.getItem('userInfo'));
-      axios(
-        {
-          method: 'delete',
-          url: `${mainUrl}/home/wordgroups/${id}/`,
-          headers:
-                    {
-                      'Content-Type': 'application/json',
-                      Authorization: user.token,
-                    },
-          data: {
+      
+      document.querySelector(`[data-row-key="${id}"]`).classList.add("remove-row");
+      setTimeout(()=> {
+        const user = JSON.parse(localStorage.getItem('userInfo'));
+        axios(
+          {
+            method: 'delete',
+            url: `${mainUrl}/home/wordgroups/${id}/`,
+            headers:
+                      {
+                        'Content-Type': 'application/json',
+                        Authorization: user.token,
+                      },
+            data: {
+            },
           },
-        },
-      ).then((response) => {
-        this.props.deleteWordGroup(id);
-      })
-        .catch((error) => {
-          notification.open({
-            type: 'error',
-            message: errServerConnection,
+        ).then((response) => {
+          this.props.deleteWordGroup(id);
+        })
+          .catch((error) => {
+            notification.open({
+              type: 'error',
+              message: errServerConnection,
+            });
           });
-        });
+        }, 200)
     };
 
     // adding new row

@@ -38,9 +38,11 @@ class StatisticPage extends React.Component {
     try {
       const dataNew = await wordGroupsApi(user.token);
       loadData(dataNew);
-      this.setState(() => ({
-        defaultSelectValue: dataNew[0].name,
-      }));
+      if (dataNew[0].name) {
+        this.setState(() => ({
+          defaultSelectValue: dataNew[0].name,
+        }));
+      }
     } catch (error) {
       notification.open({
         type: 'error',
@@ -121,18 +123,19 @@ class StatisticPage extends React.Component {
         <div>
           <Row>
             <Col span={12}>
-              <Select
-                showSearch
-                value={defaultSelectValue}
-                onChange={this.handleChange}
-                className="static-select"
-              >
-                {dataSource.map(group => (
-                  <Option value={group.name} key={group.id}>
-                    {group.name}
-                  </Option>
-                ))}
-              </Select>
+            {this.state.defaultSelectValue ? (<Select
+              showSearch
+              value={defaultSelectValue}
+              onChange={this.handleChange}
+              className="static-select"
+            >
+              {dataSource.map(group => (
+                <Option value={group.name} key={group.id}>
+                  {group.name}
+                </Option>
+              ))}
+            </Select>) : (<p>No groups to select(This text is temporary)</p>) }
+              
               <Pie data={data} getElementAtEvent={this.changeColor} />
             </Col>
             <Col span={12}>
