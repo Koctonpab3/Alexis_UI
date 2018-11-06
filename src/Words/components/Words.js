@@ -471,6 +471,7 @@ Reset
                   }],
                 })(
                   <AutoComplete
+                    id="eng-ac"
                     dataSource={enRelWords}
                     onSearch={this.handleEngAutoComplete}
                     onFocus={this.handleEngAutoComplete}

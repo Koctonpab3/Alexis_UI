@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Router, Switch, Route,
 } from 'react-router-dom';
-import createHistory from 'history/createBrowserHistory';
+import createHistory from 'history/createHashHistory';
 
 // components
 import Private from './PrivateRoute';
@@ -16,7 +16,9 @@ import LoginPage from '../../Login/components/LoginPage';
 import RegistrationPage from '../../Login/components/RegistrationPage';
 
 
-export const history = createHistory();
+export const history = createHistory({
+  base: '/',
+});
 
 //  ROUTERS
 const AppRouter = () => (
@@ -27,9 +29,9 @@ const AppRouter = () => (
         <Route path="/registration" component={RegistrationPage} />
         <Private path="/wordgroups" component={Wordgroups} exact />
         <Private path="/wordgroups/:id/:name" component={WordsPage} />
-        <Private path="/setup" component={SetupPage} />
-        <Private path="/statistics" component={StatisticPage} />
-        <Private path="/profile" component={Profile} />
+        <Private path="/setup" component={SetupPage} exact />
+        <Private path="/statistics" component={StatisticPage} exact />
+        <Private path="/profile" component={Profile} exact />
       </Switch>
     </div>
   </Router>
