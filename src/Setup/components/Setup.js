@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  Select, Button, Icon, notification,
+  Select, Button, Icon, notification, Spin,
 } from 'antd';
 import axios from 'axios';
 import { mainUrl } from '../../Base/api/auth/constants';
@@ -30,6 +30,7 @@ export class Setup extends React.Component {
       defaultWordGroup: '',
       approachBtnState: true,
       wordGroupBtnState: true,
+      loading: true,
     };
 
 
@@ -43,10 +44,10 @@ export class Setup extends React.Component {
       try {
         const data = await configApi(user.token);
         const resConfig = data;
-        // console.log(resConfig);
         this.setState({
           defaultWordGroup: resConfig.defaultGroupId,
           approach: resConfig.failApproach,
+          loading: false,
         });
         this.props.getSetupConfig(resConfig);
       } catch (error) {
@@ -66,12 +67,8 @@ export class Setup extends React.Component {
     };
 
     setWordGroup = (value, wordGroupInfo) => {
-      // console.log(wordGroupInfo);
       const wordGroupId = wordGroupInfo.props.wordGroupInfo;
       const wordGroupVal = wordGroupInfo.props.val;
-      // console.log(wordGroupVal)
-      // console.log(wordGroupInfo);
-      // console.log(value);
       if (wordGroupVal === null) {
         this.setState({
           defaultWordGroup: wordGroupVal,
@@ -228,10 +225,14 @@ export class Setup extends React.Component {
           <div className="select-block-text">
             <div className="setup-page-name">
               <Icon id="setup-text-icon" type="setting" theme="outlined" />
-              <span id="setup-page-name-text">SETUP</span>
+              <span id="setup-page-name-text">
+SETUP
+              </span>
             </div>
             <div>
-              <span id="additional-text">{mainSetupText}</span>
+              <span id="additional-text">
+                {mainSetupText}
+              </span>
             </div>
           </div>
           <div className="select-wrapper">
@@ -239,14 +240,16 @@ export class Setup extends React.Component {
               <div className="select-block-item select-label">
                 <span className="label-text">Fail Approach: </span>
               </div>
-              <Select
-                className={this.state.approachBtnState ? selectOnSelectClass : selectClasses}
-                // className="select-block-item select-item select-input fail-num-select"
-                placeholder={userFailApproaches}
-                onChange={this.setVal}
-              >
-                {failApproaches.map(fnum => <Option key={fnum}>{fnum}</Option>)}
-              </Select>
+              <Spin spinning={this.state.loading}>
+                <Select
+                  className={this.state.approachBtnState ? selectOnSelectClass : selectClasses}
+                  placeholder={userFailApproaches}
+                  onChange={this.setVal}
+                >
+                  {failApproaches.map(fnum => <Option key={fnum}>{fnum}</Option>)}
+                </Select>
+              </Spin>
+
               <Button
                 id="save-approach"
                 className="save-select-btn"
@@ -254,23 +257,28 @@ export class Setup extends React.Component {
                 onClick={this.saveApproach}
                 disabled={this.state.approachBtnState}
               >
-                Save
+                  Save
               </Button>
             </div>
             <div className="select-block-item-wrap">
               <div className="select-block-item select-label">
-                <span className="label-text">Default Word Group: </span>
+                <span className="label-text">
+Default Word Group:
+                  {' '}
+                </span>
               </div>
-              <Select
-                className={this.state.wordGroupBtnState ? selectOnSelectClass : selectClasses}
-                onChange={this.setWordGroup}
-                showSearch
-                placeholder={(defaultWordGroupName !== null ? defaultWordGroupName : wGroupMessage)}
-              >
-                <Option val="null" key="default" id="defaultField">{wGroupMessage}</Option>
-                {activeWordGroups.map(d => <Option wordGroupInfo={d.wordGroupId} val="notDefault" key={d.wordGroupName}>{d.wordGroupName}</Option>)}
+              <Spin spinning={this.state.loading}>
+                <Select
+                  className={this.state.wordGroupBtnState ? selectOnSelectClass : selectClasses}
+                  onChange={this.setWordGroup}
+                  showSearch
+                  placeholder={(defaultWordGroupName !== null ? defaultWordGroupName : wGroupMessage)}
+                >
+                  <Option val="null" key="default" id="defaultField">{wGroupMessage}</Option>
+                  {activeWordGroups.map(d => <Option wordGroupInfo={d.wordGroupId} val="notDefault" key={d.wordGroupName}>{d.wordGroupName}</Option>)}
 
-              </Select>
+                </Select>
+              </Spin>
               <Button
                 id="save-default-group"
                 className="save-select-btn"
@@ -278,7 +286,7 @@ export class Setup extends React.Component {
                 onClick={this.saveWordGroup}
                 disabled={this.state.wordGroupBtnState}
               >
-Save
+                  Save
               </Button>
             </div>
           </div>

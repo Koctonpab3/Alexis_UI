@@ -14,24 +14,26 @@ import Profile from '../../Profile/components/Profile';
 import StatisticPage from '../../Statistics/components/StaticPage';
 import LoginPage from '../../Login/components/LoginPage';
 import RegistrationPage from '../../Login/components/RegistrationPage';
-
+import NotFoundPage from '../../NotFoundPage/components/NotFoundPage';
 
 export const history = createHistory({
-  base: '/',
+  hashType: 'slash',
 });
+
 
 //  ROUTERS
 const AppRouter = () => (
   <Router history={history}>
     <div className="wrapper">
       <Switch>
-        <Route path="/" component={LoginPage} exact />
+        <Route path="/" component={LoginPage} />
         <Route path="/registration" component={RegistrationPage} />
         <Private path="/wordgroups" component={Wordgroups} exact />
-        <Private path="/wordgroups/:id/:name" component={WordsPage} />
+        <Private path="/wordgroups/:id/:name" component={WordsPage} exact />
         <Private path="/setup" component={SetupPage} exact />
         <Private path="/statistics" component={StatisticPage} exact />
         <Private path="/profile" component={Profile} exact />
+        <Route component={NotFoundPage} />
       </Switch>
     </div>
   </Router>

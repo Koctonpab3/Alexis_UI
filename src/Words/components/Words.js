@@ -6,6 +6,7 @@ import {
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { history } from '../../Base/routers/AppRouter';
 import {
   loadWordsData, addWord, deleteWord, clearWordsState,
 } from '../actions/wordsActions';
@@ -29,13 +30,11 @@ export class WordsTable extends React.Component {
       {
         title: <span className="words-col-names">
           <span className="col-lang">
-
-English
+            English
             {' '}
           </span>
           <span>
-
-Words
+            Words
           </span>
                </span>,
         dataIndex: 'enWord',
@@ -52,14 +51,10 @@ Words
               onPressEnter={this.handleSearch(selectedKeys, confirm)}
             />
             <Button id="search input" type="primary" onClick={this.handleSearch(selectedKeys, confirm)}>
-
-
-Search
+              Search
             </Button>
             <Button onClick={this.handleResetSearch(clearFilters)}>
-
-
-Reset
+              Reset
             </Button>
           </div>
         ),
@@ -93,10 +88,12 @@ Reset
   <span className="words-col-names">
     <span className="col-lang">
 
+
 Russian
       {' '}
     </span>
     <span>
+
 
 Words
     </span>
@@ -318,28 +315,32 @@ Reset
     // delete word from word group
     removeWord = (id) => {
       const wordGroupsId = this.props.match.params.id;
-      const user = JSON.parse(localStorage.getItem('userInfo'));
-      axios(
-        {
-          method: 'delete',
-          url: `${mainUrl}/home/wordgroups/${wordGroupsId}/words/${id}`,
-          headers:
-                    {
-                      'Content-Type': 'application/json',
-                      Authorization: user.token,
-                    },
-          data: {
+      const row = document.querySelector(`[data-row-key="${id}"]`).classList.add('remove-row');
+
+      setTimeout(() => {
+        const user = JSON.parse(localStorage.getItem('userInfo'));
+        axios(
+          {
+            method: 'delete',
+            url: `${mainUrl}/home/wordgroups/${wordGroupsId}/words/${id}`,
+            headers:
+                      {
+                        'Content-Type': 'application/json',
+                        Authorization: user.token,
+                      },
+            data: {
+            },
           },
-        },
-      ).then((response) => {
-        this.props.deleteWord(id);
-      })
-        .catch((error) => {
-          notification.open({
-            type: 'error',
-            message: errServerConnection,
+        ).then((response) => {
+          this.props.deleteWord(id);
+        })
+          .catch((error) => {
+            notification.open({
+              type: 'error',
+              message: errServerConnection,
+            });
           });
-        });
+      }, 200);
     };
 
     // searching words
@@ -383,10 +384,15 @@ Reset
         });
         this.props.loadWordsData(dataNew);
       }).catch((error) => {
-        notification.open({
-          type: 'error',
-          message: errServerConnection,
-        });
+        if (error.response.status === 404) {
+          history.push('/notfound');
+        }
+        if (error.response.status === 500) {
+          notification.open({
+            type: 'error',
+            message: errServerConnection,
+          });
+        }
         this.setState({
           loading: false,
         });
@@ -457,6 +463,7 @@ Reset
           <Form layout="inline" onSubmit={this.handleAddWord}>
             <div className="form-inputs-container">
               <FormItem
+                className="eng-wrap-input"
                 validateStatus={enWordError ? 'error' : ''}
                 help={enWordError || ''}
               >
@@ -521,7 +528,7 @@ Reset
                   <Icon type="plus" theme="outlined" />
 
 
-                  Add Word
+                    Add Word
                 </Button>
               </FormItem>
             </div>

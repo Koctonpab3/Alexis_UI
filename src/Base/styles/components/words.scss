@@ -5,10 +5,6 @@ $break-small-3: 403px;
 $break-m: 992px;
 
 .wordsTable{
-  background-color: #ffffff;
-  width: 80%;
-  padding: 16px 0;
-  margin: 53px auto;
   border-radius: 4px;
   @media screen and (max-width: $break-medium-5) {
     width: 100%;
@@ -20,6 +16,9 @@ $break-m: 992px;
     background-color: #ffffff;
     width: 96%;
     margin: 0 auto;
+    .eng-wrap-input{
+      margin-right: 35px;
+    }
     .engWord-col{
       width: 40%;
       text-align: center;
@@ -51,18 +50,12 @@ $break-m: 992px;
     }
     .addWordsBtn{
       margin-bottom: 20px;
-      //@media screen and (max-width: $break-m) {
-      //  margin-top: 25px;
-      //}
       @media screen and (max-width: $break-medium-5) {
         font-size: 0.9em;
       }
     }
     .wordInput{
       padding-right: 10px;
-      @media screen and (max-width: $break-m) {
-        //margin: 15px 0;
-      }
       input{
         @media screen and (max-width: $break-medium-5) {
         font-size: 0.9em;
@@ -96,8 +89,17 @@ $break-m: 992px;
     .ant-table-bordered .ant-table-tbody > tr > td{
       border-right: none;
     }
+    .ant-table-tbody>tr>td.ant-table-column-sort {
+      background: rgba(0,0,0,.01);
+    }
+    .ant-table-tbody>tr:hover{
+      background: #e6f7ff;
+    }
   }
 }
 #defaultField{
   font-weight: bold;
+}
+.display-class{
+  display: none;
 }
