@@ -29,10 +29,10 @@ const AppRouter = () => (
         <Route path="/" component={LoginPage} exact />
         <Route path="/registration" component={RegistrationPage} />
         <Private path="/wordgroups" component={Wordgroups} exact />
-        <Private path="/wordgroups/:id/:name" component={WordsPage} />
-        <Private path="/setup" component={SetupPage} />
-        <Private path="/statistics" component={StatisticPage} />
-        <Private path="/profile" component={Profile} />
+        <Private path="/wordgroups/:id/:name" component={WordsPage} exact />
+        <Private path="/setup" component={SetupPage} exact />
+        <Private path="/statistics" component={StatisticPage} exact />
+        <Private path="/profile" component={Profile} exact />
         <Route component={NotFoundPage} />
       </Switch>
     </div>
