@@ -71,6 +71,16 @@ body{
   }
 }
 
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  /* IE10+ CSS */
+  .wrapper{
+    .mainBlock{
+      min-height: 80vh;
+      flex: none;
+    }
+  }
+}
+
 .table-title{
   text-align: center;
   font-size: 19px;
