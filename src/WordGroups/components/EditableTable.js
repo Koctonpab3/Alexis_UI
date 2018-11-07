@@ -154,7 +154,7 @@ Reset
           return searchText ? (
             <span>
               <Link
-                to={`/wordgroups/${record.id}/${record.name}`}
+                to={`/wordgroups/${record.id}`}
                 className="wordGroup-name"
               >
 
@@ -168,7 +168,7 @@ Reset
           )
             : (
               <Link
-                to={`/wordgroups/${record.id}/${record.name}`}
+                to={`/wordgroups/${record.id}`}
                 className="wordGroup-name"
               >
                 {text}
@@ -356,9 +356,8 @@ Edit
     // deleting wordgroups
 
     handleDelete = (id) => {
-      
-      document.querySelector(`[data-row-key="${id}"]`).classList.add("remove-row");
-      setTimeout(()=> {
+      document.querySelector(`[data-row-key="${id}"]`).classList.add('remove-row');
+      setTimeout(() => {
         const user = JSON.parse(localStorage.getItem('userInfo'));
         axios(
           {
@@ -381,7 +380,7 @@ Edit
               message: errServerConnection,
             });
           });
-        }, 200)
+      }, 200);
     };
 
     // adding new row
