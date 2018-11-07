@@ -1,19 +1,22 @@
 import React from 'react';
 
 import {
-  Form, Icon, Input, Button, Table, Popconfirm, notification, AutoComplete,
+  Form, Icon, Input, Button, Table, Popconfirm, notification, AutoComplete, Spin,
 } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
 import { history } from '../../Base/routers/AppRouter';
 import {
   loadWordsData, addWord, deleteWord, clearWordsState,
 } from '../actions/wordsActions';
+import { loadData } from '../../WordGroups/actions/wordGroups';
 import {
   errServerConnection,
 } from '../../WordGroups/constans/constants';
 import { searchWords } from '../utils/search';
+import { findWordGroupById } from '../utils/getNameById';
 import { EngWordValidErr, RusWordValidErr, existingWordErr } from '../constants/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
 
@@ -414,13 +417,34 @@ Reset
       });
     };
 
+    loadWordGroups = () => {
+      const user = JSON.parse(localStorage.getItem('userInfo'));
+      wordGroupsApi(user.token).then((data) => {
+        const dataNew = data;
+        const pagination = { ...this.state.pagination };
+        this.setState({
+          loading: false,
+          pagination,
+        });
+        this.props.loadData(dataNew);
+      }).catch((error) => {
+        notification.open({
+          type: 'error',
+          message: errServerConnection,
+        });
+        this.setState({
+          loading: false,
+        });
+      });
+    };
+
     componentDidMount() {
       this.props.form.validateFields();
       const { clearWordsState } = this.props;
       clearWordsState();
+      this.loadWordGroups();
       this.loadWords();
     }
-
 
     render() {
       const {
@@ -428,8 +452,10 @@ Reset
       } = this.props.form;
       const { enRelWords } = this.state;
       const { rusRelWords } = this.state;
-      const wordGroupName = this.props.match.params.name;
-      const { dataSource } = this.props;
+      const { words } = this.props;
+      const { wordGroups } = this.props;
+      const wordsGroupId = Number(this.props.match.params.id);
+      const WName = findWordGroupById(wordGroups, 'id', wordsGroupId);
       const columns = this.columns.map((col) => {
         if (!col.editable) {
           return col;
@@ -457,93 +483,95 @@ Reset
               <Icon className="goBack-arr" type="arrow-left" theme="outlined" />
             </Button>
           </Link>
-          <p className="word-gr-name">
-            {wordGroupName}
-          </p>
-          <Form layout="inline" onSubmit={this.handleAddWord}>
-            <div className="form-inputs-container">
-              <FormItem
-                className="eng-wrap-input"
-                validateStatus={enWordError ? 'error' : ''}
-                help={enWordError || ''}
-              >
-                {getFieldDecorator('enWord', {
-                  rules: [{
-                    required: true,
-                    whitespace: true,
-                    pattern: '^[A-Za-z -]+$',
-                    message: EngWordValidErr,
-                    min: 1,
-                    max: 36,
-                  }],
-                })(
-                  <AutoComplete
-                    id="eng-ac"
-                    dataSource={enRelWords}
-                    onSearch={this.handleEngAutoComplete}
-                    onFocus={this.handleEngAutoComplete}
-                  >
-                    <Input
-                      className="wordInput"
-                      prefix={<Icon type="search" theme="outlined" />}
-                      placeholder="English Word"
-                    />
-                  </AutoComplete>,
-                )}
-              </FormItem>
-              <FormItem
-                validateStatus={ruWordError ? 'error' : ''}
-                help={ruWordError || ''}
-              >
-                {getFieldDecorator('ruWord', {
-                  rules: [{
-                    required: true,
-                    whitespace: true,
-                    pattern: '^[А-Яа-яЁё -]+$',
-                    message: RusWordValidErr,
-                    min: 1,
-                    max: 36,
-                  }],
-                })(
-                  <AutoComplete
-                    dataSource={rusRelWords}
-                    onSearch={this.handleRusAutoComplete}
-                  >
-                    <Input
-                      className="wordInput"
-                      prefix={<Icon type="search" theme="outlined" />}
-                      placeholder="Russian Word"
-                    />
-                  </AutoComplete>
-                  ,
-                )}
-              </FormItem>
-              <FormItem>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  disabled={hasErrors(getFieldsError())}
-                  className="addWordsBtn"
+          <Spin spinning={this.state.loading}>
+            <p className="word-gr-name">
+              {WName}
+            </p>
+            <Form layout="inline" onSubmit={this.handleAddWord}>
+              <div className="form-inputs-container">
+                <FormItem
+                  className="eng-wrap-input"
+                  validateStatus={enWordError ? 'error' : ''}
+                  help={enWordError || ''}
                 >
-                  <Icon type="plus" theme="outlined" />
+                  {getFieldDecorator('enWord', {
+                    rules: [{
+                      required: true,
+                      whitespace: true,
+                      pattern: '^[A-Za-z -]+$',
+                      message: EngWordValidErr,
+                      min: 1,
+                      max: 36,
+                    }],
+                  })(
+                    <AutoComplete
+                      id="eng-ac"
+                      dataSource={enRelWords}
+                      onSearch={this.handleEngAutoComplete}
+                      onFocus={this.handleEngAutoComplete}
+                    >
+                      <Input
+                        className="wordInput"
+                        prefix={<Icon type="search" theme="outlined" />}
+                        placeholder="English Word"
+                      />
+                    </AutoComplete>,
+                  )}
+                </FormItem>
+                <FormItem
+                  validateStatus={ruWordError ? 'error' : ''}
+                  help={ruWordError || ''}
+                >
+                  {getFieldDecorator('ruWord', {
+                    rules: [{
+                      required: true,
+                      whitespace: true,
+                      pattern: '^[А-Яа-яЁё -]+$',
+                      message: RusWordValidErr,
+                      min: 1,
+                      max: 36,
+                    }],
+                  })(
+                    <AutoComplete
+                      dataSource={rusRelWords}
+                      onSearch={this.handleRusAutoComplete}
+                    >
+                      <Input
+                        className="wordInput"
+                        prefix={<Icon type="search" theme="outlined" />}
+                        placeholder="Russian Word"
+                      />
+                    </AutoComplete>
+                    ,
+                  )}
+                </FormItem>
+                <FormItem>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    disabled={hasErrors(getFieldsError())}
+                    className="addWordsBtn"
+                  >
+                    <Icon type="plus" theme="outlined" />
 
 
                     Add Word
-                </Button>
-              </FormItem>
-            </div>
-            <Table
-              className="wordsInGroups-table"
-              columns={columns}
-              rowClassName={() => 'words-editable-row'}
-              rowKey={record => record.id}
-              dataSource={dataSource}
-              bordered
-              pagination={{ pageSize: 10 }}
-              loading={this.state.loading}
-              onChange={this.handleTableChange}
-            />
-          </Form>
+                  </Button>
+                </FormItem>
+              </div>
+              <Table
+                className="wordsInGroups-table"
+                columns={columns}
+                rowClassName={() => 'words-editable-row'}
+                rowKey={record => record.id}
+                dataSource={words}
+                bordered
+                pagination={{ pageSize: 10 }}
+              // loading={this.state.loading}
+                onChange={this.handleTableChange}
+              />
+            </Form>
+          </Spin>
         </div>
       );
     }
@@ -552,6 +580,9 @@ Reset
 const WrappedWordsTable = Form.create()(WordsTable);
 
 const mapDispatchToProps = dispatch => ({
+  loadData: (dataNew) => {
+    dispatch(loadData(dataNew));
+  },
   loadWordsData: (dataNew) => {
     dispatch(loadWordsData(dataNew));
   },
@@ -567,7 +598,8 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  dataSource: state.words.dataSource,
+  words: state.words.dataSource,
+  wordGroups: state.wordGroups.dataSource,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedWordsTable);
