@@ -1,12 +1,17 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import { configure } from 'enzyme';
+import { configure, shallow } from 'enzyme';
 import {
-  loadWordsData, addWord, deleteWord,
+  Form, Icon, Input, Button, Table, Popconfirm, notification, AutoComplete,
+} from 'antd';
+import { WordsTable } from '../../Words/components/Words';
+import {
+  loadWordsData, addWord, deleteWord, clearWordsState,
 } from '../../Words/actions/wordsActions';
 import {
-  LOAD_WORDS_DATA, ADD_WORD, DELETE_WORD,
+  LOAD_WORDS_DATA, ADD_WORD, DELETE_WORD, CLEAR_ALL_WORDS,
 } from '../../Words/constants/constants';
+
 
 configure({ adapter: new Adapter() });
 
@@ -52,7 +57,34 @@ test('shoul delete word from store', () => {
   const id = 58;
   const action = deleteWord(id);
   expect(action).toEqual({
-    type: DELETE_WORD,
     id: 58,
+    type: DELETE_WORD,
+
   });
 });
+
+// test('should clear all words from store', () => {
+//   const action = clearWordsState;
+//   expect(action).toEqual(
+//     clearWordsState,
+//   );
+// });
+
+// test('test autocomplete', () => {
+//   const props = {
+//     match: {
+//       params: {
+//         name: 'Word Group Name',
+//       },
+//     },
+//     clearWordsState,
+//   };
+//
+//   const WrappedWordsTable = Form.create()(WordsTable);
+//
+//   const wrapper = shallow(
+//     <WrappedWordsTable {...props} localStorage={localStorage} />,
+//   );
+//
+//   wrapper.dive().find('.wordInput').simulate('click');
+// });

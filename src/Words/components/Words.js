@@ -178,41 +178,41 @@ Reset
     }
 
     // english autocomplete
-    handleEngAutoComplete = (value) => {
-      this.setState({
-        enRelWords: [],
-      });
-      const lang = 'en';
-      const sendVal = value.toLowerCase();
-      const autoCompReq = async (token) => {
-        const response = await axios({
-          method: 'get',
-          url: `${mainUrl}/api/words/suggestion/${lang}/${sendVal}`,
-          data: {
-          },
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token,
-          },
-        });
-        if (response.status <= 400) {
-          return response.data;
-        }
-        throw new Error(response.status);
-      };
-      const user = JSON.parse(localStorage.getItem('userInfo'));
-      autoCompReq(user.token).then((res) => {
-        const resEnWords = res;
-        this.setState({
-          enRelWords: !value ? [] : resEnWords,
-        });
-      }).catch((error) => {
-        console.log(error);
-      });
-      this.setState({
-        enRelWords: [],
-      });
-    };
+     handleEngAutoComplete = (value) => {
+       this.setState({
+         enRelWords: [],
+       });
+       const lang = 'en';
+       const sendVal = value.toLowerCase();
+       const autoCompReq = async (token) => {
+         const response = await axios({
+           method: 'get',
+           url: `${mainUrl}/api/words/suggestion/${lang}/${sendVal}`,
+           data: {
+           },
+           headers: {
+             'Content-Type': 'application/json',
+             Authorization: token,
+           },
+         });
+         if (response.status <= 400) {
+           return response.data;
+         }
+         throw new Error(response.status);
+       };
+       const user = JSON.parse(localStorage.getItem('userInfo'));
+       autoCompReq(user.token).then((res) => {
+         const resEnWords = res;
+         this.setState({
+           enRelWords: !value ? [] : resEnWords,
+         });
+       }).catch((error) => {
+         console.log(error);
+       });
+       this.setState({
+         enRelWords: [],
+       });
+     };
 
     // russian autocomplete
     handleRusAutoComplete = (value) => {
@@ -384,10 +384,10 @@ Reset
         });
         this.props.loadWordsData(dataNew);
       }).catch((error) => {
-        if (error.response.status === 404) {
+        if (error.response.status === 400) {
           history.push('/notfound');
         }
-        if (error.response.status === 500) {
+        if (error.response.status > 400) {
           notification.open({
             type: 'error',
             message: errServerConnection,

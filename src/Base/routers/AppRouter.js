@@ -26,7 +26,7 @@ const AppRouter = () => (
   <Router history={history}>
     <div className="wrapper">
       <Switch>
-        <Route path="/" component={LoginPage} />
+        <Route path="/" component={LoginPage} exact />
         <Route path="/registration" component={RegistrationPage} />
         <Private path="/wordgroups" component={Wordgroups} exact />
         <Private path="/wordgroups/:id/:name" component={WordsPage} exact />
