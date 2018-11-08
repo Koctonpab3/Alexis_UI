@@ -34,6 +34,15 @@ $break-medium-6: 500px;
         .select-block-item-wrap{
           display: flex;
           margin-top: 25px;
+          .setup-field-icon{
+            font-size: 16pt;
+            padding: 5px;
+            color: rgba(177, 177, 177, 0.71);
+            margin-left: 5px;
+            &:hover{
+              color: rgba(122, 122, 122, 0.71);
+            }
+          }
           .select-label{
             width: 130px;
             text-align: left;
@@ -71,8 +80,8 @@ $break-medium-6: 500px;
       }
     }
   }
+  .setup-field-popover{
+    width:50px;
+    background-color: red;
+  }
 }
-//#defaultField{
-//  background-color: #f7ffbe;
-//  font-weight: 600;
-//}
