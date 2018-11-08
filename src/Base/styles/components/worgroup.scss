@@ -90,6 +90,7 @@ $break-small-2: 346px;
       }
       th.actions-col-name{
         padding-right: 146px;
+
         @media screen and (max-width: $break-medium) {
           padding-right: 136px;
         }
@@ -135,6 +136,10 @@ $break-small-2: 346px;
       .wordGroup-name{
         cursor: pointer;
         padding: 10px;
+        display: block;
+        &::first-letter{
+          text-transform: uppercase;
+        }
         &:hover{
           text-decoration: underline;
         }

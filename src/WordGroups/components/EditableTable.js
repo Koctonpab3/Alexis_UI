@@ -171,7 +171,7 @@ Reset
                 to={`/wordgroups/${record.id}`}
                 className="wordGroup-name"
               >
-                {text}
+               {text}
               </Link>
 
             );
@@ -288,6 +288,9 @@ Edit
 
     save = (form, id, activeState) => {
       form.validateFields((error, row) => {
+        const newRow = {
+          name: row.name.toLowerCase(),
+        };
         if (error) {
           return;
         }
@@ -295,9 +298,15 @@ Edit
         const index = newData.findIndex(item => id === item.id);
         if (index > -1) {
           const item = newData[index];
+          const sendItem = {
+            id: item.id,
+            name: item.name.toLowerCase(),
+            activeState: item.activeState,
+            userId: item.userId,
+          };
           newData.splice(index, 1, {
-            ...item,
-            ...row,
+            ...sendItem,
+            ...newRow,
           });
           this.setState({ editingKey: '' });
 
@@ -308,7 +317,7 @@ Edit
               url: `${mainUrl}/home/wordgroups/`,
               data: {
                 id,
-                name: row.name,
+                name: row.name.toLowerCase(),
                 activeState,
               },
               headers: {
@@ -330,7 +339,7 @@ Edit
             });
           });
         } else {
-          newData.push(row);
+          newData.push(newRow);
           this.setState({ editingKey: '' });
           this.props.editWordGroup(newData);
         }
@@ -391,11 +400,11 @@ Edit
       const namesArr = [];
       const toArr = () => {
         for (const value of obj.values()) {
-          namesArr.push(value.name);
+          namesArr.push(value.name.toLowerCase());
         }
       };
       toArr();
-      const newGroupsArr = namesArr.filter(name => name.indexOf('New group') + 1);
+      const newGroupsArr = namesArr.filter(name => name.indexOf('new group') + 1);
       const newWGArr = newGroupsArr.filter(name => name.length > 9);
       const lastNum = newWGArr.map(
         (name) => {
@@ -405,7 +414,7 @@ Edit
       );
       const maxArrNum = (Math.max(...lastNum));
       const newCount = maxArrNum + 1;
-      const nameGroup = `New group ${newCount}`;
+      const nameGroup = `new group ${newCount}`;
 
       const naming = () => {
         if (newGroupsArr.length !== 0) {
@@ -422,7 +431,7 @@ Edit
           method: 'put',
           url: `${mainUrl}/home/wordgroups/`,
           data: {
-            name: naming(),
+            name: naming().toLowerCase(),
             activeState: true,
           },
           headers: {
