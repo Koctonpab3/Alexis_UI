@@ -72,6 +72,21 @@ $break-medium-7: 400px;
             @media screen and (max-width: $break-medium-7) {
               margin-left: 0;
             }
+            .ant-select-selection__placeholder, .ant-select-search__field__placeholder{
+              &::first-letter{
+                text-transform: uppercase;
+              }
+            }
+            .ant-select-selection__rendered{
+              &::first-letter{
+                text-transform: uppercase;
+              }
+            }
+            .ant-select-selection-selected-value{
+              &::first-letter{
+                text-transform: uppercase;
+              }
+            }
           }
           .select-input-selected-color{
             color:#d9d9d9;
@@ -95,3 +110,9 @@ $break-medium-7: 400px;
     }
   }
 }
+.setup-options{
+  &::first-letter{
+    text-transform: uppercase;
+  }
+}
+
