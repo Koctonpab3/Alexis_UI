@@ -49,6 +49,21 @@ $break-medium-6: 500px;
           }
           .select-input{
             margin-left: 25px;
+            .ant-select-selection__placeholder, .ant-select-search__field__placeholder{
+              &::first-letter{
+                text-transform: uppercase;
+              }
+            }
+            .ant-select-selection__rendered{
+              &::first-letter{
+                text-transform: uppercase;
+              }
+            }
+            .ant-select-selection-selected-value{
+              &::first-letter{
+                text-transform: uppercase;
+              }
+            }
           }
           .select-input-selected-color{
             color:#d9d9d9;
@@ -72,7 +87,8 @@ $break-medium-6: 500px;
     }
   }
 }
-//#defaultField{
-//  background-color: #f7ffbe;
-//  font-weight: 600;
-//}
+.setup-options{
+  &::first-letter{
+    text-transform: uppercase;
+  }
+}
