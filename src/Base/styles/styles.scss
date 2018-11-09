@@ -10,20 +10,16 @@ $break-sm-medium: 600px;
 
 @keyframes rowRemove {
   from {
-    transform: translateX(0);
     opacity: 1;}
   to {opacity: 0;
-    transform: translateX(-50px);
   }
 }
 
 
 @keyframes rowAdd {
   from {
-    transform: translateX(-50px);
     opacity: 0;}
   to {opacity: 1;
-    transform: translateX(0px);
   }
 }
 
@@ -67,6 +63,16 @@ body{
     flex: 1;
     @media screen and (max-width: $break-sm-medium) {
       width: 96%;
+    }
+  }
+}
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  /* IE10+ CSS */
+  .wrapper{
+    .mainBlock{
+      min-height: 80vh;
+      flex: none;
     }
   }
 }

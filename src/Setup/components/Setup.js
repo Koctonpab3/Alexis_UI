@@ -279,7 +279,7 @@ Default Word Group:
                   placeholder={(defaultWordGroupName !== null ? defaultWordGroupName : wGroupMessage)}
                 >
                   <Option val="null" key="default" id="defaultField">{wGroupMessage}</Option>
-                  {activeWordGroups.map(d => <Option wordGroupInfo={d.wordGroupId} val="notDefault" key={d.wordGroupName}>{d.wordGroupName}</Option>)}
+                  {activeWordGroups.map(d => <Option className="setup-options" wordGroupInfo={d.wordGroupId} val="notDefault" key={d.wordGroupName}>{d.wordGroupName}</Option>)}
 
                 </Select>
               </Spin>
