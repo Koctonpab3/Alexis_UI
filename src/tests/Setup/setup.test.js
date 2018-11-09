@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-  loadActiveWordGroups, getSetupConfig, setApproach, setDefaultWGroup,
+  loadActiveWordGroups, getSetupConfig, setApproach, setDefaultWGroup, setSuccessApproach,
 } from '../../Setup/actions/setupActions';
 import {
-  LOAD_ACTIVE_WORDGROUPS, GET_CONFIG, SET_APPROACH, SET_DEFAULT_WGROUP,
+  LOAD_ACTIVE_WORDGROUPS, GET_CONFIG, SET_APPROACH, SET_DEFAULT_WGROUP, SET_S_APPROACH,
 } from '../../Setup/constans/setup';
 
 // test loadActiveWordGroups
@@ -48,6 +48,16 @@ test('should update user Fail Approaches', () => {
   expect(action).toEqual({
     type: SET_APPROACH,
     approach: 3,
+  });
+});
+
+// test setSuccessApproach
+test('should update user Success Approaches', () => {
+  const successApproach = 1;
+  const action = setSuccessApproach(successApproach);
+  expect(action).toEqual({
+    type: SET_S_APPROACH,
+    successApproach: 1,
   });
 });
 
