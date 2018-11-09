@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {
-  Select, Button, Icon, notification, Spin,
+  Select, Button, Icon, notification, Spin, Popover,
 } from 'antd';
 import axios from 'axios';
 import { mainUrl } from '../../Base/api/auth/constants';
@@ -9,7 +9,7 @@ import {
   loadActiveWordGroups, getSetupConfig, setApproach, setDefaultWGroup,
 } from '../actions/setupActions';
 import {
-  failApproaches, wGroupMessage, mainSetupText, selectClasses, selectOnSelectClass,
+  failApproaches, wGroupMessage, mainSetupText, selectClasses, selectOnSelectClass, defaultWordGroupContent, failApproachesContent,
 } from '../constans/setup';
 import { findObjectByKey } from '../utils/setupUtils';
 
@@ -216,6 +216,7 @@ export class Setup extends React.Component {
 
 
     render() {
+      console.log(defaultWordGroupContent);
       const { activeWordGroups } = this.props;
       const { defaultWordGroup } = this.props;
       const { userFailApproaches } = this.props;
@@ -259,6 +260,9 @@ SETUP
               >
                   Save
               </Button>
+              <Popover content={failApproachesContent}>
+                <Icon type="question-circle" className="setup-field-icon" />
+              </Popover>
             </div>
             <div className="select-block-item-wrap">
               <div className="select-block-item select-label">
@@ -288,6 +292,9 @@ Default Word Group:
               >
                   Save
               </Button>
+              <Popover content={defaultWordGroupContent}>
+                <Icon type="question-circle" className="setup-field-icon" />
+              </Popover>
             </div>
           </div>
         </div>
