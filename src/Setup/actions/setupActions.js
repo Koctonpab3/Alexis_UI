@@ -1,5 +1,5 @@
 import {
-  LOAD_ACTIVE_WORDGROUPS, GET_CONFIG, SET_APPROACH, SET_DEFAULT_WGROUP,
+  LOAD_ACTIVE_WORDGROUPS, GET_CONFIG, SET_APPROACH, SET_DEFAULT_WGROUP, SET_S_APPROACH,
 } from '../constans/setup';
 
 export const loadActiveWordGroups = resData => ({
@@ -15,6 +15,11 @@ export const getSetupConfig = resConfig => ({
 export const setApproach = approach => ({
   type: SET_APPROACH,
   approach,
+});
+
+export const setSuccessApproach = successApproach => ({
+  type: SET_S_APPROACH,
+  successApproach,
 });
 
 export const setDefaultWGroup = wGroup => ({

@@ -6,10 +6,10 @@ import {
 import axios from 'axios';
 import { mainUrl } from '../../Base/api/auth/constants';
 import {
-  loadActiveWordGroups, getSetupConfig, setApproach, setDefaultWGroup,
+  loadActiveWordGroups, getSetupConfig, setApproach, setDefaultWGroup, setSuccessApproach,
 } from '../actions/setupActions';
 import {
-  failApproaches, wGroupMessage, mainSetupText, selectClasses, selectOnSelectClass, defaultWordGroupContent, failApproachesContent,
+  approaches, wGroupMessage, mainSetupText, selectClasses, selectOnSelectClass, defaultWordGroupContent, failApproachesContent, successApproachesContent,
 } from '../constans/setup';
 import { findObjectByKey } from '../utils/setupUtils';
 
@@ -28,6 +28,8 @@ export class Setup extends React.Component {
     state = {
       approach: '',
       defaultWordGroup: '',
+      successApproach: '',
+      successApproachBtnState: true,
       approachBtnState: true,
       wordGroupBtnState: true,
       loading: true,
@@ -47,6 +49,7 @@ export class Setup extends React.Component {
         this.setState({
           defaultWordGroup: resConfig.defaultGroupId,
           approach: resConfig.failApproach,
+          successApproach: resConfig.successApproach,
           loading: false,
         });
         this.props.getSetupConfig(resConfig);
@@ -63,6 +66,14 @@ export class Setup extends React.Component {
       this.setState({
         approach: val,
         approachBtnState: false,
+      });
+    };
+
+    setSuccessVal = (value) => {
+      const val = Number(value);
+      this.setState({
+        successApproach: val,
+        successApproachBtnState: false,
       });
     };
 
@@ -128,7 +139,7 @@ export class Setup extends React.Component {
 
 
     sendConfig = async () => {
-      const { defaultWordGroup, userFailApproaches } = this.props;
+      const { defaultWordGroup, userFailApproaches, userSuccessApproach } = this.props;
       const sendConfigApi = async (token) => {
         const response = await axios({
           method: 'post',
@@ -136,6 +147,7 @@ export class Setup extends React.Component {
           data: {
             failApproach: userFailApproaches,
             defaultGroupId: defaultWordGroup,
+            successApproach: userSuccessApproach,
           },
           headers: {
             'Content-Type': 'application/json',
@@ -187,6 +199,33 @@ export class Setup extends React.Component {
         }));
     };
 
+    saveSuccessApproach = () => {
+      const successApproach = this.state.successApproach;
+      const resolveSaveSuccessApproach = () => new Promise((resolve, reject) => {
+        resolve();
+      });
+      resolveSaveSuccessApproach()
+        .then(() => {
+          this.props.setSuccessApproach(successApproach);
+        })
+        .then(
+          () => {
+            this.sendConfig();
+          },
+        )
+        .then(
+          () => {
+            this.setState({
+              successApproachBtnState: true,
+            });
+          },
+        )
+        .catch(err => notification.open({
+          type: 'error',
+          message: errServerConnection,
+        }));
+    }
+
     saveWordGroup = () => {
       const wGroup = this.state.defaultWordGroup;
       const resolveSaveWordGroup = () => new Promise((resolve, reject) => {
@@ -216,10 +255,10 @@ export class Setup extends React.Component {
 
 
     render() {
-      console.log(defaultWordGroupContent);
       const { activeWordGroups } = this.props;
       const { defaultWordGroup } = this.props;
       const { userFailApproaches } = this.props;
+      const { userSuccessApproach } = this.props;
       const defaultWordGroupName = findObjectByKey(activeWordGroups, 'wordGroupId', defaultWordGroup);
       return (
         <div className="select-block">
@@ -239,7 +278,7 @@ SETUP
           <div className="select-wrapper">
             <div className="select-block-item-wrap">
               <div className="select-block-item select-label">
-                <span className="label-text">Fail Approach: </span>
+                <span className="label-text">Fail Approaches: </span>
               </div>
               <Spin spinning={this.state.loading}>
                 <Select
@@ -247,7 +286,7 @@ SETUP
                   placeholder={userFailApproaches}
                   onChange={this.setVal}
                 >
-                  {failApproaches.map(fnum => <Option key={fnum}>{fnum}</Option>)}
+                  {approaches.map(fnum => <Option key={fnum}>{fnum}</Option>)}
                 </Select>
               </Spin>
 
@@ -261,6 +300,35 @@ SETUP
                   Save
               </Button>
               <Popover content={failApproachesContent}>
+                <Icon type="question-circle" className="setup-field-icon" />
+              </Popover>
+            </div>
+            <div className="select-block-item-wrap">
+              <div className="select-block-item select-label">
+                <span className="label-text">Successful Approaches: </span>
+              </div>
+              <Spin
+                spinning={this.state.loading}
+              >
+                <Select
+                  className={this.state.successApproachBtnState ? selectOnSelectClass : selectClasses}
+                  placeholder={userSuccessApproach}
+                  onChange={this.setSuccessVal}
+                >
+                  {approaches.map(fnum => <Option key={fnum}>{fnum}</Option>)}
+                </Select>
+              </Spin>
+
+              <Button
+                id="success-approach-btn"
+                className="save-select-btn"
+                type="primary"
+                onClick={this.saveSuccessApproach}
+                disabled={this.state.successApproachBtnState}
+              >
+                Save
+              </Button>
+              <Popover content={successApproachesContent}>
                 <Icon type="question-circle" className="setup-field-icon" />
               </Popover>
             </div>
@@ -312,6 +380,9 @@ const mapDispatchToProps = dispatch => ({
   setApproach: (approach) => {
     dispatch(setApproach(approach));
   },
+  setSuccessApproach: (successApproach) => {
+    dispatch(setSuccessApproach(successApproach));
+  },
   setDefaultWGroup: (wGroup) => {
     dispatch(setDefaultWGroup(wGroup));
   },
@@ -322,6 +393,7 @@ const mapStateToProps = state => ({
   activeWordGroups: state.setup.activeWordGroups,
   defaultWordGroup: state.setup.defaultWordGroup,
   userFailApproaches: state.setup.userFailApproaches,
+  userSuccessApproach: state.setup.userSuccessApproach,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Setup);
