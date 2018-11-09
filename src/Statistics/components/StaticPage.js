@@ -10,6 +10,8 @@ import {
   labelSucces, labelInprocess,
 } from '../constants/constants';
 import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
+import groupStatistApi from '../../Base/api/statisticApi/groupStatisticApi';
+import wordsStatisticApi from '../../Base/api/statisticApi/wordsStatisticApi';
 import { loadData } from '../../WordGroups/actions/wordGroups';
 import { filteerSuccess, filteerInProcess } from '../utils/utils';
 import dataSour from '../utils/data';
@@ -20,66 +22,89 @@ class StatisticPage extends React.Component {
     backgroundColorFalse: backgroundColorFalseDefault,
     backgroundColorSuccess,
     defaultSelectValue: '',
-    filtaredDate: [],
     titleTable: succesTitleTable,
+    inprogress: 0,
+    learned: 0,
+    activeGroupId: '',
+    pagination: {},
+    loading: false,
   };
 
-  componentDidMount = () => {
-    this.loadWordGroups();
-    const data = filteerSuccess(dataSour);
-    this.setState({
-      filtaredDate: data,
-    });
-  }
-
-  loadWordGroups = async () => {
-    const { loadData } = this.props;
+  componentDidMount = async () => {
     const user = JSON.parse(localStorage.getItem('userInfo'));
-    try {
-      const dataNew = await wordGroupsApi(user.token);
-      loadData(dataNew);
-      if (dataNew[0].name) {
-        this.setState(() => ({
-          defaultSelectValue: dataNew[0].name,
-        }));
-      }
-    } catch (error) {
-      notification.open({
-        type: 'error',
-        message: errServerConnection,
-      });
+    const { loadData } = this.props;
+    const groupList = await wordGroupsApi(user.token);
+    if (groupList[0].name) {
+      loadData(groupList);
+      this.setState(() => ({
+        defaultSelectValue: groupList[0].name,
+        activeGroupId: groupList[0].id
+        
+      }));
+      this.statisctiAmount(user.token, groupList[0].id);
+      this.handlewordsTable(user.token, groupList[0].id);
     }
-  };
+  }
 
   handleChange = (value) => {
+    const { dataSource } = this.props;
+    const user = JSON.parse(localStorage.getItem('userInfo'));
     this.setState({ defaultSelectValue: value });
+    const getIndex = dataSource.findIndex(elemet => elemet.name === value);
+    console.log(dataSource[getIndex].id);
+    this.statisctiAmount(user.token, dataSource[getIndex].id);
+    this.handlewordsTable(user.token, dataSource[getIndex].id);
+    this.setState(() => ({
+      activeGroupId: dataSource[getIndex].id,
+    }))
   }
 
+  statisctiAmount = async (token, idGroup) => {
+    const result = await groupStatistApi(token, idGroup);
+    this.setState(() => ({
+      inprogress: result.inprogress,
+      learned: result.learned,
+    }));
+  };
+
+  handlewordsTable = async (token, groupId, statusWords) => {
+    const pagination = { ...this.state.pagination };
+    const result = await wordsStatisticApi(token, groupId, statusWords);
+    console.log(result.numberOfPages);
+    pagination.total = result.numberOfPages,
+    console.log(pagination.total)
+    this.setState(() => ({
+      wordsTable: result.words,
+      pagination,
+    }));
+  };
+
+
   changeColor = (dataset) => {
-    console.log(dataset[0]._index);
+    const { dataSource } = this.props;
+    const pagination = { ...this.state.pagination };
+    const user = JSON.parse(localStorage.getItem('userInfo'));
     if (!dataset[0]._index) {
-      const data = filteerSuccess(dataSour);
       this.setState({
         backgroundColorFalse: backgroundColorFalseDefault,
         backgroundColorSuccess,
         titleTable: succesTitleTable,
-        filtaredDate: data,
       });
+      this.handlewordsTable(user.token, this.state.activeGroupId, );
     } else {
-      const data = filteerInProcess(dataSour);
       this.setState({
         backgroundColorFalse,
         backgroundColorSuccess: backgroundColorSuccessDefault,
         titleTable: inProcessTitleTable,
-        filtaredDate: data,
       });
+      this.handlewordsTable(user.token, this.state.activeGroupId, 'inprogress');
     }
   }
 
   render() {
     const { dataSource } = this.props;
     const {
-      titleTable, filtaredDate, defaultSelectValue, backgroundColorSuccess, backgroundColorFalse,
+      titleTable, wordsTable, defaultSelectValue, backgroundColorSuccess, backgroundColorFalse,
     } = this.state;
 
     const data = {
@@ -88,7 +113,7 @@ class StatisticPage extends React.Component {
         labelInprocess,
       ],
       datasets: [{
-        data: [70, 30],
+        data: [this.state.inprogress, this.state.learned],
         backgroundColor: [
           backgroundColorSuccess,
           backgroundColorFalse,
@@ -142,7 +167,7 @@ class StatisticPage extends React.Component {
               <h2 className="table-title">
                 {titleTable}
               </h2>
-              <Table dataSource={filtaredDate} columns={columns} pagination={{ pageSize: 10 }} />
+              <Table dataSource={wordsTable} columns={columns} pagination={this.state.pagination} loading={this.state.loading} />
             </Col>
           </Row>
         </div>
