@@ -388,7 +388,7 @@ Reset
         this.props.loadWordsData(dataNew);
       }).catch((error) => {
         if (error.response.status === 400) {
-          history.push('/notfound');
+          history.push('/wordgroups');
         }
         if (error.response.status > 400) {
           notification.open({
