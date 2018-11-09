@@ -47,6 +47,9 @@ $break-m: 992px;
     .word-gr-name{
       font-size: 1.2em;
       padding: 10px 0;
+      &::first-letter{
+        text-transform: uppercase;
+      }
     }
     .addWordsBtn{
       margin-bottom: 20px;
