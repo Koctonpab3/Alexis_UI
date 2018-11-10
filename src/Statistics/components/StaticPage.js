@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import { connect } from 'react-redux';
 import { Pie } from 'react-chartjs-2';
+import uuidv4 from 'uuid/v4';
 import {
   pageTitle, backgroundColorFalseDefault, backgroundColorSuccessDefault, backgroundColorFalse, backgroundColorSuccess,
   succesTitleTable, inProcessTitleTable, errServerConnection, wordtitle, successTitle, titleFail,
@@ -13,9 +14,6 @@ import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
 import groupStatistApi from '../../Base/api/statisticApi/groupStatisticApi';
 import wordsStatisticApi from '../../Base/api/statisticApi/wordsStatisticApi';
 import { loadData } from '../../WordGroups/actions/wordGroups';
-import { filteerSuccess, filteerInProcess } from '../utils/utils';
-import dataSour from '../utils/data';
-
 
 class StatisticPage extends React.Component {
   state = {
@@ -25,9 +23,11 @@ class StatisticPage extends React.Component {
     titleTable: succesTitleTable,
     inprogress: 0,
     learned: 0,
+    wordsTable: [],
     activeGroupId: '',
     pagination: {},
     loading: false,
+    acitveFilter: 'learned'
   };
 
   componentDidMount = async () => {
@@ -38,24 +38,37 @@ class StatisticPage extends React.Component {
       loadData(groupList);
       this.setState(() => ({
         defaultSelectValue: groupList[0].name,
-        activeGroupId: groupList[0].id
-        
+        activeGroupId: groupList[0].id,
       }));
       this.statisctiAmount(user.token, groupList[0].id);
-      this.handlewordsTable(user.token, groupList[0].id);
+      this.handlewordsTable(user.token, groupList[0].id, this.state.acitveFilter);
     }
+  }
+  handleTableChange = (pagination) => {
+    const user = JSON.parse(localStorage.getItem('userInfo'));
+    const pager = { ...this.state.pagination };
+    pager.current = pagination.current;
+    this.setState({
+      pagination: pager,
+    });
+    console.log(pagination.current)
+    this.handlewordsTable(user.token, this.state.activeGroupId, this.state.acitveFilter, pagination.current);
+
   }
 
   handleChange = (value) => {
     const { dataSource } = this.props;
+    const pagination = { ...this.state.pagination };
+    pagination.current = 1;
     const user = JSON.parse(localStorage.getItem('userInfo'));
     this.setState({ defaultSelectValue: value });
     const getIndex = dataSource.findIndex(elemet => elemet.name === value);
     console.log(dataSource[getIndex].id);
     this.statisctiAmount(user.token, dataSource[getIndex].id);
-    this.handlewordsTable(user.token, dataSource[getIndex].id);
+    this.handlewordsTable(user.token, dataSource[getIndex].id, this.state.acitveFilter);
     this.setState(() => ({
       activeGroupId: dataSource[getIndex].id,
+      pagination,
     }))
   }
 
@@ -67,15 +80,17 @@ class StatisticPage extends React.Component {
     }));
   };
 
-  handlewordsTable = async (token, groupId, statusWords) => {
+  handlewordsTable = async (token, groupId, statusWords, page) => {
     const pagination = { ...this.state.pagination };
-    const result = await wordsStatisticApi(token, groupId, statusWords);
-    console.log(result.numberOfPages);
-    pagination.total = result.numberOfPages,
+    const result = await wordsStatisticApi(token, groupId, statusWords, page);
+    console.log(result.words);
+    const wordsWithKey = result.words.map((word) => ({...word, key: uuidv4()}))
+    pagination.total = result.numberOfPages * 10,
     console.log(pagination.total)
     this.setState(() => ({
-      wordsTable: result.words,
+      wordsTable: wordsWithKey,
       pagination,
+      acitveFilter: statusWords
     }));
   };
 
@@ -90,7 +105,7 @@ class StatisticPage extends React.Component {
         backgroundColorSuccess,
         titleTable: succesTitleTable,
       });
-      this.handlewordsTable(user.token, this.state.activeGroupId, );
+      this.handlewordsTable(user.token, this.state.activeGroupId, 'learned' );
     } else {
       this.setState({
         backgroundColorFalse,
@@ -167,7 +182,9 @@ class StatisticPage extends React.Component {
               <h2 className="table-title">
                 {titleTable}
               </h2>
-              <Table dataSource={wordsTable} columns={columns} pagination={this.state.pagination} loading={this.state.loading} />
+              <Table dataSource={wordsTable} columns={columns} pagination={this.state.pagination} loading={this.state.loading} 
+                onChange={this.handleTableChange}
+              />
             </Col>
           </Row>
         </div>
