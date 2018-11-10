@@ -11,6 +11,8 @@ export const successTitle = 'correct';
 export const titleFail = 'wrong';
 export const labelSucces = 'correct';
 export const labelInprocess = 'wrong';
-
+export const noGroupsTest = 'You do not have any groups'
+export const inprogressForUrl = 'inprogress'
+export const learnedForUrl = 'learned'
 // filter value
 export const maxValue = 3;
