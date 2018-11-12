@@ -12,6 +12,6 @@ export const wGroupMessage = 'Default';
 export const mainSetupText = 'You can choose the fail approach and the default group';
 export const selectClasses = 'select-block-item select-item select-input fail-num-select';
 export const selectOnSelectClass = 'select-block-item select-item select-input fail-num-select select-input-selected-color';
-export const defaultWordGroupContent = 'The Quiz start group. If the group is not chosen or default group is chosen - quiz will be started from the random group';
+export const defaultWordGroupContent = 'The Quiz start group. If the value is set to default - the Quiz will be started from the random group';
 export const failApproachesContent = 'The acceptable approaches number of incorrectly named word';
 export const successApproachesContent = 'The approaches number of correctly named word to consider it learned';

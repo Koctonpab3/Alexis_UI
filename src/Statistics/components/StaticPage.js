@@ -4,82 +4,122 @@ import {
 } from 'antd';
 import { connect } from 'react-redux';
 import { Pie } from 'react-chartjs-2';
+import uuidv4 from 'uuid/v4';
+import { configApi } from '../../Base/api/setup/setupApi';
 import {
   pageTitle, backgroundColorFalseDefault, backgroundColorSuccessDefault, backgroundColorFalse, backgroundColorSuccess,
   succesTitleTable, inProcessTitleTable, errServerConnection, wordtitle, successTitle, titleFail,
-  labelSucces, labelInprocess,
+  labelSucces, labelInprocess, noGroupsTest, inprogressForUrl, learnedForUrl
 } from '../constants/constants';
 import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
+import groupStatistApi from '../../Base/api/statisticApi/groupStatisticApi';
+import wordsStatisticApi from '../../Base/api/statisticApi/wordsStatisticApi';
 import { loadData } from '../../WordGroups/actions/wordGroups';
-import { filteerSuccess, filteerInProcess } from '../utils/utils';
-import dataSour from '../utils/data';
-
+import { configure } from 'enzyme';
 
 class StatisticPage extends React.Component {
   state = {
     backgroundColorFalse: backgroundColorFalseDefault,
     backgroundColorSuccess,
     defaultSelectValue: '',
-    filtaredDate: [],
     titleTable: succesTitleTable,
+    inprogress: 0,
+    learned: 0,
+    wordsTable: [],
+    activeGroupId: '',
+    pagination: {},
+    loading: false,
+    acitveFilter: learnedForUrl,
   };
 
-  componentDidMount = () => {
-    this.loadWordGroups();
-    const data = filteerSuccess(dataSour);
-    this.setState({
-      filtaredDate: data,
-    });
-  }
-
-  loadWordGroups = async () => {
-    const { loadData } = this.props;
+  componentDidMount = async () => {
     const user = JSON.parse(localStorage.getItem('userInfo'));
-    try {
-      const dataNew = await wordGroupsApi(user.token);
-      loadData(dataNew);
-      if (dataNew[0].name) {
-        this.setState(() => ({
-          defaultSelectValue: dataNew[0].name,
-        }));
-      }
-    } catch (error) {
-      notification.open({
-        type: 'error',
-        message: errServerConnection,
-      });
+    const defaultSetup = await configApi(user.token);
+    const { loadData } = this.props;
+    const groupList = await wordGroupsApi(user.token);
+    const defauldName = groupList.find(item => item.id === defaultSetup.defaultGroupId);
+    if (defauldName.name) {
+      loadData(groupList);
+      this.setState(() => ({
+        defaultSelectValue: defauldName.name,
+        activeGroupId: defauldName.id,
+      }));
+      this.statisctiAmount(user.token, defaultSetup.defaultGroupId);
+      this.handlewordsTable(user.token, defaultSetup.defaultGroupId, this.state.acitveFilter);
     }
-  };
+  }
+  handleTableChange = (pagination) => {
+    const user = JSON.parse(localStorage.getItem('userInfo'));
+    const pager = { ...this.state.pagination };
+    pager.current = pagination.current;
+    this.setState({
+      pagination: pager,
+    });
+    this.handlewordsTable(user.token, this.state.activeGroupId, this.state.acitveFilter, pagination.current);
+
+  }
 
   handleChange = (value) => {
+    const { dataSource } = this.props;
+    const pagination = { ...this.state.pagination };
+    pagination.current = 1;
+    const user = JSON.parse(localStorage.getItem('userInfo'));
     this.setState({ defaultSelectValue: value });
+    const getIndex = dataSource.findIndex(elemet => elemet.name === value);
+    this.statisctiAmount(user.token, dataSource[getIndex].id);
+    this.handlewordsTable(user.token, dataSource[getIndex].id, this.state.acitveFilter);
+    this.setState(() => ({
+      activeGroupId: dataSource[getIndex].id,
+      pagination,
+    }))
   }
 
+  statisctiAmount = async (token, idGroup) => {
+    const result = await groupStatistApi(token, idGroup);
+    this.setState(() => ({
+      inprogress: result.inprogress,
+      learned: result.learned,
+    }));
+  };
+
+  handlewordsTable = async (token, groupId, statusWords, page) => {
+    const pagination = { ...this.state.pagination };
+    const result = await wordsStatisticApi(token, groupId, statusWords, page);
+    const wordsWithKey = result.words.map((word) => ({...word, key: uuidv4()}))
+    pagination.total = result.numberOfPages * 10,
+    this.setState(() => ({
+      wordsTable: wordsWithKey,
+      pagination,
+      acitveFilter: statusWords
+    }));
+  };
+
+
   changeColor = (dataset) => {
-    console.log(dataset[0]._index);
+    const { dataSource } = this.props;
+    const pagination = { ...this.state.pagination };
+    const user = JSON.parse(localStorage.getItem('userInfo'));
     if (!dataset[0]._index) {
-      const data = filteerSuccess(dataSour);
       this.setState({
         backgroundColorFalse: backgroundColorFalseDefault,
         backgroundColorSuccess,
         titleTable: succesTitleTable,
-        filtaredDate: data,
       });
+      this.handlewordsTable(user.token, this.state.activeGroupId, learnedForUrl );
     } else {
-      const data = filteerInProcess(dataSour);
       this.setState({
         backgroundColorFalse,
         backgroundColorSuccess: backgroundColorSuccessDefault,
         titleTable: inProcessTitleTable,
-        filtaredDate: data,
       });
+      this.handlewordsTable(user.token, this.state.activeGroupId, inprogressForUrl);
     }
   }
 
   render() {
     const { dataSource } = this.props;
     const {
-      titleTable, filtaredDate, defaultSelectValue, backgroundColorSuccess, backgroundColorFalse,
+      titleTable, wordsTable, defaultSelectValue, backgroundColorSuccess, backgroundColorFalse,
     } = this.state;
 
     const data = {
@@ -88,7 +128,7 @@ class StatisticPage extends React.Component {
         labelInprocess,
       ],
       datasets: [{
-        data: [70, 30],
+        data: [this.state.inprogress, this.state.learned],
         backgroundColor: [
           backgroundColorSuccess,
           backgroundColorFalse,
@@ -134,7 +174,7 @@ class StatisticPage extends React.Component {
                   {group.name}
                 </Option>
               ))}
-            </Select>) : (<p>No groups to select(This text is temporary)</p>) }
+            </Select>) : (<p>{noGroupsTest}</p>) }
               
               <Pie data={data} getElementAtEvent={this.changeColor} />
             </Col>
@@ -142,7 +182,9 @@ class StatisticPage extends React.Component {
               <h2 className="table-title">
                 {titleTable}
               </h2>
-              <Table dataSource={filtaredDate} columns={columns} pagination={{ pageSize: 10 }} />
+              <Table dataSource={wordsTable} columns={columns} pagination={this.state.pagination} loading={this.state.loading} 
+                onChange={this.handleTableChange}
+              />
             </Col>
           </Row>
         </div>
