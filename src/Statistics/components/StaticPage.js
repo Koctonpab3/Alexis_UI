@@ -5,6 +5,7 @@ import {
 import { connect } from 'react-redux';
 import { Pie } from 'react-chartjs-2';
 import uuidv4 from 'uuid/v4';
+import { configApi } from '../../Base/api/setup/setupApi';
 import {
   pageTitle, backgroundColorFalseDefault, backgroundColorSuccessDefault, backgroundColorFalse, backgroundColorSuccess,
   succesTitleTable, inProcessTitleTable, errServerConnection, wordtitle, successTitle, titleFail,
@@ -14,6 +15,7 @@ import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
 import groupStatistApi from '../../Base/api/statisticApi/groupStatisticApi';
 import wordsStatisticApi from '../../Base/api/statisticApi/wordsStatisticApi';
 import { loadData } from '../../WordGroups/actions/wordGroups';
+import { configure } from 'enzyme';
 
 class StatisticPage extends React.Component {
   state = {
@@ -27,21 +29,23 @@ class StatisticPage extends React.Component {
     activeGroupId: '',
     pagination: {},
     loading: false,
-    acitveFilter: learnedForUrl
+    acitveFilter: learnedForUrl,
   };
 
   componentDidMount = async () => {
     const user = JSON.parse(localStorage.getItem('userInfo'));
+    const defaultSetup = await configApi(user.token);
     const { loadData } = this.props;
     const groupList = await wordGroupsApi(user.token);
-    if (groupList[0].name) {
+    const defauldName = groupList.find(item => item.id === defaultSetup.defaultGroupId);
+    if (defauldName.name) {
       loadData(groupList);
       this.setState(() => ({
-        defaultSelectValue: groupList[0].name,
-        activeGroupId: groupList[0].id,
+        defaultSelectValue: defauldName.name,
+        activeGroupId: defauldName.id,
       }));
-      this.statisctiAmount(user.token, groupList[0].id);
-      this.handlewordsTable(user.token, groupList[0].id, this.state.acitveFilter);
+      this.statisctiAmount(user.token, defaultSetup.defaultGroupId);
+      this.handlewordsTable(user.token, defaultSetup.defaultGroupId, this.state.acitveFilter);
     }
   }
   handleTableChange = (pagination) => {
