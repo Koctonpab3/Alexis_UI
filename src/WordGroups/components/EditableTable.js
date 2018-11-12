@@ -57,7 +57,7 @@ class EditableCell extends React.Component {
                         required: true,
                         message: errWordGroupName,
                         whitespace: true,
-                        pattern: '[-_a-zA-Z0-9.]',
+                        pattern: '[-_a-zA-Z0-9.]+$',
                         min: 1,
                         max: 30,
                       }],
