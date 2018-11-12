@@ -171,7 +171,7 @@ Reset
                 to={`/wordgroups/${record.id}`}
                 className="wordGroup-name"
               >
-               {text}
+                {text}
               </Link>
 
             );
