@@ -133,6 +133,12 @@ $break-small-2: 346px;
       .ant-table-bordered .ant-table-tbody > tr > td{
         border-right: none;
       }
+      .ant-table-tbody>tr>td.ant-table-column-sort {
+        background: rgba(0,0,0,.01);
+      }
+      .ant-table-tbody>tr:hover{
+        background: #e6f7ff;
+      }
       .wordGroup-name{
         cursor: pointer;
         padding: 10px;
