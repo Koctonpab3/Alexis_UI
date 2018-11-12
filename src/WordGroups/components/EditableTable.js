@@ -176,6 +176,7 @@ Reset
 
             );
         },
+        defaultSortOrder: 'ascend',
         sorter: (a, b) => a.name.localeCompare(b.name),
       },
       {
