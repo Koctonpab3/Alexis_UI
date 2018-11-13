@@ -173,49 +173,47 @@ Reset
       enRelWords: [],
     };
 
-    clearWordsState() {
+    // english autocomplete
+    handleEngAutoComplete = (value) => {
       this.setState({
         enRelWords: [],
-        rusRelWords: [],
       });
-    }
+      const lang = 'en';
+      console.log(value);
 
-    // english autocomplete
-     handleEngAutoComplete = (value) => {
-       this.setState({
-         enRelWords: [],
-       });
-       const lang = 'en';
-       const sendVal = value.toLowerCase();
-       const autoCompReq = async (token) => {
-         const response = await axios({
-           method: 'get',
-           url: `${mainUrl}/api/words/suggestion/${lang}/${sendVal}`,
-           data: {
-           },
-           headers: {
-             'Content-Type': 'application/json',
-             Authorization: token,
-           },
-         });
-         if (response.status <= 400) {
-           return response.data;
-         }
-         throw new Error(response.status);
-       };
-       const user = JSON.parse(localStorage.getItem('userInfo'));
-       autoCompReq(user.token).then((res) => {
-         const resEnWords = res;
-         this.setState({
-           enRelWords: !value ? [] : resEnWords,
-         });
-       }).catch((error) => {
-         console.log(error);
-       });
-       this.setState({
-         enRelWords: [],
-       });
-     };
+      if (value) {
+        const sendVal = value.toLowerCase();
+
+        const autoCompReq = async (token) => {
+          const response = await axios({
+            method: 'get',
+            url: `${mainUrl}/api/words/suggestion/${lang}/${sendVal}`,
+            data: {
+            },
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: token,
+            },
+          });
+          if (response.status <= 400) {
+            return response.data;
+          }
+          throw new Error(response.status);
+        };
+        const user = JSON.parse(localStorage.getItem('userInfo'));
+        autoCompReq(user.token).then((res) => {
+          const resEnWords = res;
+          this.setState({
+            enRelWords: !value ? [] : resEnWords,
+          });
+        }).catch((error) => {
+          console.log(error);
+        });
+        this.setState({
+          enRelWords: [],
+        });
+      }
+    };
 
     // russian autocomplete
     handleRusAutoComplete = (value) => {
@@ -223,36 +221,48 @@ Reset
         rusRelWords: [],
       });
       const lang = 'ru';
-      const sendVal = value.toLowerCase();
-      const autoCompReq = async (token) => {
-        const response = await axios({
-          method: 'get',
-          url: `${mainUrl}/api/words/suggestion/${lang}/${sendVal}`,
-          data: {
-          },
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: token,
-          },
+      console.log(value);
+      if (value) {
+        const sendVal = value.toLowerCase();
+        const autoCompReq = async (token) => {
+          const response = await axios({
+            method: 'get',
+            url: `${mainUrl}/api/words/suggestion/${lang}/${sendVal}`,
+            data: {
+            },
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: token,
+            },
+          });
+          if (response.status <= 400) {
+            return response.data;
+          }
+          throw new Error(response.status);
+        };
+        const user = JSON.parse(localStorage.getItem('userInfo'));
+        autoCompReq(user.token).then((res) => {
+          const resRuWords = res;
+          this.setState({
+            rusRelWords: !value ? [] : resRuWords,
+          });
+        }).catch((error) => {
+          console.log(error);
         });
-        if (response.status <= 400) {
-          return response.data;
-        }
-        throw new Error(response.status);
-      };
-      const user = JSON.parse(localStorage.getItem('userInfo'));
-      autoCompReq(user.token).then((res) => {
-        const resRuWords = res;
         this.setState({
-          rusRelWords: !value ? [] : resRuWords,
+          rusRelWords: [],
         });
-      }).catch((error) => {
-        console.log(error);
-      });
+      }
+    };
+
+
+    clearWordsState() {
       this.setState({
+        enRelWords: [],
         rusRelWords: [],
       });
-    };
+    }
+
 
     // adding new word to group
     handleAddWord = (e) => {
@@ -508,7 +518,6 @@ Reset
                       id="eng-ac"
                       dataSource={enRelWords}
                       onSearch={this.handleEngAutoComplete}
-                      onFocus={this.handleEngAutoComplete}
                     >
                       <Input
                         className="wordInput"
