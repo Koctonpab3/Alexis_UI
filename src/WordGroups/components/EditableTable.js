@@ -57,7 +57,7 @@ class EditableCell extends React.Component {
                         required: true,
                         message: errWordGroupName,
                         whitespace: true,
-                        pattern: '^[-_a-zA-Z0-9.]+$',
+                        pattern: '^[-_A-Za-z 0-9]+$',
                         min: 1,
                         max: 30,
                       }],
@@ -176,8 +176,9 @@ Reset
 
             );
         },
-        // defaultSortOrder: 'ascend',
-        sorter: (a, b) => a.name.localeCompare(b.name),
+        // sorter: (a, b) => a.name.localeCompare(b.name),
+        sorter: this.state.order,
+
       },
       {
         title: 'Actions',
@@ -277,7 +278,9 @@ Edit
       count: 0,
       pagination: {},
       loading: true,
+      order: (a, b) => a.name.localeCompare(b.name),
       // dataSource: {},
+
     };
 
     // editing word groups
