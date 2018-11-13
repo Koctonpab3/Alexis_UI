@@ -46,7 +46,7 @@ class StatisticPage extends React.Component {
       }));
       this.statisctiAmount(user.token, defaultSetup.defaultGroupId);
       this.handlewordsTable(user.token, defaultSetup.defaultGroupId, this.state.acitveFilter);
-    } else {
+    } else if (groupList[0]) {
       loadData(groupList);
       this.setState(() => ({
         defaultSelectValue: groupList[0].name,
