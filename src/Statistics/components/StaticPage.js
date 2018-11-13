@@ -38,7 +38,7 @@ class StatisticPage extends React.Component {
     const { loadData } = this.props;
     const groupList = await wordGroupsApi(user.token);
     const defauldName = groupList.find(item => item.id === defaultSetup.defaultGroupId);
-    if (defauldName.name) {
+    if (defauldName) {
       loadData(groupList);
       this.setState(() => ({
         defaultSelectValue: defauldName.name,
@@ -46,6 +46,14 @@ class StatisticPage extends React.Component {
       }));
       this.statisctiAmount(user.token, defaultSetup.defaultGroupId);
       this.handlewordsTable(user.token, defaultSetup.defaultGroupId, this.state.acitveFilter);
+    } else {
+      loadData(groupList);
+      this.setState(() => ({
+        defaultSelectValue: groupList[0].name,
+        activeGroupId: groupList[0].name,
+      }));
+      this.statisctiAmount(user.token, groupList[0].id);
+      this.handlewordsTable(user.token, groupList[0].id, this.state.acitveFilter);
     }
   }
   handleTableChange = (pagination) => {
