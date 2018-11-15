@@ -6,17 +6,16 @@ import {
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
+// import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
 import { history } from '../../Base/routers/AppRouter';
 import {
   loadWordsData, addWord, deleteWord, clearWordsState,
 } from '../actions/wordsActions';
-import { loadData } from '../../WordGroups/actions/wordGroups';
+// import { loadData } from '../../WordGroups/actions/wordGroups';
 import {
   errServerConnection,
 } from '../../WordGroups/constans/constants';
 import { searchWords } from '../utils/search';
-import { findWordGroupById } from '../utils/getNameById';
 import { EngWordValidErr, RusWordValidErr, existingWordErr } from '../constants/constants';
 import { mainUrl } from '../../Base/api/auth/constants';
 
@@ -171,6 +170,7 @@ Reset
       pagination: {},
       rusRelWords: [],
       enRelWords: [],
+      currentWordGroupName: '',
     };
 
     // english autocomplete
@@ -179,7 +179,6 @@ Reset
         enRelWords: [],
       });
       const lang = 'en';
-      console.log(value);
 
       if (value) {
         const sendVal = value.toLowerCase();
@@ -221,7 +220,6 @@ Reset
         rusRelWords: [],
       });
       const lang = 'ru';
-      console.log(value);
       if (value) {
         const sendVal = value.toLowerCase();
         const autoCompReq = async (token) => {
@@ -427,24 +425,54 @@ Reset
       });
     };
 
-    loadWordGroups = () => {
+    // loadWordGroups = () => {
+    //   const user = JSON.parse(localStorage.getItem('userInfo'));
+    //   wordGroupsApi(user.token).then((data) => {
+    //     const dataNew = data;
+    //     const pagination = { ...this.state.pagination };
+    //     this.setState({
+    //       loading: false,
+    //       pagination,
+    //     });
+    //     this.props.loadData(dataNew);
+    //   }).catch((error) => {
+    //     notification.open({
+    //       type: 'error',
+    //       message: errServerConnection,
+    //     });
+    //     this.setState({
+    //       loading: false,
+    //     });
+    //   });
+    // };
+
+    getWordGroupName = () => {
+      const wordGroupId = Number(this.props.match.params.id);
+      const getWordGrName = async (token) => {
+        const response = await axios({
+          method: 'get',
+          url: `${mainUrl}/home/wordgroups/${wordGroupId}`,
+          data: {
+          },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: token,
+          },
+        });
+        if (response.status <= 400) {
+          return response.data;
+        }
+        throw new Error(response.status);
+      };
       const user = JSON.parse(localStorage.getItem('userInfo'));
-      wordGroupsApi(user.token).then((data) => {
-        const dataNew = data;
-        const pagination = { ...this.state.pagination };
+      getWordGrName(user.token).then((res, error) => {
+        const resName = res.name;
         this.setState({
-          loading: false,
-          pagination,
+          currentWordGroupName: resName,
         });
-        this.props.loadData(dataNew);
-      }).catch((error) => {
-        notification.open({
-          type: 'error',
-          message: errServerConnection,
-        });
-        this.setState({
-          loading: false,
-        });
+        if (error) {
+          console.log(error);
+        }
       });
     };
 
@@ -452,8 +480,9 @@ Reset
       this.props.form.validateFields();
       const { clearWordsState } = this.props;
       clearWordsState();
-      this.loadWordGroups();
+      // this.loadWordGroups();
       this.loadWords();
+      this.getWordGroupName();
     }
 
     render() {
@@ -463,9 +492,7 @@ Reset
       const { enRelWords } = this.state;
       const { rusRelWords } = this.state;
       const { words } = this.props;
-      const { wordGroups } = this.props;
-      const wordsGroupId = Number(this.props.match.params.id);
-      const WName = findWordGroupById(wordGroups, 'id', wordsGroupId);
+      const WName = this.state.currentWordGroupName;
       const columns = this.columns.map((col) => {
         if (!col.editable) {
           return col;
@@ -493,11 +520,11 @@ Reset
               <Icon className="goBack-arr" type="arrow-left" theme="outlined" />
             </Button>
           </Link>
-          <Spin spinning={this.state.loading}>
+          <Spin className="wordstable-spin" spinning={this.state.loading}>
             <p className="word-gr-name">
               {WName}
             </p>
-            <Form layout="inline" onSubmit={this.handleAddWord}>
+            <Form className="words-table-form" layout="inline" onSubmit={this.handleAddWord}>
               <div className="form-inputs-container">
                 <FormItem
                   className="eng-wrap-input"
@@ -516,11 +543,12 @@ Reset
                   })(
                     <AutoComplete
                       id="eng-ac"
+                      className="eng-com"
                       dataSource={enRelWords}
                       onSearch={this.handleEngAutoComplete}
                     >
                       <Input
-                        className="wordInput"
+                        className="wordInput engWordInput"
                         prefix={<Icon type="search" theme="outlined" />}
                         placeholder="English Word"
                       />
@@ -546,7 +574,7 @@ Reset
                       onSearch={this.handleRusAutoComplete}
                     >
                       <Input
-                        className="wordInput"
+                        className="wordInput ruWordInput"
                         prefix={<Icon type="search" theme="outlined" />}
                         placeholder="Russian Word"
                       />
@@ -589,9 +617,9 @@ Reset
 const WrappedWordsTable = Form.create()(WordsTable);
 
 const mapDispatchToProps = dispatch => ({
-  loadData: (dataNew) => {
-    dispatch(loadData(dataNew));
-  },
+  // loadData: (dataNew) => {
+  //   dispatch(loadData(dataNew));
+  // },
   loadWordsData: (dataNew) => {
     dispatch(loadWordsData(dataNew));
   },
@@ -608,7 +636,6 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   words: state.words.dataSource,
-  wordGroups: state.wordGroups.dataSource,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedWordsTable);

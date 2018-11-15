@@ -2,14 +2,14 @@ import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import { configure, shallow } from 'enzyme';
 import {
-  Form, Icon, Input, Button, Table, Popconfirm, notification, AutoComplete,
+  Form, Icon, Input, Button, Table, Popconfirm, notification, AutoComplete, Spin,
 } from 'antd';
 import { WordsTable } from '../../Words/components/Words';
 import {
   loadWordsData, addWord, deleteWord, clearWordsState,
 } from '../../Words/actions/wordsActions';
 import {
-  LOAD_WORDS_DATA, ADD_WORD, DELETE_WORD, CLEAR_ALL_WORDS,
+  LOAD_WORDS_DATA, ADD_WORD, DELETE_WORD,
 } from '../../Words/constants/constants';
 
 
@@ -53,7 +53,7 @@ test('should add word to store', () => {
 });
 
 // test deleteWord
-test('shoul delete word from store', () => {
+test('should delete word from store', () => {
   const id = 58;
   const action = deleteWord(id);
   expect(action).toEqual({
@@ -63,28 +63,73 @@ test('shoul delete word from store', () => {
   });
 });
 
-// test('should clear all words from store', () => {
-//   const action = clearWordsState;
-//   expect(action).toEqual(
-//     clearWordsState,
-//   );
-// });
+test('words input autocomplete test', () => {
+  class LocalStorageMock {
+    constructor() {
+      this.store = {
+        userInfo: {
+          token: '',
+        },
+      };
+    }
 
-// test('test autocomplete', () => {
-//   const props = {
-//     match: {
-//       params: {
-//         name: 'Word Group Name',
-//       },
-//     },
-//     clearWordsState,
-//   };
-//
-//   const WrappedWordsTable = Form.create()(WordsTable);
-//
-//   const wrapper = shallow(
-//     <WrappedWordsTable {...props} localStorage={localStorage} />,
-//   );
-//
-//   wrapper.dive().find('.wordInput').simulate('click');
-// });
+    clear() {
+      this.store = {};
+    }
+
+    getItem(key) {
+      return this.store[key] || null;
+    }
+
+    setItem(key, value) {
+      this.store[key] = value.toString();
+    }
+
+    removeItem(key) {
+      delete this.store[key];
+    }
+  }
+
+  global.localStorage = new LocalStorageMock();
+  expect(localStorage.getItem).toBeCalledWith('userInfo');
+  localStorage.setItem('userInfo', JSON.stringify({ token: 'Basic c2FkYWRAZ21haWwuY29tOjExMTExMQ==' }));
+  const user = JSON.parse(localStorage.getItem('userInfo'));
+  expect(user.token).toBe('Basic c2FkYWRAZ21haWwuY29tOjExMTExMQ==');
+
+  const props = {
+    match: {
+      params: {
+        name: 'Word Group Name',
+      },
+    },
+    clearWordsState,
+  };
+
+  const WrappedWordsTable = Form.create()(WordsTable);
+
+  const wrapper = shallow(
+    <WrappedWordsTable
+      {...props}
+    />,
+  );
+
+  // expect(wrapper.dive().instance().handleEngAutoComplete()).equals(true);
+  expect(wrapper.dive().instance().state.rusRelWords).toEqual([]);
+  expect(wrapper.dive().instance().state.enRelWords).toEqual([]);
+  expect(wrapper.find(WordsTable)).toHaveLength(1);
+  expect(wrapper.find(WordsTable).dive().find('.words-table')).toHaveLength(1);
+
+  const Wordstable = wrapper.find(WordsTable).dive().find('.words-table');
+  // expect(Wordstable.find('#eng-ac')).toHaveLength(1);
+  expect(Wordstable.find('.wordstable-spin')).toHaveLength(1);
+  // expect(Wordstable.find('.wordstable-spin').find('.words-table-form')).toHaveLength(1);
+  const WordsTableForm = Wordstable.find('.wordstable-spin').find('.words-table-form');
+  expect(WordsTableForm.find('.engWordInput')).toHaveLength(1);
+  expect(WordsTableForm.find('.ruWordInput')).toHaveLength(1);
+  const engWordInput = WordsTableForm.find('.engWordInput');
+  const ruWordInput = WordsTableForm.find('.ruWordInput');
+  // engWordInput.simulate('keydown', { which: 'a' });
+  engWordInput.simulate('change', { target: { value: 'c' } });
+
+  // expect(wrapper.find(WordsTable).dive().handleEngAutoComplete().called).toBe('c');
+});
