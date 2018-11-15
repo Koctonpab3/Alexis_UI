@@ -1,6 +1,6 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import { configure, shallow } from 'enzyme';
+import { configure, shallow, mount } from 'enzyme';
 import {
   Form, Icon, Input, Button, Table, Popconfirm, notification, AutoComplete, Spin,
 } from 'antd';
@@ -113,23 +113,13 @@ test('words input autocomplete test', () => {
     />,
   );
 
-  // expect(wrapper.dive().instance().handleEngAutoComplete()).equals(true);
-  expect(wrapper.dive().instance().state.rusRelWords).toEqual([]);
-  expect(wrapper.dive().instance().state.enRelWords).toEqual([]);
-  expect(wrapper.find(WordsTable)).toHaveLength(1);
-  expect(wrapper.find(WordsTable).dive().find('.words-table')).toHaveLength(1);
-
+  wrapper.dive().instance().componentDidMount();
   const Wordstable = wrapper.find(WordsTable).dive().find('.words-table');
-  // expect(Wordstable.find('#eng-ac')).toHaveLength(1);
-  expect(Wordstable.find('.wordstable-spin')).toHaveLength(1);
-  // expect(Wordstable.find('.wordstable-spin').find('.words-table-form')).toHaveLength(1);
   const WordsTableForm = Wordstable.find('.wordstable-spin').find('.words-table-form');
   expect(WordsTableForm.find('.engWordInput')).toHaveLength(1);
   expect(WordsTableForm.find('.ruWordInput')).toHaveLength(1);
-  const engWordInput = WordsTableForm.find('.engWordInput');
-  const ruWordInput = WordsTableForm.find('.ruWordInput');
-  // engWordInput.simulate('keydown', { which: 'a' });
-  engWordInput.simulate('change', { target: { value: 'c' } });
-
-  // expect(wrapper.find(WordsTable).dive().handleEngAutoComplete().called).toBe('c');
+  expect(WordsTableForm.find('.eng-com')).toHaveLength(1);
+  expect(WordsTableForm.find('.ru-com')).toHaveLength(1);
+  WordsTableForm.find('.eng-com').prop('onSearch')(() => { onSearch(); });
+  WordsTableForm.find('.ru-com').prop('onSearch')(() => { onSearch(); });
 });

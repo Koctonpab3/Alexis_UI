@@ -181,7 +181,7 @@ Reset
       const lang = 'en';
 
       if (value) {
-        const sendVal = value.toLowerCase();
+        const sendVal = value.toString().toLowerCase();
 
         const autoCompReq = async (token) => {
           const response = await axios({
@@ -221,7 +221,7 @@ Reset
       });
       const lang = 'ru';
       if (value) {
-        const sendVal = value.toLowerCase();
+        const sendVal = value.toString().toLowerCase();
         const autoCompReq = async (token) => {
           const response = await axios({
             method: 'get',
@@ -572,6 +572,7 @@ Reset
                     <AutoComplete
                       dataSource={rusRelWords}
                       onSearch={this.handleRusAutoComplete}
+                      className="ru-com"
                     >
                       <Input
                         className="wordInput ruWordInput"
@@ -617,9 +618,6 @@ Reset
 const WrappedWordsTable = Form.create()(WordsTable);
 
 const mapDispatchToProps = dispatch => ({
-  // loadData: (dataNew) => {
-  //   dispatch(loadData(dataNew));
-  // },
   loadWordsData: (dataNew) => {
     dispatch(loadWordsData(dataNew));
   },
