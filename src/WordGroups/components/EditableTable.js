@@ -117,6 +117,7 @@ export class EditableTable extends React.Component {
         dataIndex: 'name',
         editable: true,
         className: 'group-name-col',
+        sorter: (a, b) => a.name.localeCompare(b.name),
         filterDropdown: ({
           setSelectedKeys, selectedKeys, confirm, clearFilters,
         }) => (
@@ -176,9 +177,6 @@ Reset
 
             );
         },
-        // sorter: (a, b) => a.name.localeCompare(b.name),
-        sorter: this.state.order,
-
       },
       {
         title: 'Actions',
@@ -278,9 +276,6 @@ Edit
       count: 0,
       pagination: {},
       loading: true,
-      order: (a, b) => a.name.localeCompare(b.name),
-      // dataSource: {},
-
     };
 
     // editing word groups
@@ -502,6 +497,7 @@ Edit
     }
 
     handleTableChange = (pagination, filters, sorter) => {
+      console.log(sorter);
       const pager = { ...this.state.pagination };
       pager.current = pagination.current;
       this.setState({
@@ -589,7 +585,6 @@ Edit
             rowKey={record => record.id}
             rowClassName={() => 'editable-row'}
             dataSource={dataSource}
-            // pagination={this.state.pagination}
             pagination={{ pageSize: 10 }}
             loading={this.state.loading}
             onChange={this.handleTableChange}
