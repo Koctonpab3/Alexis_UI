@@ -15,7 +15,7 @@ import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
 import groupStatistApi from '../../Base/api/statisticApi/groupStatisticApi';
 import wordsStatisticApi from '../../Base/api/statisticApi/wordsStatisticApi';
 import { loadData } from '../../WordGroups/actions/wordGroups';
-import { configure } from 'enzyme';
+import { reDrawPie } from '../actions/pieActions'
 
 class StatisticPage extends React.Component {
   state = {
@@ -23,8 +23,6 @@ class StatisticPage extends React.Component {
     backgroundColorSuccess,
     defaultSelectValue: '',
     titleTable: succesTitleTable,
-    inprogress: 0,
-    learned: 0,
     wordsTable: [],
     activeGroupId: '',
     pagination: {},
@@ -83,11 +81,15 @@ class StatisticPage extends React.Component {
   }
 
   statisctiAmount = async (token, idGroup) => {
+    const { reDrawPie } = this.props;
     const result = await groupStatistApi(token, idGroup);
-    this.setState(() => ({
-      inprogress: result.inprogress,
-      learned: result.learned,
-    }));
+    
+    const { inprogress, learned } = result
+    reDrawPie({ inprogress, learned });
+    // this.setState(() => ({
+    //   inprogress: result.inprogress,
+    //   learned: result.learned,
+    // }));
   };
 
   handlewordsTable = async (token, groupId, statusWords, page) => {
@@ -125,7 +127,7 @@ class StatisticPage extends React.Component {
   }
 
   render() {
-    const { dataSource } = this.props;
+    const { dataSource, pie} = this.props;
     const {
       titleTable, wordsTable, defaultSelectValue, backgroundColorSuccess, backgroundColorFalse,
     } = this.state;
@@ -136,7 +138,7 @@ class StatisticPage extends React.Component {
         labelInprocess,
       ],
       datasets: [{
-        data: [this.state.inprogress, this.state.learned],
+        data: [pie.learned, pie.inprogress],
         backgroundColor: [
           backgroundColorSuccess,
           backgroundColorFalse,
@@ -205,10 +207,14 @@ const mapDispatchToProps = dispatch => ({
   loadData: (dataNew) => {
     dispatch(loadData(dataNew));
   },
+  reDrawPie: (data) => {
+    dispatch(reDrawPie(data));
+  },
 });
 
 const mapStateToProps = state => ({
   dataSource: state.wordGroups.dataSource,
+  pie: state.pie,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatisticPage);
