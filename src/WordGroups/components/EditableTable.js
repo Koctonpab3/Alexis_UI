@@ -176,9 +176,7 @@ Reset
 
             );
         },
-        // sorter: (a, b) => a.name.localeCompare(b.name),
-        sorter: this.state.order,
-
+        sorter: (a, b) => a.name.localeCompare(b.name),
       },
       {
         title: 'Actions',
@@ -278,9 +276,6 @@ Edit
       count: 0,
       pagination: {},
       loading: true,
-      order: (a, b) => a.name.localeCompare(b.name),
-      // dataSource: {},
-
     };
 
     // editing word groups
@@ -589,7 +584,6 @@ Edit
             rowKey={record => record.id}
             rowClassName={() => 'editable-row'}
             dataSource={dataSource}
-            // pagination={this.state.pagination}
             pagination={{ pageSize: 10 }}
             loading={this.state.loading}
             onChange={this.handleTableChange}
