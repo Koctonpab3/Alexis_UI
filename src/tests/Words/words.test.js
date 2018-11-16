@@ -1,8 +1,8 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import { configure, shallow, mount } from 'enzyme';
+import { configure, shallow } from 'enzyme';
 import {
-  Form, Icon, Input, Button, Table, Popconfirm, notification, AutoComplete, Spin,
+  Form,
 } from 'antd';
 import { WordsTable } from '../../Words/components/Words';
 import {

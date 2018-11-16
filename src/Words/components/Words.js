@@ -6,12 +6,10 @@ import {
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-// import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
 import { history } from '../../Base/routers/AppRouter';
 import {
   loadWordsData, addWord, deleteWord, clearWordsState,
 } from '../actions/wordsActions';
-// import { loadData } from '../../WordGroups/actions/wordGroups';
 import {
   errServerConnection,
 } from '../../WordGroups/constans/constants';
@@ -425,27 +423,6 @@ Reset
       });
     };
 
-    // loadWordGroups = () => {
-    //   const user = JSON.parse(localStorage.getItem('userInfo'));
-    //   wordGroupsApi(user.token).then((data) => {
-    //     const dataNew = data;
-    //     const pagination = { ...this.state.pagination };
-    //     this.setState({
-    //       loading: false,
-    //       pagination,
-    //     });
-    //     this.props.loadData(dataNew);
-    //   }).catch((error) => {
-    //     notification.open({
-    //       type: 'error',
-    //       message: errServerConnection,
-    //     });
-    //     this.setState({
-    //       loading: false,
-    //     });
-    //   });
-    // };
-
     getWordGroupName = () => {
       const wordGroupId = Number(this.props.match.params.id);
       const getWordGrName = async (token) => {
@@ -480,7 +457,6 @@ Reset
       this.props.form.validateFields();
       const { clearWordsState } = this.props;
       clearWordsState();
-      // this.loadWordGroups();
       this.loadWords();
       this.getWordGroupName();
     }
@@ -605,7 +581,6 @@ Reset
                 dataSource={words}
                 bordered
                 pagination={{ pageSize: 10 }}
-              // loading={this.state.loading}
                 onChange={this.handleTableChange}
               />
             </Form>
