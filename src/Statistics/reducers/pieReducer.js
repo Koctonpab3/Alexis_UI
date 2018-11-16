@@ -1,15 +1,20 @@
-import { backgroundColorFalseDefault, backgroundColorSuccess } from '../constants/constants'
+import {
+  backgroundColorFalseDefault, inprogressForUrl, learnedForUrl, backgroundColorSuccess, inProcessTitleTable, succesTitleTable, backgroundColorFalse, backgroundColorSuccessDefault } from '../constants/constants'
 const defaultUserState = {
-  backgroundColorFalse: backgroundColorFalseDefault,
-  backgroundColorSuccess: backgroundColorSuccess,
+  ColorFalse: backgroundColorFalseDefault,
+  ColorSuccess: backgroundColorSuccess,
   inprogress: 0,
   learned: 0,
+  titleTable: succesTitleTable,
+  acitveFilter: learnedForUrl,
+  wordsTable: [],
+  activeGroupId: '',
+  pagination: {},
+  defaultSelectValue: '',
 };
 
 export default (state = defaultUserState, action) => {
-  const {
-    backgroundColorFalse, backgroundColorSuccess, inprogress, learned,
-  } = action;
+  const { inprogress, learned, defaultSelectValue, activeGroupId, wordsTable } = action;
   switch (action.type) {
     case 'REDRAW': {
       return Object.assign({}, state, {
@@ -19,14 +24,29 @@ export default (state = defaultUserState, action) => {
     }
     case 'CHANGE_TO_WRONG': {
       return Object.assign({}, state, {
-        backgroundColorFalse,
-        backgroundColorSuccess,
+        ColorSuccess: backgroundColorSuccessDefault,
+        ColorFalse: backgroundColorFalse,
+        titleTable: inProcessTitleTable,
+        acitveFilter: inprogressForUrl,
       });
     }
     case 'CHANGE_TO_SUCCESS': {
       return Object.assign({}, state, {
-        backgroundColorFalse,
-        backgroundColorSuccess,
+        ColorFalse: backgroundColorFalseDefault,
+        ColorSuccess: backgroundColorSuccess,
+        titleTable: succesTitleTable,
+        acitveFilter: learnedForUrl,
+      });
+    }
+    case 'SELECT_GROUP': {
+      return Object.assign({}, state, {
+        defaultSelectValue,
+        activeGroupId,
+      });
+    }
+    case 'LOAD_WORDS': {
+      return Object.assign({}, state, {
+        wordsTable,
       });
     }
     default:
