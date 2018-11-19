@@ -20,3 +20,11 @@ export const tableWordTitle = 'Words';
 
 // filter value
 export const maxValue = 3;
+
+
+// actions
+export const REDRAW = 'REDRAW';
+export const CHANGE_TO_WRONG = 'CHANGE_TO_WRONG';
+export const CHANGE_TO_SUCCESS = 'CHANGE_TO_SUCCESS';
+export const SELECT_GROUP = 'SELECT_GROUP';
+export const LOAD_WORDS = 'LOAD_WORDS';
