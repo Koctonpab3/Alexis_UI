@@ -9,10 +9,14 @@ export const errServerConnection = 'The server connection failed';
 export const wordtitle = 'ruWord';
 export const successTitle = 'correct';
 export const titleFail = 'wrong';
-export const labelSucces = 'correct';
-export const labelInprocess = 'wrong';
-export const noGroupsTest = 'You do not have any groups'
-export const inprogressForUrl = 'inprogress'
-export const learnedForUrl = 'learned'
+export const labelSucces = 'Success words';
+export const labelInprocess = 'Words in process';
+export const noGroupsTest = 'You do not have any groups';
+export const inprogressForUrl = 'inprogress';
+export const learnedForUrl = 'learned';
+export const wordSuccessTitle = 'Success';
+export const wordInprogressTitle = 'In process';
+export const tableWordTitle = 'Words';
+
 // filter value
 export const maxValue = 3;
