@@ -86,6 +86,11 @@ body{
   margin-bottom: 20px;
   width: 300px;
 }
+.f-letter-up-case, .ant-select-selection-selected-value{
+  &::first-letter{
+    text-transform: uppercase;
+  }
+}
 
 
 // components styles
