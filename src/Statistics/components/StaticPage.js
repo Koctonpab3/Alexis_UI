@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { Pie } from 'react-chartjs-2';
 import uuidv4 from 'uuid/v4';
 import { configApi } from '../../Base/api/setup/setupApi';
-import { pageTitle, learnedForUrl, inprogressForUrl, backgroundColorFalse, backgroundColorSuccess, wordtitle, successTitle, titleFail, labelSucces, labelInprocess, noGroupsTest } from '../constants/constants';
+import { pageTitle,tableWordTitle, wordSuccessTitle, wordInprogressTitle, learnedForUrl, inprogressForUrl, backgroundColorFalse, backgroundColorSuccess, wordtitle, successTitle, titleFail, labelSucces, labelInprocess, noGroupsTest } from '../constants/constants';
 import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
 import groupStatistApi from '../../Base/api/statisticApi/groupStatisticApi';
 import wordsStatisticApi from '../../Base/api/statisticApi/wordsStatisticApi';
@@ -123,15 +123,15 @@ class StatisticPage extends React.Component {
 
     const Option = Select.Option;
     const columns = [{
-      title: wordtitle,
+      title: tableWordTitle,
       dataIndex: wordtitle,
       key: wordtitle,
     }, {
-      title: successTitle,
+      title: wordSuccessTitle,
       dataIndex: successTitle,
       key: successTitle,
     }, {
-      title: titleFail,
+      title: wordInprogressTitle,
       dataIndex: titleFail,
       key: titleFail,
     }];
