@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { mainUrl } from '../auth/constants';
 
-const wordsStatisticApi = async (token, idGroup, statusWords = 'learned', pageNumber = 1) => {
+const wordsStatisticApi = async (token, idGroup, statusWords, pageNumber = 1) => {
   const response = await axios({
     method: 'get',
     url: `${mainUrl}/api/alexa/quiz/statistic/${statusWords}/${idGroup}?pageNumber=${pageNumber}`,

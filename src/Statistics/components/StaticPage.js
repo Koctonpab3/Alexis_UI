@@ -6,140 +6,113 @@ import { connect } from 'react-redux';
 import { Pie } from 'react-chartjs-2';
 import uuidv4 from 'uuid/v4';
 import { configApi } from '../../Base/api/setup/setupApi';
-import {
-  pageTitle, backgroundColorFalseDefault, backgroundColorSuccessDefault, backgroundColorFalse, backgroundColorSuccess,
-  succesTitleTable, inProcessTitleTable, errServerConnection, wordtitle, successTitle, titleFail,
-  labelSucces, labelInprocess, noGroupsTest, inprogressForUrl, learnedForUrl
-} from '../constants/constants';
+import { pageTitle,tableWordTitle, wordSuccessTitle, wordInprogressTitle, learnedForUrl, inprogressForUrl, backgroundColorFalse, backgroundColorSuccess, wordtitle, successTitle, titleFail, labelSucces, labelInprocess, noGroupsTest } from '../constants/constants';
 import { wordGroupsApi } from '../../Base/api/wordGroups/wordGroupsApi';
 import groupStatistApi from '../../Base/api/statisticApi/groupStatisticApi';
 import wordsStatisticApi from '../../Base/api/statisticApi/wordsStatisticApi';
 import { loadData } from '../../WordGroups/actions/wordGroups';
-import { configure } from 'enzyme';
+import { reDrawPie, changeToInprogress, changeToLearned, selectGroup, loadWords } from '../actions/pieActions';
 
 class StatisticPage extends React.Component {
   state = {
-    backgroundColorFalse: backgroundColorFalseDefault,
-    backgroundColorSuccess,
-    defaultSelectValue: '',
-    titleTable: succesTitleTable,
-    inprogress: 0,
-    learned: 0,
-    wordsTable: [],
-    activeGroupId: '',
     pagination: {},
     loading: false,
-    acitveFilter: learnedForUrl,
   };
 
   componentDidMount = async () => {
     const user = JSON.parse(localStorage.getItem('userInfo'));
     const defaultSetup = await configApi(user.token);
-    const { loadData } = this.props;
+    const { loadData, selectGroup, pie } = this.props;
     const groupList = await wordGroupsApi(user.token);
     const defauldName = groupList.find(item => item.id === defaultSetup.defaultGroupId);
     if (defauldName) {
       loadData(groupList);
-      this.setState(() => ({
-        defaultSelectValue: defauldName.name,
-        activeGroupId: defauldName.id,
-      }));
+      selectGroup({ defaultSelectValue: defauldName.name, activeGroupId: defauldName.id });
       this.statisctiAmount(user.token, defaultSetup.defaultGroupId);
-      this.handlewordsTable(user.token, defaultSetup.defaultGroupId, this.state.acitveFilter);
+      this.handlewordsTable(user.token, defaultSetup.defaultGroupId, pie.acitveFilter);
     } else if (groupList[0]) {
       loadData(groupList);
-      this.setState(() => ({
-        defaultSelectValue: groupList[0].name,
-        activeGroupId: groupList[0].name,
-      }));
+      selectGroup({ defaultSelectValue: groupList[0].name, activeGroupId: groupList[0].id });
       this.statisctiAmount(user.token, groupList[0].id);
-      this.handlewordsTable(user.token, groupList[0].id, this.state.acitveFilter);
+      this.handlewordsTable(user.token, groupList[0].id, pie.acitveFilter);
     }
   }
+  componentWillUnmount = () => {
+    const {loadWords} = this.props;
+    loadWords({});
+  }
+
   handleTableChange = (pagination) => {
     const user = JSON.parse(localStorage.getItem('userInfo'));
     const pager = { ...this.state.pagination };
+    const { pie } = this.props
     pager.current = pagination.current;
     this.setState({
       pagination: pager,
     });
-    this.handlewordsTable(user.token, this.state.activeGroupId, this.state.acitveFilter, pagination.current);
-
+    this.handlewordsTable(user.token, pie.activeGroupId, pie.acitveFilter, pagination.current);
   }
 
   handleChange = (value) => {
-    const { dataSource } = this.props;
+    const { dataSource, selectGroup, pie } = this.props;
     const pagination = { ...this.state.pagination };
     pagination.current = 1;
     const user = JSON.parse(localStorage.getItem('userInfo'));
-    this.setState({ defaultSelectValue: value });
     const getIndex = dataSource.findIndex(elemet => elemet.name === value);
-    this.statisctiAmount(user.token, dataSource[getIndex].id);
-    this.handlewordsTable(user.token, dataSource[getIndex].id, this.state.acitveFilter);
+    const idGroup = dataSource[getIndex].id;
+    this.statisctiAmount(user.token, idGroup);
+    this.handlewordsTable(user.token, idGroup, pie.acitveFilter);
+    selectGroup({ defaultSelectValue: value, activeGroupId: idGroup });
     this.setState(() => ({
-      activeGroupId: dataSource[getIndex].id,
       pagination,
-    }))
+    }));
   }
 
   statisctiAmount = async (token, idGroup) => {
+    const { reDrawPie } = this.props;
     const result = await groupStatistApi(token, idGroup);
-    this.setState(() => ({
-      inprogress: result.inprogress,
-      learned: result.learned,
-    }));
+    const { inprogress, learned } = result;
+    reDrawPie({ inprogress, learned });
   };
 
   handlewordsTable = async (token, groupId, statusWords, page) => {
+    const { loadWords, pie } = this.props
     const pagination = { ...this.state.pagination };
     const result = await wordsStatisticApi(token, groupId, statusWords, page);
     const wordsWithKey = result.words.map((word) => ({...word, key: uuidv4()}))
     pagination.total = result.numberOfPages * 10,
+    loadWords({ wordsTable: wordsWithKey })
     this.setState(() => ({
-      wordsTable: wordsWithKey,
       pagination,
-      acitveFilter: statusWords
     }));
   };
 
 
   changeColor = (dataset) => {
-    const { dataSource } = this.props;
-    const pagination = { ...this.state.pagination };
     const user = JSON.parse(localStorage.getItem('userInfo'));
+    const { changeToInprogress, changeToLearned, pie } = this.props;
     if (!dataset[0]._index) {
-      this.setState({
-        backgroundColorFalse: backgroundColorFalseDefault,
-        backgroundColorSuccess,
-        titleTable: succesTitleTable,
-      });
-      this.handlewordsTable(user.token, this.state.activeGroupId, learnedForUrl );
+      changeToLearned();
+      this.handlewordsTable(user.token, pie.activeGroupId, learnedForUrl);
     } else {
-      this.setState({
-        backgroundColorFalse,
-        backgroundColorSuccess: backgroundColorSuccessDefault,
-        titleTable: inProcessTitleTable,
-      });
-      this.handlewordsTable(user.token, this.state.activeGroupId, inprogressForUrl);
+      changeToInprogress();
+      this.handlewordsTable(user.token, pie.activeGroupId, inprogressForUrl);
+
     }
   }
 
   render() {
-    const { dataSource } = this.props;
-    const {
-      titleTable, wordsTable, defaultSelectValue, backgroundColorSuccess, backgroundColorFalse,
-    } = this.state;
-
+    const { dataSource, pie } = this.props;
     const data = {
       labels: [
         labelSucces,
         labelInprocess,
       ],
       datasets: [{
-        data: [this.state.inprogress, this.state.learned],
+        data: [pie.learned, pie.inprogress],
         backgroundColor: [
-          backgroundColorSuccess,
-          backgroundColorFalse,
+          pie.ColorSuccess,
+          pie.ColorFalse,
         ],
         hoverBackgroundColor: [
           backgroundColorSuccess,
@@ -150,19 +123,19 @@ class StatisticPage extends React.Component {
 
     const Option = Select.Option;
     const columns = [{
-      title: wordtitle,
+      title: tableWordTitle,
       dataIndex: wordtitle,
       key: wordtitle,
     }, {
-      title: successTitle,
+      title: wordSuccessTitle,
       dataIndex: successTitle,
       key: successTitle,
     }, {
-      title: titleFail,
+      title: wordInprogressTitle,
       dataIndex: titleFail,
       key: titleFail,
     }];
-
+    console.log(pie.wordsTable)
     return (
       <div className="page static-page">
         <h1 className="page__title">
@@ -171,9 +144,9 @@ class StatisticPage extends React.Component {
         <div>
           <Row>
             <Col span={12}>
-            {this.state.defaultSelectValue ? (<Select
+            {pie.defaultSelectValue ? (<Select
               showSearch
-              value={defaultSelectValue}
+              value={pie.defaultSelectValue}
               onChange={this.handleChange}
               className="static-select"
 
@@ -189,9 +162,9 @@ class StatisticPage extends React.Component {
             </Col>
             <Col span={12}>
               <h2 className="table-title">
-                {titleTable}
+                {pie.titleTable}
               </h2>
-              <Table dataSource={wordsTable} columns={columns} pagination={this.state.pagination} loading={this.state.loading} 
+              <Table dataSource={pie.wordsTable} columns={columns} pagination={this.state.pagination} loading={this.state.loading} 
                 onChange={this.handleTableChange}
               />
             </Col>
@@ -206,10 +179,26 @@ const mapDispatchToProps = dispatch => ({
   loadData: (dataNew) => {
     dispatch(loadData(dataNew));
   },
+  reDrawPie: (data) => {
+    dispatch(reDrawPie(data));
+  },
+  changeToInprogress: () => {
+    dispatch(changeToInprogress());
+  },
+  changeToLearned: () => {
+    dispatch(changeToLearned());
+  },
+  selectGroup: (data) => {
+    dispatch(selectGroup(data));
+  },
+  loadWords: (data) => {
+    dispatch(loadWords(data));
+  },
 });
 
 const mapStateToProps = state => ({
   dataSource: state.wordGroups.dataSource,
+  pie: state.pie,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(StatisticPage);
