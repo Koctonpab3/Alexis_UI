@@ -149,9 +149,10 @@ class StatisticPage extends React.Component {
               value={pie.defaultSelectValue}
               onChange={this.handleChange}
               className="static-select"
+
             >
               {dataSource.map(group => (
-                <Option value={group.name} key={group.id}>
+                <Option value={group.name} key={group.id} className="f-letter-up-case">
                   {group.name}
                 </Option>
               ))}
