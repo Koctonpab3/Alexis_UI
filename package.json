@@ -87,6 +87,7 @@
     "history": "^4.7.2",
     "mini-css-extract-plugin": "^0.4.1",
     "node-sass": "^4.9.2",
+    "npm": "^6.4.1",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
     "react": "^16.4.1",
     "react-alert": "^4.0.4",

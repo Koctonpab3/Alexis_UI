@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 import createHistory from 'history/createHashHistory';
 
+
 // components
 import Private from './PrivateRoute';
 // pages
@@ -19,7 +20,6 @@ import NotFoundPage from '../../NotFoundPage/components/NotFoundPage';
 export const history = createHistory({
   hashType: 'slash',
 });
-
 
 //  ROUTERS
 const AppRouter = () => (
