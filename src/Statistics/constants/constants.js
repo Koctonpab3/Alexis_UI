@@ -14,13 +14,12 @@ export const labelInprocess = 'Words in process';
 export const noGroupsTest = 'You do not have any groups';
 export const inprogressForUrl = 'inprogress';
 export const learnedForUrl = 'learned';
-export const wordSuccessTitle = 'Success';
-export const wordInprogressTitle = 'In process';
+export const wordSuccessTitle = 'Сorrect';
+export const wordInprogressTitle = 'Failed';
 export const tableWordTitle = 'Words';
 
 // filter value
 export const maxValue = 3;
-
 
 // actions
 export const REDRAW = 'REDRAW';
