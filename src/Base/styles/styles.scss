@@ -85,6 +85,9 @@ body{
 .static-select{
   margin-bottom: 20px;
   width: 300px;
+  .ant-select{
+    width: 100%;
+  }
 }
 .f-letter-up-case, .ant-select-selection-selected-value{
   &::first-letter{
