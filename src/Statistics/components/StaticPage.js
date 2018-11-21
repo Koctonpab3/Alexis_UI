@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Row, Col, Select, Table, notification,
+  Row, Col, Select, Table, notification, Spin
 } from 'antd';
 import { connect } from 'react-redux';
 import { Pie } from 'react-chartjs-2';
@@ -17,6 +17,8 @@ class StatisticPage extends React.Component {
   state = {
     pagination: {},
     loading: false,
+    tableLoding: true,
+    selectLoading: true
   };
 
   componentDidMount = async () => {
@@ -35,6 +37,11 @@ class StatisticPage extends React.Component {
       selectGroup({ defaultSelectValue: groupList[0].name, activeGroupId: groupList[0].id });
       this.statisctiAmount(user.token, groupList[0].id);
       this.handlewordsTable(user.token, groupList[0].id, pie.acitveFilter);
+    } else {
+      this.setState(() => ({
+        selectLoading: false,
+        tableLoding: false,
+      }));
     }
   }
   componentWillUnmount = () => {
@@ -76,6 +83,9 @@ class StatisticPage extends React.Component {
   };
 
   handlewordsTable = async (token, groupId, statusWords, page) => {
+    this.setState(() => ({
+      tableLoding: true,
+    }));
     const { loadWords, pie } = this.props
     const pagination = { ...this.state.pagination };
     const result = await wordsStatisticApi(token, groupId, statusWords, page);
@@ -84,6 +94,8 @@ class StatisticPage extends React.Component {
     loadWords({ wordsTable: wordsWithKey })
     this.setState(() => ({
       pagination,
+      tableLoding: false,
+      selectLoading: false,
     }));
   };
 
@@ -135,7 +147,7 @@ class StatisticPage extends React.Component {
       dataIndex: titleFail,
       key: titleFail,
     }];
-    console.log(pie.wordsTable)
+    console.log(pie.defaultSelectValue)
     return (
       <div className="page static-page">
         <h1 className="page__title">
@@ -144,19 +156,18 @@ class StatisticPage extends React.Component {
         <div>
           <Row>
             <Col span={12}>
-            {pie.defaultSelectValue ? (<Select
+            <div className="static-select"><Spin spinning={this.state.selectLoading}><Select
               showSearch
-              value={pie.defaultSelectValue}
+              value={pie.defaultSelectValue ? pie.defaultSelectValue: noGroupsTest}
               onChange={this.handleChange}
-              className="static-select"
-
+              placeholder="Select users"
             >
               {dataSource.map(group => (
                 <Option value={group.name} key={group.id} className="f-letter-up-case">
                   {group.name}
                 </Option>
               ))}
-            </Select>) : (<p>{noGroupsTest}</p>) }
+            </Select></Spin></div>
               
               <Pie data={data} getElementAtEvent={this.changeColor} />
             </Col>
@@ -164,7 +175,7 @@ class StatisticPage extends React.Component {
               <h2 className="table-title">
                 {pie.titleTable}
               </h2>
-              <Table dataSource={pie.wordsTable} columns={columns} pagination={this.state.pagination} loading={this.state.loading} 
+              <Table dataSource={pie.wordsTable} columns={columns} pagination={this.state.pagination} loading={this.state.tableLoding} 
                 onChange={this.handleTableChange}
               />
             </Col>
