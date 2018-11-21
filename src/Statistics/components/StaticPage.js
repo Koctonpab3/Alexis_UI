@@ -45,8 +45,10 @@ class StatisticPage extends React.Component {
     }
   }
   componentWillUnmount = () => {
-    const {loadWords} = this.props;
+    const {loadWords, reDrawPie, selectGroup} = this.props;
     loadWords({});
+    reDrawPie({});
+    selectGroup({});
   }
 
   handleTableChange = (pagination) => {
