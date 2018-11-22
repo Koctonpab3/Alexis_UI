@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Router, Switch, Route,
 } from 'react-router-dom';
-import createHistory from 'history/createHashHistory';
+import createHistory from 'history/createBrowserHistory';
 
 
 // components
@@ -17,9 +17,7 @@ import LoginPage from '../../Login/components/LoginPage';
 import RegistrationPage from '../../Login/components/RegistrationPage';
 import NotFoundPage from '../../NotFoundPage/components/NotFoundPage';
 
-export const history = createHistory({
-  hashType: 'slash',
-});
+export const history = createHistory();
 
 //  ROUTERS
 const AppRouter = () => (
@@ -27,7 +25,7 @@ const AppRouter = () => (
     <div className="wrapper">
       <Switch>
         <Route path="/" component={LoginPage} exact />
-        <Route path="/registration" component={RegistrationPage} />
+        <Route path="/registration" component={RegistrationPage} exact />
         <Private path="/wordgroups" component={Wordgroups} exact />
         <Private path="/wordgroups/:id" component={WordsPage} exact />
         <Private path="/setup" component={SetupPage} exact />
