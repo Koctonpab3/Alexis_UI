@@ -61,6 +61,9 @@ body{
     margin: 0 auto;
     padding-bottom: 15px;
     flex: 1;
+    @media screen and (max-width: 746px) {
+     padding-top: 56px;
+    }
     @media screen and (max-width: $break-sm-medium) {
       width: 96%;
     }
@@ -83,7 +86,7 @@ body{
   text-transform: uppercase;
 }
 .static-select{
-  margin-bottom: 20px;
+  margin: 10px auto 20px auto;
   width: 300px;
   .ant-select{
     width: 100%;

@@ -157,7 +157,7 @@ class StatisticPage extends React.Component {
         </h1>
         <div>
           <Row>
-            <Col span={12}>
+            <Col sm={{ span: 24 }} lg={{ span: 12}} >
             <div className="static-select"><Spin spinning={this.state.selectLoading}><Select
               showSearch
               value={pie.defaultSelectValue ? pie.defaultSelectValue: noGroupsTest}
@@ -173,7 +173,7 @@ class StatisticPage extends React.Component {
               
               <Pie data={data} getElementAtEvent={this.changeColor} />
             </Col>
-            <Col span={12}>
+            <Col sm={{ span: 24 }} lg={{ span: 12 }} >
               <h2 className="table-title">
                 {pie.titleTable}
               </h2>
